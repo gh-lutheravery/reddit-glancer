@@ -1,0 +1,26 @@
+﻿<!--Html.TextBoxFor(m => m.City)-->
+
+@{
+    <!--_Views_Home_Base baseView = new _Views_Home_Base();
+    baseView.IgnoreBody();-->
+}
+
+@model BlogApplication.ViewModels.PostCreateViewModel
+<div class="content-section">
+    <h2 class="text-danger">@ViewData["ErrorMessage"]</h2>
+    @using (Html.BeginForm("AddPost", "Post", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <fieldset class="form-group">
+            @Html.LabelFor(m => m.Title)
+            @Html.TextBoxFor(m => m.Title, "", new { @class = "form-control", @placeholder = "Title" })
+            @Html.ValidationMessageFor(m => m.Title, "", new { @class = "badge badge-danger" })
+
+            @Html.LabelFor(m => m.Content)
+            @Html.TextBoxFor(m => m.Content, "", new { @class = "form-control", @placeholder = "Content" })
+            @Html.ValidationMessageFor(m => m.Content, "", new { @class = "badge badge-danger" })
+
+            <input type="submit" name="submit" class="btn btn-danger" value="Create" />
+        </fieldset>
+    }
+</div>

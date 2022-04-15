@@ -1,0 +1,17 @@
+﻿@model Post
+
+
+<div class="content-section">
+    <h2 class="text-danger">@ViewData["ErrorMessage"]</h2>
+    <form method="POST">
+        @Html.AntiForgeryToken()
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4"><h1>Delete Post</h1></legend>
+            <h2>Are you sure you want the delete the post: "@Model.Title"</h2>
+        </fieldset>
+        <div class="form-group">
+            <button asp-controller="Post" asp-action="PostConfirmDelete" asp-route-id="@Model.PostId" class="btn btn-outline-danger" type="submit">Delete</button>
+            <a asp-controller="Post" asp-action="PostDetail" asp-route-id="@Model.PostId" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

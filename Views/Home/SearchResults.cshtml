@@ -1,0 +1,39 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Web.Common;
+@model X.PagedList.IPagedList<Post>
+@using Microsoft.AspNetCore.Authorization;
+
+
+@{
+
+    if (Model.Count != 0)
+    {
+        <h1>Search Results</h1>
+        foreach (var post in Model)
+        {
+            <article class="media content-section">
+                <div class="media-body">
+                    <div class="article-metadata">
+                        <p class="mr-2" style="display: inline" href="#">@post.User.NormalizedUserName</p>
+                        <small class="text-muted">@post.DatePosted.ToString("dd, MM yy")</small>
+                    </div>
+                    <h2><a class="article-title"  asp-area="" asp-controller="Post" asp-action="PostDetail"
+                       asp-route-id="@post.PostId">@post.Title</a></h2>
+                    <p style="max-height: 9ch" class="article-content">@post.Content</p>
+                </div>
+            </article>
+        }
+    }
+
+    else
+    {
+        <div>
+            <h1><b>No Search Results Found.</b></h1>
+        </div>
+    }
+}
+
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("PostController",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+    new PagedListRenderOptions { LiElementClasses = new string[] { "" }, PageClasses = new string[] { "btn btn-outline-info m-1" } });

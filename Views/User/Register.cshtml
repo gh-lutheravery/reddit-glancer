@@ -1,0 +1,45 @@
+﻿@model BlogApplication.ViewModels.RegisterViewModel
+
+
+<div class="content-section">
+    @using (Html.BeginForm("CreateUser", "User", FormMethod.Post))
+    {
+        //@Html.ValidationSummary()
+        @Html.AntiForgeryToken()
+
+        <div class="border-bottom mb-4"><h1>Join Today</h1></div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.NormalizedUserName, "Username*")
+            @Html.TextBoxFor(m => m.NormalizedUserName, "", new { @class = "form-control", @placeholder = "Username" })
+            @Html.ValidationMessageFor(m => m.NormalizedUserName, "", new { @class = "badge badge-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.NormalizedEmail, "Email*")
+            @Html.TextBoxFor(m => m.NormalizedEmail, "", new { @class = "form-control", @placeholder = "Email" })
+            @Html.ValidationMessageFor(m => m.NormalizedEmail, "", new { @class = "badge badge-danger" })
+            @if (ViewBag.error != null)
+            {
+                <span class="badge badge-danger">@ViewBag.error</span>
+            }
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.PasswordHash, "Password*")
+            @Html.PasswordFor(m => m.PasswordHash, new { @class = "form-control", @placeholder = "Password" })
+            @Html.ValidationMessageFor(m => m.PasswordHash, "", new { @class = "badge badge-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword, "Password confirmation*")
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
+            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "badge badge-danger" })
+        </div>
+        <div class="form-group">
+            <input type="submit" name="submit" class="btn btn-outline-info" value="Register" />
+        </div>
+    }
+</div>
+
+<div class="border-top pt-4">
+    <small class="text-muted">
+        Already Have An Account? @Html.ActionLink("Login", "Login", "User", null, new { @class = "ml-1" })
+    </small>
+</div>
