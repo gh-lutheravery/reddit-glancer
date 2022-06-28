@@ -1,0 +1,41 @@
+﻿@model BlogApplication.ViewModels.SubredditViewModel
+
+
+<div class="header-container bg-secondary">
+    <h1 class="post-index-header" style="color: white">@Model.Sub.Subscribers subscribed to @Model.Sub.Name</h1>
+
+    <ul class="index-list-item">
+        <li class="index-list-item">Description: @Model.Sub.Description</li>
+        <li class="index-list-item">Subreddit created @Model.Sub.Created.ToLongDateString()</li>
+        <li class="index-list-item">Moderators:</li>
+            
+        <ul class="index-list-item" style="margin-bottom:.25rem">
+            @foreach (var mod in @Model.Sub.Moderators)
+            {
+                <li class="index-list-item">@mod.Name</li>
+            }
+        </ul>
+
+        @if (Model.Sub.Over18 != null)
+        {
+            @if ((bool)Model.Sub.Over18)
+            {
+                <li class="index-list-item">Looks like you have to be over 18 to view this subreddit.</li>
+            }
+        }
+    </ul>
+</div>
+
+<div class="header-container bg-secondary">
+    <h2 class="post-index-header" style="color: white">15 New Posts: (if they exist)</h2>
+</div>
+
+@Html.Partial("/Views/Api/_DisplayPost.cshtml", Model.TcPostArr)
+
+<div class="header-container bg-secondary">
+    <h2 class="post-index-header" style="color: white">15 New Comments: (if they exist)</h2>
+</div>
+
+@Html.Partial("/Views/Api/_DisplayComment.cshtml", Model.TcComArr)
+    
+

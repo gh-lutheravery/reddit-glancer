@@ -1,0 +1,24 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Web.Common;
+@model BlogApplication.ViewModels.SearchResultViewModel
+
+@{
+    if (Model.QueryList.Count != 0)
+    {
+        <h1>Search Results</h1>
+        <h4>Page @Model.QueryList.PageNumber</h4>
+        @Html.Partial("/Views/Api/_DisplayPost.cshtml", Model.QueryList.ToArray())
+    }
+
+    else
+    {
+        <div>
+            <h1><b>No Search Results Found.</b></h1>
+        </div>
+    }  
+}
+
+@Html.PagedListPager(Model.QueryList, page => Url.Action("SearchResult",
+    new { page, searchBar = Model.Query, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+    new PagedListRenderOptions { LiElementClasses = new string[] { "" }, PageClasses = new string[] { "btn btn-outline-info m-1 bg-light" } })

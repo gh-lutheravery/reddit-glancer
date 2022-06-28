@@ -8,11 +8,12 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using BlogApplication.Data;
 using BlogApplication.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Routing;
 
 namespace BlogApplication
 {
@@ -35,13 +36,18 @@ namespace BlogApplication
 		{
 			services.Configure<CookiePolicyOptions>(options =>
 			{
-				options.CheckConsentNeeded = context => true;
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
 
-			services.AddDbContext<BlogContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-			
+			services.AddDistributedMemoryCache();
+
+			services.AddSession(options =>
+			{
+				options.IdleTimeout = TimeSpan.FromSeconds(10);
+				options.Cookie.HttpOnly = true;
+				options.Cookie.IsEssential = true;
+			});
+
 			services.Configure<IdentityOptions>(options =>
 			{
 				// Password settings.
@@ -62,24 +68,20 @@ namespace BlogApplication
 				"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 				options.User.RequireUniqueEmail = false;
 			});
-			
-			services.ConfigureApplicationCookie(options =>
-			{
-				// Cookie settings
-				options.Cookie.HttpOnly = true;
-				options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-				options.LoginPath = "/User/Login";
-				options.SlidingExpiration = true;
-			});
+
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(options =>
+				{
+					options.ExpireTimeSpan = TimeSpan.FromDays(1);
+					options.LoginPath = "/Api/Home";
+					options.SlidingExpiration = true;
+					options.LogoutPath = "/Api/SignOut";
+					options.Cookie.IsEssential = true;
+				});
+
 			services.AddMvc();
 			services.AddHttpContextAccessor();
-			services.AddIdentity<BlogUser, BlogRole>(options =>
-			{
-				options.User.RequireUniqueEmail = false;
-			})
-			.AddEntityFrameworkStores<BlogContext>()
-			.AddDefaultTokenProviders();
 
 		}
 
@@ -92,9 +94,22 @@ namespace BlogApplication
 			}
 			else
 			{
-				app.UseExceptionHandler("/Home/Error");
+				app.UseExceptionHandler("/Misc/Error");
 				app.UseHsts();
 			}
+
+			if (!env.IsDevelopment())
+				app.Use(async (ctx, next) =>
+				{
+					await next(); 
+
+					if (ctx.Response.StatusCode == 404 && !ctx.Response.HasStarted)
+					{
+						ctx.Request.Path = "/Misc/PageNotFound";
+						await next();
+					}
+				});
+
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
@@ -104,11 +119,20 @@ namespace BlogApplication
 
 			app.UseAuthentication();
 
+			app.UseCookiePolicy();
+
+			app.UseSession();
+
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapControllers();
+			});
+
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(
 					name: "default",
-					pattern: "{controller=Home}/{action=Home}/{id?}");
+					pattern: "{controller=Api}/{action=Home}");
 			});
 		}
 	}

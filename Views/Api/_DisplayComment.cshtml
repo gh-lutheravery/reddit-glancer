@@ -1,0 +1,25 @@
+﻿@model Reddit.Controllers.Comment[]
+
+@{
+    foreach (var com in Model)
+    {
+
+        <article class="content-section">
+            <div class="media-body">
+
+                <div class="article-metadata">
+                    <small class="text-muted">@com.Created.ToLongDateString()<b> |</b></small>
+                    <small class="text-muted">r/@com.Subreddit<b> |</b></small>
+                    <small class="text-muted">u/@com.Author</small>
+                </div>
+
+                <div>
+                    <p class="article-content">
+                        @com.Body
+                    </p>
+                </div>
+                  
+            </div>
+        </article>
+    }
+}

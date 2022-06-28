@@ -5,17 +5,35 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\NotFoundError.cshtml" />
+    <Content Remove="Views\ServerError.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Misc\PageNotFound.cshtml" />
+    <None Include="Views\Misc\Error.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AttributeRouting" Version="3.4.2" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.21" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.21" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.26" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.21">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="PagedList.Core.Mvc" Version="3.0.0" />
     <PackageReference Include="PagedList.Mvc" Version="4.5.0" />
+    <PackageReference Include="Reddit" Version="1.5.2" />
+    <PackageReference Include="Reddit.AuthTokenRetrieverLib" Version="1.5.1" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="6.0.0" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.1.0" />
   </ItemGroup>
 

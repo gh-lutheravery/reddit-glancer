@@ -1,16 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BlogApplication.Models;
-using X.PagedList;
-
-namespace BlogApplication.ViewModels
+﻿namespace BlogApplication.ViewModels
 {
 	public class HomeViewModel
 	{
-		public IPagedList<Post> PostList { get; set; }
+		// fields for authenticating to reddit
+		public string ErrorMessage { get; set; }
 
-		public string AuthenticatedId { get; set; }
+		public string SuccessMessage { get; set; }
+
+		public string RedditUrl { get; set; }
+
+		public bool IsAuth = false;
+
+		public bool RememberMe { get; set; }
+
+		// fields for making api requests to reddit
+		public string RedditorName { get; set; }
+
+		public string SubredditName { get; set; }
 	}
 }
