@@ -39,6 +39,17 @@ ul {
     color: #444444;
 }
 
+.layout-title {
+    font-weight: 600;
+    font-size: 1.75rem;
+}
+
+#search-id {
+    background-color: #15181B;
+    color: white;
+    border: 0;
+}
+
 a.article-title:hover {
     color: #428bca;
     text-decoration: none;
@@ -93,10 +104,6 @@ a.article-title:hover {
     max-width: 1500px;
 }
 
-.form-control {
-    margin-bottom: 1rem;
-}
-
 .grid-body {
     display: grid;
     grid-template-columns: auto auto auto;
@@ -108,6 +115,10 @@ a.article-title:hover {
 
 .grid-post {
     
+}
+
+.home-form-control {
+    margin-bottom: .5rem
 }
 
 #centered-flex {
@@ -144,13 +155,12 @@ video {
     height: auto;
 }
 
-#jbody {
 
+.post-img {
+    max-width: 512px;
+    max-height: 450px;
 }
 
-#jbody-comment {
-
-}
 
 #title {
     font-weight: bold;

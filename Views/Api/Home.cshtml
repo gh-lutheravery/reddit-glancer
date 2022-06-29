@@ -4,7 +4,7 @@
 <h2 class="text-danger fade-in">@Model.ErrorMessage</h2>
 <h2 class="text-success fade-in">@Model.SuccessMessage</h2>
 
-<div class="content-section" style="margin: .5rem">
+<div class="content-section" style="margin: 2rem">
     <h1 style="margin-bottom: 0">Search Reddit</h1>
     <p class="text-muted">Must already be authenticated to search, and only one search box can be used at a time.</p>
         
@@ -27,11 +27,11 @@
         @Html.AntiForgeryToken()
         <fieldset class="form-group">
             @Html.LabelFor(m => m.RedditorName, "Redditor Search")
-            @Html.TextBoxFor(m => m.RedditorName, "", new { @class = "form-control", @placeholder = "Search for a Redditor" })
+            @Html.TextBoxFor(m => m.RedditorName, "", new { @class = "form-control home-form-control", @placeholder = "Search for a Redditor" })
             @Html.ValidationMessageFor(m => m.RedditorName, "", new { @class = "badge badge-danger" })
 
             @Html.LabelFor(m => m.SubredditName, "Subreddit Search")
-            @Html.TextBoxFor(m => m.SubredditName, "", new { @class = "form-control", @placeholder = "Search for a Subreddit" })
+            @Html.TextBoxFor(m => m.SubredditName, "", new { @class = "form-control home-form-control", @placeholder = "Search for a Subreddit" })
             @Html.ValidationMessageFor(m => m.SubredditName, "", new { @class = "badge badge-danger" })
 
             <input type="submit" name="submit" class="btn btn-primary" value="Search" />
