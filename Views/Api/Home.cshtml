@@ -1,10 +1,14 @@
 ﻿@model BlogApplication.ViewModels.HomeViewModel
 
+<script defer>
+    
+</script>
 
-<h2 class="text-danger fade-in">@Model.ErrorMessage</h2>
-<h2 class="text-success fade-in">@Model.SuccessMessage</h2>
+<h2 class="text-danger fade-in msg" onloadstart="setMargin(e)">@Model.ErrorMessage</h2>
 
-<div class="content-section" style="margin: 2rem">
+<h2 class="text-success fade-in msg" onloadstart="setMargin(e)">@Model.SuccessMessage</h2>
+
+<div class="content-section" id="home-container" style="margin-top: 2rem">
     <h1 style="margin-bottom: 0">Search Reddit</h1>
     <p class="text-muted">Must already be authenticated to search, and only one search box can be used at a time.</p>
         
@@ -37,4 +41,37 @@
             <input type="submit" name="submit" class="btn btn-primary" value="Search" />
         </fieldset>
     }
+
+   <script>
+        /*
+        function isHidden(el) {
+            return (el.offsetParent === null)
+        }
+
+        function removeHomeContainerMargin(e) {
+            if (!isHidden(e)) {
+                let homeCont = document.getElementById("home-container");
+                homeCont.style.marginTop = 0
+            }
+        }
+        */
+
+       let msg = document.getElementsByClassName("msg");
+       let tally = 0;
+
+       for (let element of msg) {
+           if (element.innerHTML !== "") {
+               element.style.marginTop = "1rem";
+               element.style.marginBottom = "1rem";
+
+               if (tally == 0) { 
+                   let homeCont = document.getElementById("home-container");
+                   homeCont.style.marginTop = "0";
+               }
+           }
+           tally++;
+       }
+
+       
+   </script>
 </div>

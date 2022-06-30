@@ -83,26 +83,6 @@ namespace BlogApplication.Controllers
 			return authLib.RefreshToken;
 		}
 
-		private void OpenReddit(string authUrl, string browserPath = "C:\\Program Files\\Mozilla Firefox\\firefox.exe")
-		{
-			try
-			{
-				ProcessStartInfo processStartInfo = new ProcessStartInfo(authUrl);
-				processStartInfo.UseShellExecute = true;
-				processStartInfo.CreateNoWindow = true;
-				Process.Start(processStartInfo);
-			}
-			
-			catch (System.ComponentModel.Win32Exception)
-			{
-				ProcessStartInfo processStartInfo = new ProcessStartInfo(browserPath)
-				{
-					Arguments = authUrl
-				};
-				Process.Start(processStartInfo);
-			}
-		}
-
 		[Route("login")]
 		[ValidateAntiForgeryToken]
 		[HttpPost]
@@ -336,12 +316,18 @@ namespace BlogApplication.Controllers
 			return RedirectToAction(nameof(Home));
 		}
 
+		private string ToCompactUrl(string url)
+		{
+			// replace with compact to make authorize page better on mobile
+			return url.Replace("authorize?", "authorize.compact?");
+		}
+
 		public ActionResult Home()
 		{
 			HomeViewModel vm = new HomeViewModel();
 
 			if (!IsRefreshTokenSet())
-				vm.RedditUrl = new AuthTokenRetrieverLib(AppId, AppSecret, 8080).AuthURL();
+				vm.RedditUrl = ToCompactUrl(new AuthTokenRetrieverLib(AppId, AppSecret, 8080).AuthURL());
 
 			else
 				vm.IsAuth = true;
