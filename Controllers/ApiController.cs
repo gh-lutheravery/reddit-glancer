@@ -1,24 +1,19 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlogApplication.ViewModels;
+using System.Net.Sockets;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Reddit;
-using Reddit.AuthTokenRetriever;
-using System.Diagnostics;
-using System.Security.Claims;
+using BlogApplication.ViewModels;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-using X.PagedList;
-using Newtonsoft.Json;
-using AttributeRouting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Net.Sockets;
+using Reddit;
+using Reddit.AuthTokenRetriever;
 using Reddit.Exceptions;
+using X.PagedList;
+using System.Threading;
 
 namespace BlogApplication.Controllers
 {
@@ -70,7 +65,8 @@ namespace BlogApplication.Controllers
 				return TooManySocketError;
 			}
 
-			// wait until refresh token is sent from reddit
+			// wait until refresh token is sent from reddit, sleep first to minimize cpu usage
+			Thread.Sleep(700);
 			while (true)
 			{
 				if (authLib.RefreshToken != null)
@@ -140,8 +136,6 @@ namespace BlogApplication.Controllers
 				IssuedUtc = DateTime.UtcNow,
 				RedirectUri = "/profile"
 			};
-
-			
 
 			await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, 
 				new ClaimsPrincipal(claimsIdentity), authProperties);
