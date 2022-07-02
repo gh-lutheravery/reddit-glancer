@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using System.Threading;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,14 +14,14 @@ using Reddit;
 using Reddit.AuthTokenRetriever;
 using Reddit.Exceptions;
 using X.PagedList;
-using System.Threading;
+
 
 namespace GlanceReddit.Controllers
 {
 	public class ApiController : Controller
 	{
-        readonly string AppId = Environment.GetEnvironmentVariable("APP_ID", EnvironmentVariableTarget.User);
-        readonly string AppSecret = Environment.GetEnvironmentVariable("APP_SECRET", EnvironmentVariableTarget.User);
+        readonly string AppId = Environment.GetEnvironmentVariable("APP_ID", EnvironmentVariableTarget.Machine);
+        readonly string AppSecret = Environment.GetEnvironmentVariable("APP_SECRET", EnvironmentVariableTarget.Machine);
 
 		readonly string GenericError = "Something went wrong... try again.";
 		readonly string NotAuthError = "You're not logged into reddit here; try again.";
@@ -66,7 +67,7 @@ namespace GlanceReddit.Controllers
 			}
 
 			// wait until refresh token is sent from reddit, sleep first to minimize cpu usage
-			Thread.Sleep(700);
+			Thread.Sleep(1000);
 			while (true)
 			{
 				if (authLib.RefreshToken != null)
@@ -82,7 +83,7 @@ namespace GlanceReddit.Controllers
 		[Route("login")]
 		[ValidateAntiForgeryToken]
 		[HttpPost]
-		public async Task<ActionResult> RedditLogin(RedditRequestViewModel viewRequest)
+		public ActionResult RedditLogin(RedditRequestViewModel viewRequest)
 		{
 			if (!IsRefreshTokenSet())
 			{		
