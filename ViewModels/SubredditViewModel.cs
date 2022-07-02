@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BlogApplication.ViewModels
+namespace GlanceReddit.ViewModels
 {
     public class SubredditViewModel
     {

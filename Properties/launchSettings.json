@@ -14,7 +14,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "BlogApplication": {
+    "GlanceReddit": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

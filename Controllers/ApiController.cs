@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using BlogApplication.ViewModels;
+using GlanceReddit.ViewModels;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Reddit;
@@ -15,7 +15,7 @@ using Reddit.Exceptions;
 using X.PagedList;
 using System.Threading;
 
-namespace BlogApplication.Controllers
+namespace GlanceReddit.Controllers
 {
 	public class ApiController : Controller
 	{

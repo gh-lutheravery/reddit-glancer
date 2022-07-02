@@ -1,4 +1,4 @@
-﻿using BlogApplication.Models;
+﻿using GlanceReddit.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 
-namespace BlogApplication.ViewComponents
+namespace GlanceReddit.ViewComponents
 {
 	public class DisplayVideo : ViewComponent
 	{

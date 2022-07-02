@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using BlogApplication.Models;
+using GlanceReddit.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using X.PagedList;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
-using BlogApplication.ViewModels;
+using GlanceReddit.ViewModels;
 using AttributeRouting;
 
-namespace BlogApplication.Controllers
+namespace GlanceReddit.Controllers
 {
 	public class MiscController : Controller
 	{

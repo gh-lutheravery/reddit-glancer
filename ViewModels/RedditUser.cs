@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Reddit;
 
-namespace BlogApplication.ViewModels
+namespace GlanceReddit.ViewModels
 {
 	public class RedditUser
 	{

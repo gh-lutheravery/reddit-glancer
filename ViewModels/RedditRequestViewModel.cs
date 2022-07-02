@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlogApplication.Controllers;
+using GlanceReddit.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Reddit;
 
-namespace BlogApplication.ViewModels
+namespace GlanceReddit.ViewModels
 {
 	public class RedditRequestViewModel
 	{

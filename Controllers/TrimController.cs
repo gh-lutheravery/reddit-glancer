@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlogApplication.Controllers
+namespace GlanceReddit.Controllers
 {
     public class TrimController
     {

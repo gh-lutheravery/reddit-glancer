@@ -1,4 +1,4 @@
-﻿namespace BlogApplication.Models
+﻿namespace GlanceReddit.Models
 {
 	public class DisplayVideoModel
 	{

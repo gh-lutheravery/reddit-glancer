@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BlogApplication.Models
+namespace GlanceReddit.Models
 {
 	public class ErrorViewModel
 	{

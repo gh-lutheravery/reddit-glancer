@@ -1,4 +1,4 @@
-﻿namespace BlogApplication.ViewModels
+﻿namespace GlanceReddit.ViewModels
 {
     public class UserViewModel
     {

@@ -2,7 +2,7 @@
 using System.IO;
 using X.PagedList;
 
-namespace BlogApplication.ViewModels
+namespace GlanceReddit.ViewModels
 {
 	public class SearchResultViewModel
 	{
