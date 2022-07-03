@@ -20,8 +20,8 @@ namespace GlanceReddit.Controllers
 {
 	public class ApiController : Controller
 	{
-        readonly string AppId = Environment.GetEnvironmentVariable("APP_ID", EnvironmentVariableTarget.Machine);
-        readonly string AppSecret = Environment.GetEnvironmentVariable("APP_SECRET", EnvironmentVariableTarget.Machine);
+        readonly string AppId = Environment.GetEnvironmentVariable("APP_ID");
+        readonly string AppSecret = Environment.GetEnvironmentVariable("APP_SECRET");
 
 		readonly string GenericError = "Something went wrong... try again.";
 		readonly string NotAuthError = "You're not logged into reddit here; try again.";

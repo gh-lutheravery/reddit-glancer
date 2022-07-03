@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
+using System.Net;
 
 namespace GlanceReddit
 {
@@ -24,9 +25,17 @@ namespace GlanceReddit
 			Host.CreateDefaultBuilder(args)
 				.ConfigureWebHostDefaults(webBuilder =>
 				{
-					webBuilder.UseStartup<Startup>();
-				});
+                    var portEnv = Environment.GetEnvironmentVariable("PORT");
 
-            
+                    if (portEnv != null)
+                    {
+                        webBuilder.ConfigureKestrel(serverOptions =>
+                        {
+                            serverOptions.Listen(IPAddress.Any, Convert.ToInt32(portEnv));
+                        });
+                    }
+
+                    webBuilder.UseStartup<Startup>();
+                });
 	}
 }
