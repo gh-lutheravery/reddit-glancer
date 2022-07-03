@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
-COPY ["GlanceReddit/GlanceReddit.csproj", "GlanceReddit/"]
+COPY GlanceReddit/GlanceReddit.csproj GlanceReddit/
 RUN dotnet restore "GlanceReddit/GlanceReddit.csproj"
 COPY . .
 WORKDIR "/src/GlanceReddit"
