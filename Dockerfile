@@ -19,4 +19,4 @@ RUN dotnet publish "GlanceReddit.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-CMD ["dotnet", "BennyAPI.dll"]
+CMD ["dotnet", "GlanceReddit.dll"]
