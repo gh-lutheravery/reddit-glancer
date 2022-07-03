@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace GlanceReddit
 {
@@ -96,6 +98,19 @@ namespace GlanceReddit
 			{
 				app.UseExceptionHandler("/Misc/Error");
 				app.UseHsts();
+				
+				var forwardedHeadersOptions = new ForwardedHeadersOptions
+				{
+					ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+				};
+
+				forwardedHeadersOptions.KnownNetworks.Clear();
+				forwardedHeadersOptions.KnownProxies.Clear();
+
+				app.UseForwardedHeaders(forwardedHeadersOptions);
+				var rewriteOptions = new RewriteOptions().AddRedirectToHttps(307);
+
+				app.UseRewriter(rewriteOptions);
 			}
 
 			if (!env.IsDevelopment())
