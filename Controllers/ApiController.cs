@@ -14,7 +14,7 @@ using Reddit;
 using Reddit.AuthTokenRetriever;
 using Reddit.Exceptions;
 using X.PagedList;
-
+using System.Text.RegularExpressions;
 
 namespace GlanceReddit.Controllers
 {
@@ -22,6 +22,9 @@ namespace GlanceReddit.Controllers
 	{
         readonly string AppId = Environment.GetEnvironmentVariable("APP_ID");
         readonly string AppSecret = Environment.GetEnvironmentVariable("APP_SECRET");
+
+		readonly string HostName = "glancereddit.herokuapp.com";
+		readonly string RedirectUri = "https://glancereddit.herokuapp.com/";
 
 		readonly string GenericError = "Something went wrong... try again.";
 		readonly string NotAuthError = "You're not logged into reddit here; try again.";
@@ -33,7 +36,7 @@ namespace GlanceReddit.Controllers
 		readonly string TooManySocketError = "You connected to reddit too many times; try again.";
 		readonly string ForbiddenError = "Reddit says you are forbidden from accessing that; it " +
 			"might have been deleted or privated.";
-		readonly string LoginSuccess = "Logging in was successful!";
+		readonly string LoginSuccess = "Logging in was successful! ";
 		readonly string LogOutSuccess = "Logging out was successful!";
 
 		readonly int SubmissionLimit = 15;
@@ -52,9 +55,9 @@ namespace GlanceReddit.Controllers
 			return false;
 		}
 
-		private string AuthorizeUser(string AppId, string AppSecret, int port = 8080)
+		private string AuthorizeUser()
 		{
-			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(AppId, AppSecret, port);
+			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(AppId, 443, host: HostName, redirectUri: RedirectUri, AppSecret);
 			
 			try
 			{
@@ -87,7 +90,7 @@ namespace GlanceReddit.Controllers
 		{
 			if (!IsRefreshTokenSet())
 			{		
-				string result = AuthorizeUser(AppId, AppSecret);
+				string result = AuthorizeUser();
 				if (result != TooManySocketError)
 				{
 					SignIn(result, viewRequest.RememberMe);
@@ -311,10 +314,19 @@ namespace GlanceReddit.Controllers
 			return RedirectToAction(nameof(Home));
 		}
 
+		// replace with compact to make authorize page better on mobile
 		private string ToCompactUrl(string url)
 		{
-			// replace with compact to make authorize page better on mobile
 			return url.Replace("authorize?", "authorize.compact?");
+		}
+
+		private string ToDeployedRedirectUri(string url)
+		{
+			//return Regex("&redirect_uri*&scope").Replace(RedirectUri)
+			string replaceRedirectUriPattern = @"\&redirect_uri(.*?)\&scope";
+
+			return Regex.Replace(url, replaceRedirectUriPattern, RedirectUri);
+
 		}
 
 		public ActionResult Home()
@@ -322,7 +334,13 @@ namespace GlanceReddit.Controllers
 			HomeViewModel vm = new HomeViewModel();
 
 			if (!IsRefreshTokenSet())
-				vm.RedditUrl = ToCompactUrl(new AuthTokenRetrieverLib(AppId, AppSecret, 8080).AuthURL());
+			{
+				string originalUrl = new AuthTokenRetrieverLib(AppId, 443, host: HostName, 
+					redirectUri: RedirectUri, AppSecret).AuthURL();
+
+				string serverRedirectUri = ToDeployedRedirectUri(originalUrl);
+				vm.RedditUrl = ToCompactUrl(serverRedirectUri);
+			}
 
 			else
 				vm.IsAuth = true;
