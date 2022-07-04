@@ -65,15 +65,17 @@ namespace GlanceReddit.Controllers
 
 		// send request to client that opens reddit auth page
 		[Route("openreddit")]
-		public ActionResult OpenReddit()
+		public ActionResult OpenReddit(string serverRedirectUri)
 		{
+			ViewBag.serverRedirectUri = serverRedirectUri;
+			ViewData["AuthUrl"] = serverRedirectUri;
 			return View();
 		}
 
 		private string AuthorizeUser(bool rememberUser)
 		{
-			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(AppId, 443, host: HostName, redirectUri: RedirectUri, AppSecret);
-
+			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(AppId, KestrelPort, host: HostName, redirectUri: RedirectUri, AppSecret);
+			
 			try
 			{
 				authLib.AwaitCallback();
@@ -84,11 +86,16 @@ namespace GlanceReddit.Controllers
 				return TooManySocketError;
 			}
 
-			OpenReddit();
+			string originalUrl = authLib.AuthURL();
+
+			string serverRedirectUri = ToDeployedRedirectUri(originalUrl);
+			serverRedirectUri = ToCompactUrl(serverRedirectUri);
+
+			OpenReddit(serverRedirectUri);
 
 			// wait until refresh token is sent from reddit, sleep first to minimize cpu usage
 			Thread.Sleep(500);
-			while (true) 
+			while (true)
 			{
 				if (authLib.RefreshToken != null)
 				{
@@ -106,6 +113,7 @@ namespace GlanceReddit.Controllers
 		[HttpPost]
 		public ActionResult RedditLogin(RedditRequestViewModel viewRequest)
 		{
+
 			if (!IsRefreshTokenSet())
 			{		
 				string result = AuthorizeUser(viewRequest.RememberMe);
