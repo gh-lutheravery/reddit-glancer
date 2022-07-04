@@ -346,22 +346,15 @@ namespace GlanceReddit.Controllers
 		{
 			return SetQueryVal(url, "redirect_uri", RedirectUri).ToString();
 		}
-
+		
 		public ActionResult Home()
 		{
 			HomeViewModel vm = new HomeViewModel();
 
-			if (!IsRefreshTokenSet())
+			if (IsRefreshTokenSet())
 			{
-				string originalUrl = new AuthTokenRetrieverLib(AppId, KestrelPort, host: HostName, 
-					redirectUri: RedirectUri, AppSecret).AuthURL();
-
-				string serverRedirectUri = ToDeployedRedirectUri(originalUrl);
-				vm.RedditUrl = ToCompactUrl(serverRedirectUri);
-			}
-
-			else
 				vm.IsAuth = true;
+			}
 
 			if (TempData["ErrorMessage"] != null)
 				vm.ErrorMessage = TempData["ErrorMessage"].ToString();
