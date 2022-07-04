@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Threading;
 using System.Security.Claims;
+using System.Web;
+using System.Collections.Specialized;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using GlanceReddit.ViewModels;
@@ -14,7 +16,6 @@ using Reddit;
 using Reddit.AuthTokenRetriever;
 using Reddit.Exceptions;
 using X.PagedList;
-using System.Text.RegularExpressions;
 
 namespace GlanceReddit.Controllers
 {
@@ -24,7 +25,8 @@ namespace GlanceReddit.Controllers
         readonly string AppSecret = Environment.GetEnvironmentVariable("APP_SECRET");
 
 		readonly string HostName = "glancereddit.herokuapp.com";
-		readonly string RedirectUri = "https://glancereddit.herokuapp.com/";
+		readonly string RedirectUri = "https://glancereddit.herokuapp.com/auth-redirect";
+		readonly int KestrelPort = 443;
 
 		readonly string GenericError = "Something went wrong... try again.";
 		readonly string NotAuthError = "You're not logged into reddit here; try again.";
@@ -40,7 +42,6 @@ namespace GlanceReddit.Controllers
 		readonly string LogOutSuccess = "Logging out was successful!";
 
 		readonly int SubmissionLimit = 15;
-
 		readonly int SearchSubmissionLimit = 25;
 
 		private bool IsRefreshTokenSet()
@@ -55,10 +56,24 @@ namespace GlanceReddit.Controllers
 			return false;
 		}
 
-		private string AuthorizeUser()
+		// send request to client that opens reddit auth page
+		[Route("auth-redirect")]
+		public ActionResult AuthRedirect()
+		{
+			return View();
+		}
+
+		// send request to client that opens reddit auth page
+		[Route("openreddit")]
+		public ActionResult OpenReddit()
+		{
+			return View();
+		}
+
+		private string AuthorizeUser(bool rememberUser)
 		{
 			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(AppId, 443, host: HostName, redirectUri: RedirectUri, AppSecret);
-			
+
 			try
 			{
 				authLib.AwaitCallback();
@@ -69,9 +84,11 @@ namespace GlanceReddit.Controllers
 				return TooManySocketError;
 			}
 
+			OpenReddit();
+
 			// wait until refresh token is sent from reddit, sleep first to minimize cpu usage
-			Thread.Sleep(1000);
-			while (true)
+			Thread.Sleep(500);
+			while (true) 
 			{
 				if (authLib.RefreshToken != null)
 				{
@@ -80,7 +97,8 @@ namespace GlanceReddit.Controllers
 			}
 
 			authLib.StopListening();
-			return authLib.RefreshToken;
+			SignIn(authLib.RefreshToken, rememberUser);
+			return LoginSuccess;
 		}
 
 		[Route("login")]
@@ -90,19 +108,14 @@ namespace GlanceReddit.Controllers
 		{
 			if (!IsRefreshTokenSet())
 			{		
-				string result = AuthorizeUser();
-				if (result != TooManySocketError)
-				{
-					SignIn(result, viewRequest.RememberMe);
-					TempData["SuccessMessage"] = LoginSuccess;
-					return RedirectToAction(nameof(Home));
-				}
-
-				else
+				string result = AuthorizeUser(viewRequest.RememberMe);
+				if (result == TooManySocketError)
 				{
 					TempData["ErrorMessage"] = TooManySocketError;
 					return RedirectToAction(nameof(Home));
 				}
+				else
+					return RedirectToAction(nameof(Home));
 			}
 
 			TempData["ErrorMessage"] = AlreadyAuthError;
@@ -314,6 +327,15 @@ namespace GlanceReddit.Controllers
 			return RedirectToAction(nameof(Home));
 		}
 
+		public Uri SetQueryVal(string url, string name, string newValue)
+		{
+			NameValueCollection nvc = HttpUtility.ParseQueryString(url);
+			nvc[name] = (newValue ?? string.Empty).ToString();
+
+			Uri uri = new Uri(url);
+			return new UriBuilder(uri) { Query = nvc.ToString() }.Uri;
+		}
+
 		// replace with compact to make authorize page better on mobile
 		private string ToCompactUrl(string url)
 		{
@@ -322,11 +344,7 @@ namespace GlanceReddit.Controllers
 
 		private string ToDeployedRedirectUri(string url)
 		{
-			//return Regex("&redirect_uri*&scope").Replace(RedirectUri)
-			string replaceRedirectUriPattern = @"\&redirect_uri(.*?)\&scope";
-
-			return Regex.Replace(url, replaceRedirectUriPattern, RedirectUri);
-
+			return SetQueryVal(url, "redirect_uri", RedirectUri).ToString();
 		}
 
 		public ActionResult Home()
@@ -335,7 +353,7 @@ namespace GlanceReddit.Controllers
 
 			if (!IsRefreshTokenSet())
 			{
-				string originalUrl = new AuthTokenRetrieverLib(AppId, 443, host: HostName, 
+				string originalUrl = new AuthTokenRetrieverLib(AppId, KestrelPort, host: HostName, 
 					redirectUri: RedirectUri, AppSecret).AuthURL();
 
 				string serverRedirectUri = ToDeployedRedirectUri(originalUrl);
@@ -345,10 +363,9 @@ namespace GlanceReddit.Controllers
 			else
 				vm.IsAuth = true;
 
-
 			if (TempData["ErrorMessage"] != null)
 				vm.ErrorMessage = TempData["ErrorMessage"].ToString();
-
+			 
 			else if (TempData["SuccessMessage"] != null)
 				vm.SuccessMessage = TempData["SuccessMessage"].ToString();
 
