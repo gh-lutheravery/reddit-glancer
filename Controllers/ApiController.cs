@@ -74,7 +74,11 @@ namespace GlanceReddit.Controllers
 		private string AuthorizeUser(bool rememberUser)
 		{
 			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(AppId, KestrelPort, host: HostName, redirectUri: RedirectUri, AppSecret);
-			
+			string originalUrl = authLib.AuthURL();
+
+			string serverRedirectUri = ToDeployedRedirectUri(originalUrl);
+			serverRedirectUri = ToCompactUrl(serverRedirectUri);
+
 			try
 			{
 				authLib.AwaitCallback();
@@ -84,11 +88,6 @@ namespace GlanceReddit.Controllers
 			{
 				return TooManySocketError;
 			}
-
-			string originalUrl = authLib.AuthURL();
-
-			string serverRedirectUri = ToDeployedRedirectUri(originalUrl);
-			serverRedirectUri = ToCompactUrl(serverRedirectUri);
 
 			OpenReddit(serverRedirectUri);
 
