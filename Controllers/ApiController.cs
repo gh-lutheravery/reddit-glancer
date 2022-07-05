@@ -67,7 +67,6 @@ namespace GlanceReddit.Controllers
 		[Route("openreddit")]
 		public ActionResult OpenReddit(string serverRedirectUri)
 		{
-			ViewBag.serverRedirectUri = serverRedirectUri;
 			ViewData["AuthUrl"] = serverRedirectUri;
 			return View();
 		}
