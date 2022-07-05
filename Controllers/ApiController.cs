@@ -56,7 +56,7 @@ namespace GlanceReddit.Controllers
 			return false;
 		}
 
-		// send request to client that opens reddit auth page
+		// redirect uri that reddit uses in oauth process
 		[Route("auth-redirect")]
 		public ActionResult AuthRedirect()
 		{

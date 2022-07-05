@@ -174,19 +174,22 @@ video {
 }
 
 .fade-in {
-    animation: fadeIn 1s;
+    animation: fadeIn 1s ease 1;
 }
 
 @keyframes fadeIn {
     0% {
         opacity: 0;
+        transform: scaleY(0);
     }
 
     50% {
         opacity: 0.5;
+        transform: scaleY(1);
     }
 
     100% {
         opacity: 1;
+        transform: scaleY(1);
     }
 }
