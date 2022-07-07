@@ -66,10 +66,6 @@ namespace GlanceReddit.Controllers
 		private string AuthorizeUser(bool rememberUser)
 		{
 			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(AppId, KestrelPort, host: HostName, redirectUri: RedirectUri, AppSecret);
-			string originalUrl = authLib.AuthURL();
-
-			string serverRedirectUri = ToDeployedRedirectUri(originalUrl);
-			serverRedirectUri = ToCompactUrl(serverRedirectUri);
 
 			try
 			{
@@ -92,7 +88,6 @@ namespace GlanceReddit.Controllers
 			}
 
 			authLib.StopListening();
-			SignIn(authLib.RefreshToken, rememberUser);
 			return LoginSuccess;
 		}
 
@@ -104,14 +99,19 @@ namespace GlanceReddit.Controllers
 
 			if (!IsRefreshTokenSet())
 			{		
-				string result = AuthorizeUser(viewRequest.RememberMe);
+				string result = AuthorizeUser();
+
 				if (result == TooManySocketError)
 				{
 					TempData["ErrorMessage"] = TooManySocketError;
 					return RedirectToAction(nameof(Home));
 				}
 				else
+				{
+					SignIn(result, viewRequest.RememberMe);
+					TempData["ErrorMessage"] = LoginSuccess;
 					return RedirectToAction(nameof(Home));
+				}
 			}
 
 			TempData["ErrorMessage"] = AlreadyAuthError;
