@@ -63,14 +63,6 @@ namespace GlanceReddit.Controllers
 			return View();
 		}
 
-		// send request to client that opens reddit auth page
-		[Route("openreddit")]
-		public ActionResult OpenReddit(string serverRedirectUri)
-		{
-			ViewData["AuthUrl"] = serverRedirectUri;
-			return View();
-		}
-
 		private string AuthorizeUser(bool rememberUser)
 		{
 			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(AppId, KestrelPort, host: HostName, redirectUri: RedirectUri, AppSecret);
@@ -88,8 +80,6 @@ namespace GlanceReddit.Controllers
 			{
 				return TooManySocketError;
 			}
-
-			OpenReddit(serverRedirectUri);
 
 			// wait until refresh token is sent from reddit, sleep first to minimize cpu usage
 			Thread.Sleep(500);
