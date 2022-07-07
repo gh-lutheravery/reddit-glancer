@@ -13,7 +13,7 @@
         @using (Html.BeginForm("RedditLogin", "Api", FormMethod.Post, new { @autocomplete = "off" }))
         {
             @Html.AntiForgeryToken()          
-            <input class="btn btn-primary" type="submit" value="Authenticate to Reddit"/>
+            <a onclick="this.parentNode.submit()" class="btn btn-primary">Authenticate to Reddit</a>
 
             <div class="form-check" style="margin-bottom: 0.25rem">
                 @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input", @id = "flexCheckDefault"})
