@@ -63,9 +63,11 @@ namespace GlanceReddit.Controllers
 			return View();
 		}
 
-		private string AuthorizeUser(bool rememberUser)
+		private string AuthorizeUser()
 		{
-			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(AppId, KestrelPort, host: HostName, redirectUri: RedirectUri, AppSecret);
+			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(
+				AppId, KestrelPort, host: HostName, 
+				redirectUri: RedirectUri, AppSecret);
 
 			try
 			{
@@ -88,7 +90,7 @@ namespace GlanceReddit.Controllers
 			}
 
 			authLib.StopListening();
-			return LoginSuccess;
+			return authLib.RefreshToken;
 		}
 
 		[Route("login")]
@@ -96,7 +98,6 @@ namespace GlanceReddit.Controllers
 		[HttpPost]
 		public ActionResult RedditLogin(RedditRequestViewModel viewRequest)
 		{
-
 			if (!IsRefreshTokenSet())
 			{		
 				string result = AuthorizeUser();
@@ -109,7 +110,7 @@ namespace GlanceReddit.Controllers
 				else
 				{
 					SignIn(result, viewRequest.RememberMe);
-					TempData["ErrorMessage"] = LoginSuccess;
+					TempData["SuccessMessage"] = LoginSuccess;
 					return RedirectToAction(nameof(Home));
 				}
 			}
