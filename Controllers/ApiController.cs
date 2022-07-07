@@ -357,10 +357,17 @@ namespace GlanceReddit.Controllers
 		{
 			HomeViewModel vm = new HomeViewModel();
 
-			if (IsRefreshTokenSet())
+			if (!IsRefreshTokenSet())
 			{
-				vm.IsAuth = true;
+				string originalUrl = new AuthTokenRetrieverLib(AppId, KestrelPort, host: HostName,
+					redirectUri: RedirectUri, AppSecret).AuthURL();
+
+				string serverRedirectUri = ToDeployedRedirectUri(originalUrl);
+				vm.RedditUrl = ToCompactUrl(serverRedirectUri);
 			}
+
+			else
+				vm.IsAuth = true;
 
 			if (TempData["ErrorMessage"] != null)
 				vm.ErrorMessage = TempData["ErrorMessage"].ToString();
