@@ -327,7 +327,6 @@ namespace GlanceReddit.Controllers
 		public Uri SetQueryVal(string url, string name, string newValue)
 		{
 			NameValueCollection nvc = HttpUtility.ParseQueryString(url);
-			nvc.Remove("https://www.reddit.com/api/v1/authorize?client_id");
 			nvc[name] = (newValue ?? string.Empty).ToString();
 
 			Uri uri = new Uri(url);
@@ -342,7 +341,8 @@ namespace GlanceReddit.Controllers
 
 		private string ToDeployedRedirectUri(string url)
 		{
-			return SetQueryVal(url, "redirect_uri", RedirectUri).ToString();
+			// remove first 48 characters to remove duplicated host
+			return SetQueryVal(url, "redirect_uri", "https://localhost:44384/about").ToString().Remove(0, 48);
 		}
 		
 		public ActionResult Home()
