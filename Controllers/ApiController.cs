@@ -26,7 +26,7 @@ namespace GlanceReddit.Controllers
 
 		readonly string HostName = "glancereddit.herokuapp.com";
 		readonly string RedirectUri = "https://glancereddit.herokuapp.com/auth-redirect";
-		readonly int KestrelPort = 443;
+		readonly int SocketPort = 80;
 
 		readonly string GenericError = "Something went wrong... try again.";
 		readonly string NotAuthError = "You're not logged into reddit here; try again.";
