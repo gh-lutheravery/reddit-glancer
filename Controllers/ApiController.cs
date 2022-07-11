@@ -327,6 +327,7 @@ namespace GlanceReddit.Controllers
 		public Uri SetQueryVal(string url, string name, string newValue)
 		{
 			NameValueCollection nvc = HttpUtility.ParseQueryString(url);
+			nvc.Remove("https://www.reddit.com/api/v1/authorize?client_id");
 			nvc[name] = (newValue ?? string.Empty).ToString();
 
 			Uri uri = new Uri(url);
