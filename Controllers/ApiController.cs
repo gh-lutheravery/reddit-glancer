@@ -342,7 +342,7 @@ namespace GlanceReddit.Controllers
 		private string ToDeployedRedirectUri(string url)
 		{
 			// remove first 48 characters to remove duplicated host
-			return SetQueryVal(url, "redirect_uri", "https://localhost:44384/about").ToString().Remove(0, 48);
+			return SetQueryVal(url, "redirect_uri", "https://localhost:44384/about").ToString().Remove(0, 40);
 		}
 		
 		public ActionResult Home()
