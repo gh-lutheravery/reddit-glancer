@@ -25,8 +25,8 @@ namespace GlanceReddit.Controllers
         readonly string AppSecret = Environment.GetEnvironmentVariable("APP_SECRET");
 
 		readonly string HostName = "glancereddit.herokuapp.com";
-		readonly string RedirectUri = "https://glancereddit.herokuapp.com:80/auth-redirect";
-		readonly int SocketPort = 80;
+		readonly string RedirectUri = "https://glancereddit.herokuapp.com/auth-redirect";
+		readonly int Port = Convert.ToInt32(Environment.GetEnvironmentVariable("PORT"));
 
 		readonly string GenericError = "Something went wrong... try again.";
 		readonly string NotAuthError = "You're not logged into reddit here; try again.";
@@ -66,7 +66,7 @@ namespace GlanceReddit.Controllers
 		private string AuthorizeUser()
 		{
 			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(
-				AppId, SocketPort, host: HostName, 
+				AppId, Port, host: HostName, 
 				redirectUri: RedirectUri, AppSecret);
 
 			try
@@ -351,7 +351,7 @@ namespace GlanceReddit.Controllers
 
 			if (!IsRefreshTokenSet())
 			{
-				string originalUrl = new AuthTokenRetrieverLib(AppId, SocketPort, host: HostName,
+				string originalUrl = new AuthTokenRetrieverLib(AppId, Port, host: HostName,
 					redirectUri: RedirectUri, AppSecret).AuthURL();
 
 				string serverRedirectUri = ToDeployedRedirectUri(originalUrl);
