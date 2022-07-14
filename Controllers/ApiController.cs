@@ -76,6 +76,7 @@ namespace GlanceReddit.Controllers
 
 			catch (SocketException ex)
 			{
+				authLib.StopListening();
 				return TooManySocketError;
 			}
 
