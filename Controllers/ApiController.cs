@@ -16,6 +16,7 @@ using Reddit;
 using Reddit.AuthTokenRetriever;
 using Reddit.Exceptions;
 using X.PagedList;
+using System.Net;
 
 namespace GlanceReddit.Controllers
 {
@@ -65,8 +66,9 @@ namespace GlanceReddit.Controllers
 
 		private string AuthorizeUser()
 		{
+			string hostIp = Dns.GetHostAddresses(HostName)[0].ToString();
 			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(
-				AppId, Port, host: HostName, 
+				AppId, Port, host: hostIp, 
 				redirectUri: RedirectUri, AppSecret);
 
 			try
