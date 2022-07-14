@@ -36,7 +36,7 @@ namespace GlanceReddit.Controllers
 			"remember that there has to be a subreddit with that exact name.";
 		readonly string NoUserError = "There seems to be no user with that name; " +
 			"remember that there has to be a user with that exact name.";
-		readonly string TooManySocketError = "You connected to reddit too many times; try again.";
+		readonly string SocketError = "Authentication failed; try again.";
 		readonly string ForbiddenError = "Reddit says you are forbidden from accessing that; it " +
 			"might have been deleted or privated.";
 		readonly string LoginSuccess = "Logging in was successful! ";
@@ -79,7 +79,7 @@ namespace GlanceReddit.Controllers
 			catch (SocketException ex)
 			{
 				authLib.StopListening();
-				return TooManySocketError;
+				return SocketError;
 			}
 
 			// wait until refresh token is sent from reddit, sleep first to minimize cpu usage
@@ -105,9 +105,9 @@ namespace GlanceReddit.Controllers
 			{		
 				string result = AuthorizeUser();
 
-				if (result == TooManySocketError)
+				if (result == SocketError)
 				{
-					TempData["ErrorMessage"] = TooManySocketError;
+					TempData["ErrorMessage"] = SocketError;
 					return RedirectToAction(nameof(Home));
 				}
 				else
