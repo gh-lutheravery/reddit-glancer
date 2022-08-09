@@ -31,7 +31,6 @@ namespace GlanceReddit.Controllers
         readonly string AppSecret = Environment.GetEnvironmentVariable("APP_SECRET");
 
 		readonly string HostAuthorizer = Environment.GetEnvironmentVariable("SITE_AUTHORIZER");
-		readonly string TokenRetrieverService = Environment.GetEnvironmentVariable("SERVICE_NAME");
 
 		readonly string HostName = "glancereddit.azurewebsites.net";
 		readonly string RedirectUri = "https://glancereddit.azurewebsites.net/auth-redirect";
@@ -105,7 +104,7 @@ namespace GlanceReddit.Controllers
 			{
 				string jwtToken = GenerateKey();
 
-				var result = httpClient.PostAsJsonAsync(TokenRetrieverService, jwtToken).Result;
+				var result = httpClient.PostAsJsonAsync(_config["Jwt:Audience"], jwtToken).Result;
 				jsonResult = result.Content.ReadAsStringAsync().Result;
 
 				JObject jobject = JObject.Parse(jsonResult);
