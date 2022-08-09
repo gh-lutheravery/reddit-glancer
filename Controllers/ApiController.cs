@@ -45,6 +45,12 @@ namespace GlanceReddit.Controllers
 		readonly int SubmissionLimit = 15;
 		readonly int SearchSubmissionLimit = 25;
 
+		readonly IConfiguration _config;
+		public ApiController(IConfiguration config)
+		{
+			_config = config;
+		}
+
 		private bool IsRefreshTokenSet()
 		{
 			if (Request != null)
