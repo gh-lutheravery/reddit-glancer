@@ -64,7 +64,17 @@ namespace GlanceReddit.Controllers
 			return View();
 		}
 
-		private string AuthorizeUser()
+		public string GenerateKey()
+		{
+			SymmetricSecurityKey secKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+			SigningCredentials credentials = new SigningCredentials(secKey, SecurityAlgorithms.HmacSha256);
+
+			Claim[] claims = new Claim[] { new Claim(ClaimTypes.Name, HostAuthorizer) };
+
+			JwtSecurityToken token = new JwtSecurityToken();
+		}
+
+			private string AuthorizeUser()
 		{
 			string hostIp = Dns.GetHostAddresses(HostName)[0].ToString();
 			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(
