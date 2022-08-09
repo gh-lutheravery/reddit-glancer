@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net.Sockets;
-using System.Threading;
 using System.Security.Claims;
 using System.Web;
 using System.Collections.Specialized;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
+using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using GlanceReddit.ViewModels;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Reddit;
 using Reddit.AuthTokenRetriever;
 using Reddit.Exceptions;
 using X.PagedList;
-using System.Net;
+using Newtonsoft.Json.Linq;
+using GlanceReddit.ViewModels;
+
 
 namespace GlanceReddit.Controllers
 {
