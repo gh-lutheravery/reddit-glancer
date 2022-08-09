@@ -25,17 +25,6 @@ namespace GlanceReddit
 			Host.CreateDefaultBuilder(args)
 				.ConfigureWebHostDefaults(webBuilder =>
 				{
-                    var portEnv = Environment.GetEnvironmentVariable("PORT");
-
-                    if (portEnv != null)
-                    {
-                        webBuilder.ConfigureKestrel(serverOptions =>
-                        {
-                            serverOptions.Listen(IPAddress.Any, Convert.ToInt32(portEnv));
-                        });
-                    }
-
-                    webBuilder.UseStartup<Startup>();
                 });
 	}
 }
