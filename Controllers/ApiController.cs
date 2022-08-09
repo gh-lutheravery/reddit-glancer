@@ -71,39 +71,34 @@ namespace GlanceReddit.Controllers
 
 			Claim[] claims = new Claim[] { new Claim(ClaimTypes.Name, HostAuthorizer) };
 
-			JwtSecurityToken token = new JwtSecurityToken();
+			JwtSecurityToken token = new JwtSecurityToken(_config["Jwt:Issuer"],
+				_config["Jwt:Audience"],
+				claims,
+				expires: DateTime.Now.AddMinutes(5),
+				signingCredentials: credentials
+			);
+
+			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 
-			private string AuthorizeUser()
+
+
+		private string AuthorizeUser()
 		{
-			string hostIp = Dns.GetHostAddresses(HostName)[0].ToString();
-			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(
-				AppId, Port, host: hostIp, 
-				redirectUri: RedirectUri, AppSecret);
-
-			try
+			bool apiError = false;
+			string jsonResult = string.Empty;
+			using (var httpClient = new HttpClient())
 			{
-				authLib.AwaitCallback();
-			}
+				string jwtToken = GenerateKey();
 
-			catch (SocketException ex)
-			{
-				authLib.StopListening();
-				return SocketError;
-			}
+				var result = httpClient.PostAsJsonAsync(TokenRetrieverService, jwtToken).Result;
+				jsonResult = result.Content.ReadAsStringAsync().Result;
 
-			// wait until refresh token is sent from reddit, sleep first to minimize cpu usage
-			Thread.Sleep(500);
-			while (true)
-			{
-				if (authLib.RefreshToken != null)
-				{
-					break;
-				}
+				JObject jobject = JObject.Parse(jsonResult);
+				JToken errorToken = jobject.SelectToken("error");
+				if (errorToken != null)
+					apiError = true;
 			}
-
-			authLib.StopListening();
-			return authLib.RefreshToken;
 		}
 
 		[Route("login")]
