@@ -30,6 +30,9 @@ namespace GlanceReddit.Controllers
         readonly string AppId = Environment.GetEnvironmentVariable("APP_ID");
         readonly string AppSecret = Environment.GetEnvironmentVariable("APP_SECRET");
 
+		readonly string HostAuthorizer = Environment.GetEnvironmentVariable("SITE_AUTHORIZER");
+		readonly string TokenRetrieverService = Environment.GetEnvironmentVariable("SERVICE_NAME");
+
 		readonly string HostName = "glancereddit.herokuapp.com";
 		readonly string RedirectUri = "https://glancereddit.herokuapp.com/auth-redirect";
 		readonly int Port = Convert.ToInt32(Environment.GetEnvironmentVariable("PORT"));
