@@ -99,6 +99,11 @@ namespace GlanceReddit.Controllers
 				if (errorToken != null)
 					apiError = true;
 			}
+
+			if (apiError)
+				return SocketError;
+
+			return JsonSerializer.Deserialize<OAuthToken>(jsonResult).RefreshToken;
 		}
 
 		[Route("login")]
