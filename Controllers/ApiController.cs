@@ -35,7 +35,7 @@ namespace GlanceReddit.Controllers
 
 		readonly string HostName = "glancereddit.azurewebsites.net";
 		readonly string RedirectUri = "https://glancereddit.azurewebsites.net/auth-redirect";
-		readonly int Port = Convert.ToInt32(Environment.GetEnvironmentVariable("PORT"));
+		readonly int Port = 0;
 
 		readonly string GenericError = "Something went wrong... try again.";
 		readonly string NotAuthError = "You're not logged into reddit here; try again.";
@@ -97,7 +97,7 @@ namespace GlanceReddit.Controllers
 
 
 
-		private string AuthorizeUser()
+		private string GetRefreshToken()
 		{
 			bool apiError = false;
 			string jsonResult = string.Empty;
@@ -127,7 +127,7 @@ namespace GlanceReddit.Controllers
 		{
 			if (!IsRefreshTokenSet())
 			{		
-				string result = AuthorizeUser();
+				string result = GetRefreshToken();
 
 				if (result == SocketError)
 				{
