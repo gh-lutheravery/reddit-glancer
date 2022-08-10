@@ -78,7 +78,6 @@ namespace GlanceReddit
 					options.Cookie.IsEssential = true;
 				});
 
-			string jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddJwtBearer(options =>
 				{
@@ -90,7 +89,7 @@ namespace GlanceReddit
 						ValidateIssuerSigningKey = true,
 						ValidIssuer = Configuration["Jwt:Issuer"],
 						ValidAudience = Configuration["Jwt:Audience"],
-						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")))
 					};
 				});
 

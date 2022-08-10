@@ -31,7 +31,6 @@ namespace GlanceReddit.Controllers
         readonly string AppSecret = Environment.GetEnvironmentVariable("APP_SECRET");
 
 		readonly string HostAuthorizer = Environment.GetEnvironmentVariable("SITE_AUTHORIZER");
-		readonly string JwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
 
 		readonly string HostName = "glancereddit.azurewebsites.net";
 		readonly string RedirectUri = "https://glancereddit.azurewebsites.net/auth-redirect";
@@ -80,7 +79,7 @@ namespace GlanceReddit.Controllers
 
 		public string GenerateKey()
 		{
-			SymmetricSecurityKey secKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtKey));
+			SymmetricSecurityKey secKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")));
 			SigningCredentials credentials = new SigningCredentials(secKey, SecurityAlgorithms.HmacSha256);
 
 			Claim[] claims = new Claim[] { new Claim(ClaimTypes.Name, HostAuthorizer) };
