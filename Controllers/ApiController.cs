@@ -104,7 +104,7 @@ namespace GlanceReddit.Controllers
 			{
 				string jwtToken = GenerateKey();
 
-				var result = httpClient.PostAsJsonAsync(_config["Jwt:Audience"], jwtToken).Result;
+				var result = httpClient.PostAsJsonAsync(String.Concat("https://", _config["Jwt:Audience"]), jwtToken).Result;
 				jsonResult = result.Content.ReadAsStringAsync().Result;
 
 				JObject jobject = JObject.Parse(jsonResult);
