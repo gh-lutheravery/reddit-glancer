@@ -103,8 +103,9 @@ namespace GlanceReddit.Controllers
 			using (var httpClient = new HttpClient())
 			{
 				string jwtToken = GenerateKey();
-
-				var result = httpClient.PostAsJsonAsync(String.Concat("http://", _config["Jwt:Audience"], "/"), jwtToken).Result;
+				// create your own uri object here
+				Uri audienceUri = new Uri(String.Concat("http://", _config["Jwt:Audience"]));
+				var result = httpClient.PostAsJsonAsync(audienceUri, jwtToken).Result;
 				jsonResult = result.Content.ReadAsStringAsync().Result;
 
 				JObject jobject = JObject.Parse(jsonResult);
