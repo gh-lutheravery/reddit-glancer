@@ -100,10 +100,15 @@ namespace GlanceReddit.Controllers
 		{
 			bool apiError = false;
 			string jsonResult = string.Empty;
+
 			using (var httpClient = new HttpClient())
 			{
 				string jwtToken = GenerateKey();
 				// test in another branch or project
+				if (string.IsNullOrEmpty(_config["Jwt:Audience"]))
+				{
+					throw new Exception();
+				}
 				Uri audienceUri = new Uri(String.Concat("http://", _config["Jwt:Audience"]));
 				var result = httpClient.PostAsJsonAsync(audienceUri, jwtToken).Result;
 				jsonResult = result.Content.ReadAsStringAsync().Result;
@@ -126,7 +131,7 @@ namespace GlanceReddit.Controllers
 		public ActionResult RedditLogin(RedditRequestViewModel viewRequest)
 		{
 			if (!IsRefreshTokenSet())
-			{		
+			{
 				string result = GetRefreshToken();
 
 				if (result == SocketError)
