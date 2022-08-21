@@ -109,7 +109,13 @@ namespace GlanceReddit.Controllers
 				if (string.IsNullOrEmpty(_config.ToString()))
 				{
 				}
-				throw new Exception(_config.ToString());
+				List<string> strings = new List<string>() { "Beginning" };
+				foreach (KeyValuePair<string, string> i in _config.AsEnumerable())
+				{
+					strings.Add(i.Key + i.Value);
+				}
+				throw new Exception(strings.ToString());
+
 				Uri audienceUri = new Uri(String.Concat("http://", _config["Jwt:Audience"]));
 				var result = httpClient.PostAsJsonAsync(audienceUri, jwtToken).Result;
 				jsonResult = result.Content.ReadAsStringAsync().Result;
