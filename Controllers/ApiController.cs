@@ -105,7 +105,8 @@ namespace GlanceReddit.Controllers
 			{
 				string jwtToken = GenerateKey();
 				// test in another branch or project
-				if (string.IsNullOrEmpty(_config["Jwt:Audience"]))
+				// below if statement returns true. 
+				if (string.IsNullOrEmpty(_config["Audience"]))
 				{
 					throw new Exception();
 				}
