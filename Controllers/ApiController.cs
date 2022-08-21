@@ -106,9 +106,9 @@ namespace GlanceReddit.Controllers
 				string jwtToken = GenerateKey();
 				// test in another branch or project
 				// below if statement returns true. 
-				if (string.IsNullOrEmpty(_config["Audience"]))
+				if (string.IsNullOrEmpty(_config.ToString()))
 				{
-					throw new Exception();
+					throw new Exception(_config.ToString());
 				}
 				Uri audienceUri = new Uri(String.Concat("http://", _config["Jwt:Audience"]));
 				var result = httpClient.PostAsJsonAsync(audienceUri, jwtToken).Result;
