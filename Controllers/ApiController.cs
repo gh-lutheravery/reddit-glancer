@@ -114,7 +114,7 @@ namespace GlanceReddit.Controllers
 				{
 					strings.Add(i.Key + i.Value);
 				}
-				throw new Exception(strings.ToString());
+				throw new Exception(strings.ToString().Count().ToString());
 
 				Uri audienceUri = new Uri(String.Concat("http://", _config["Jwt:Audience"]));
 				var result = httpClient.PostAsJsonAsync(audienceUri, jwtToken).Result;
