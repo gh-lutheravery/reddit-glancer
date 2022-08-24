@@ -52,12 +52,6 @@ namespace GlanceReddit.Controllers
 		readonly int SubmissionLimit = 15;
 		readonly int SearchSubmissionLimit = 25;
 
-		readonly IConfiguration _config;
-		public ApiController(IConfiguration config)
-		{
-			_config = config;
-		}
-
 		private bool IsRefreshTokenSet()
 		{
 			if (Request != null)
@@ -84,8 +78,8 @@ namespace GlanceReddit.Controllers
 
 			Claim[] claims = new Claim[] { new Claim(ClaimTypes.Name, HostAuthorizer) };
 
-			JwtSecurityToken token = new JwtSecurityToken(_config["Jwt:Issuer"],
-				_config["Jwt:Audience"],
+			JwtSecurityToken token = new JwtSecurityToken(Environment.GetEnvironmentVariable("JWT_ISSUER"),
+				Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
 				claims,
 				expires: DateTime.Now.AddMinutes(5),
 				signingCredentials: credentials
@@ -105,7 +99,7 @@ namespace GlanceReddit.Controllers
 			{
 				string jwtToken = GenerateKey();
 
-				Uri audienceUri = new Uri(String.Concat("http://", _config["Jwt:Audience"]));
+				Uri audienceUri = new Uri(String.Concat("http://", Environment.GetEnvironmentVariable("JWT_AUDIENCE")));
 				var result = httpClient.PostAsJsonAsync(audienceUri, jwtToken).Result;
 				jsonResult = result.Content.ReadAsStringAsync().Result;
 
