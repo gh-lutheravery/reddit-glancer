@@ -21,7 +21,8 @@ using Reddit.Exceptions;
 using X.PagedList;
 using Newtonsoft.Json.Linq;
 using GlanceReddit.ViewModels;
-
+using Azure.Containers.ContainerRegistry;
+using Azure.Identity;
 
 namespace GlanceReddit.Controllers
 {
@@ -99,8 +100,11 @@ namespace GlanceReddit.Controllers
 			{
 				string jwtToken = GenerateKey();
 
-				Uri audienceUri = new Uri(String.Concat("http://", Environment.GetEnvironmentVariable("JWT_AUDIENCE")));
-				var result = httpClient.PostAsJsonAsync(audienceUri, jwtToken).Result;
+				Uri endpoint = new Uri(String.Concat("http://", "webserviceprojects.azurecr.io"));
+				ContainerRegistryClient client = new ContainerRegistryClient(endpoint, new DefaultAzureCredential());
+
+				Uri serviceUri  = client.GetRepository("fetchtokenservice").RegistryEndpoint;
+				var result = httpClient.PostAsJsonAsync(serviceUri, jwtToken).Result;
 				jsonResult = result.Content.ReadAsStringAsync().Result;
 
 				JObject jobject = JObject.Parse(jsonResult);
