@@ -100,10 +100,7 @@ namespace GlanceReddit.Controllers
 			{
 				string jwtToken = GenerateKey();
 
-				Uri endpoint = new Uri(String.Concat("http://", "webserviceprojects.azurecr.io"));
-				ContainerRegistryClient client = new ContainerRegistryClient(endpoint, new DefaultAzureCredential());
-
-				Uri serviceUri  = client.GetRepository("fetchtokenservice").RegistryEndpoint;
+				Uri serviceUri  = new Uri(Environment.GetEnvironmentVariable("FTS_ADDRESS"));
 				var result = httpClient.PostAsJsonAsync(serviceUri, jwtToken).Result;
 				jsonResult = result.Content.ReadAsStringAsync().Result;
 
