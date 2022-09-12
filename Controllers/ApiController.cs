@@ -100,7 +100,7 @@ namespace GlanceReddit.Controllers
 			{
 				string jwtToken = GenerateKey();
 
-				Uri serviceUri  = new Uri(Environment.GetEnvironmentVariable("FTS_ADDRESS"));
+				Uri serviceUri  = new Uri(String.Concat("http://", Environment.GetEnvironmentVariable("FTS_ADDRESS")));
 				var result = httpClient.PostAsJsonAsync(serviceUri, jwtToken).Result;
 				jsonResult = result.Content.ReadAsStringAsync().Result;
 
