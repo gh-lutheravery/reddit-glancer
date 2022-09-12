@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'glancereddit'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_665D4675A9F04653BD1B84D58048A67A }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AE0251350A824AD1827961C9BB0917EC }}
           package: .
