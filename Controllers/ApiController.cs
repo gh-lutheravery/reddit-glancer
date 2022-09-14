@@ -100,7 +100,7 @@ namespace GlanceReddit.Controllers
 			{
 				string jwtToken = GenerateKey();
 
-				Uri serviceUri  = new Uri("fetchtokenservice.azurewebsites.net");
+				Uri serviceUri  = new Uri("fetchtokenservice.azurewebsites.net/api/FetchTokenService");
 				var result = httpClient.PostAsJsonAsync(serviceUri, jwtToken).Result;
 				jsonResult = result.Content.ReadAsStringAsync().Result;
 
