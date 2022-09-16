@@ -69,7 +69,29 @@ namespace GlanceReddit.Controllers
 		[Route("auth-redirect")]
 		public ActionResult AuthRedirect()
 		{
-			return View();
+			bool apiError = false;
+			using (var httpClient = new HttpClient())
+			{
+				string jwtToken = GenerateKey();
+
+				Uri serviceUri = new Uri("https://fetchtokenservice.azurewebsites.net/api/FetchTokenService/Redirect");
+				var result = httpClient.PostAsJsonAsync(serviceUri, jwtToken).Result;
+				string jsonResult = result.Content.ReadAsStringAsync().Result;
+
+				JObject jobject = JObject.Parse(jsonResult);
+				JToken errorToken = jobject.SelectToken("error");
+				if (errorToken != null)
+					apiError = true;
+			}
+
+			if (apiError)
+				throw new Exception("API Redirect endpoint failed");
+
+			OAuthToken token = J
+
+			SignIn(result, viewRequest.RememberMe);
+
+			return View(); 
 		}
 
 		public string GenerateKey()
@@ -91,29 +113,15 @@ namespace GlanceReddit.Controllers
 
 
 
-		private string GetRefreshToken()
+		private void AwaitRedirect()
 		{
-			bool apiError = false;
-			string jsonResult = string.Empty;
-
 			using (var httpClient = new HttpClient())
 			{
 				string jwtToken = GenerateKey();
 				
 				Uri serviceUri  = new Uri("https://fetchtokenservice.azurewebsites.net/api/FetchTokenService/");
 				var result = httpClient.PostAsJsonAsync(serviceUri, jwtToken).Result;
-				jsonResult = result.Content.ReadAsStringAsync().Result;
-
-				JObject jobject = JObject.Parse(jsonResult);
-				JToken errorToken = jobject.SelectToken("error");
-				if (errorToken != null)
-					apiError = true;
 			}
-
-			if (apiError)
-				return SocketError;
-
-			return JsonSerializer.Deserialize<OAuthToken>(jsonResult).RefreshToken;
 		}
 
 		[Route("login")]
