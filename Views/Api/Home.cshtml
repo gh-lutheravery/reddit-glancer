@@ -10,7 +10,7 @@
         
     @if (!Model.IsAuth)
     {
-        @using (Html.BeginForm("RedditLogin", "Api", FormMethod.Post, new { @autocomplete = "off" }))
+        @using (Html.BeginForm("BeginLogin", "Api", FormMethod.Post, new { @autocomplete = "off" }))
         {
             @Html.AntiForgeryToken()          
             <a onclick="this.parentNode.submit()" class="btn btn-primary" href="@Model.RedditUrl" target="_blank">Authenticate to Reddit</a>
