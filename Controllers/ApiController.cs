@@ -75,7 +75,7 @@ namespace GlanceReddit.Controllers
 			{
 				string jwtToken = GenerateKey();
 
-				Uri serviceUri = new Uri("https://fetchtokenservice.azurewebsites.net/api/FetchTokenService/Redirect");
+				Uri serviceUri = new Uri("https://fetchtokenservice.azurewebsites.net:8080/api/FetchTokenService/Redirect");
 				var result = httpClient.PostAsJsonAsync(serviceUri, jwtToken).Result;
 				jsonResult = result.Content.ReadAsStringAsync().Result;
 
