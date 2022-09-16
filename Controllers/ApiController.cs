@@ -70,13 +70,14 @@ namespace GlanceReddit.Controllers
 		public ActionResult AuthRedirect()
 		{
 			bool apiError = false;
+			string jsonResult = string.Empty;
 			using (var httpClient = new HttpClient())
 			{
 				string jwtToken = GenerateKey();
 
 				Uri serviceUri = new Uri("https://fetchtokenservice.azurewebsites.net/api/FetchTokenService/Redirect");
 				var result = httpClient.PostAsJsonAsync(serviceUri, jwtToken).Result;
-				string jsonResult = result.Content.ReadAsStringAsync().Result;
+				jsonResult = result.Content.ReadAsStringAsync().Result;
 
 				JObject jobject = JObject.Parse(jsonResult);
 				JToken errorToken = jobject.SelectToken("error");
@@ -87,9 +88,9 @@ namespace GlanceReddit.Controllers
 			if (apiError)
 				throw new Exception("API Redirect endpoint failed");
 
-			OAuthToken token = J
+			string token = JsonSerializer.Deserialize<OAuthToken>(jsonResult).RefreshToken;
 
-			SignIn(result, viewRequest.RememberMe);
+			SignIn(token);
 
 			return View(); 
 		}
@@ -127,23 +128,11 @@ namespace GlanceReddit.Controllers
 		[Route("login")]
 		[ValidateAntiForgeryToken]
 		[HttpPost]
-		public ActionResult RedditLogin(RedditRequestViewModel viewRequest)
+		public ActionResult BeginLogin(RedditRequestViewModel viewRequest)
 		{
 			if (!IsRefreshTokenSet())
 			{
-				string result = GetRefreshToken();
-
-				if (result == SocketError)
-				{
-					TempData["ErrorMessage"] = SocketError;
-					return RedirectToAction(nameof(Home));
-				}
-				else
-				{
-					SignIn(result, viewRequest.RememberMe);
-					TempData["SuccessMessage"] = LoginSuccess;
-					return RedirectToAction(nameof(Home));
-				}
+				AwaitRedirect();
 			}
 
 			TempData["ErrorMessage"] = AlreadyAuthError;
@@ -164,7 +153,7 @@ namespace GlanceReddit.Controllers
 			return View(redditor);
 		}
 
-		private async void SignIn(string refreshToken, bool rememberUser)
+		private async void SignIn(string refreshToken)
 		{
 			var claims = new List<Claim>
 			{
@@ -177,7 +166,7 @@ namespace GlanceReddit.Controllers
 			var authProperties = new AuthenticationProperties
 			{
 				AllowRefresh = true,
-				IsPersistent = rememberUser == true,
+				IsPersistent = false,
 				IssuedUtc = DateTime.UtcNow,
 				RedirectUri = "/profile"
 			};
