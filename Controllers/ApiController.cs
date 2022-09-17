@@ -279,12 +279,13 @@ namespace GlanceReddit.Controllers
 		[Route("subreddit")]
 		public ActionResult RedditGetSubreddit(string name)
 		{
+			/*
 			if (!IsRefreshTokenSet())
 			{
 				TempData["ErrorMessage"] = NotAuthError;
 				return RedirectToAction(nameof(Home));
 			}
-
+			*/
 			RedditUser redditor = InitRedditor();
 
 			try
@@ -322,18 +323,17 @@ namespace GlanceReddit.Controllers
 		private RedditUser InitRedditor(bool isProfile = false)
 		{
 			var redditor = new RedditUser();
-			if (IsRefreshTokenSet())
+			
+			string refreshToken = Request.HttpContext.User.Claims.ElementAt(0).Value;
+
+			redditor.Client = new RedditClient(AppId, refreshToken, AppSecret);
+
+			if (isProfile)
 			{
-				string refreshToken = Request.HttpContext.User.Claims.ElementAt(0).Value;
-
-				redditor.Client = new RedditClient(AppId, refreshToken, AppSecret);
-
-				if (isProfile)
-				{
-					redditor.TcPostHistory = redditor.Client.Account.Me.GetPostHistory(limit: SubmissionLimit).ToArray();
-					redditor.TcCommentHistory = redditor.Client.Account.Me.GetCommentHistory(limit: SubmissionLimit).ToArray();
-				}
+				redditor.TcPostHistory = redditor.Client.Account.Me.GetPostHistory(limit: SubmissionLimit).ToArray();
+				redditor.TcCommentHistory = redditor.Client.Account.Me.GetCommentHistory(limit: SubmissionLimit).ToArray();
 			}
+			
 
 			else
 				return null;
@@ -363,12 +363,13 @@ namespace GlanceReddit.Controllers
 
 					else if (viewRequest.SubredditName != null)
 					{
+						/*
 						if (!IsRefreshTokenSet())
 						{
 							ViewData["ErrorMessage"] = NotAuthError;
 							return RedirectToAction(nameof(Home));
 						}
-
+						*/
 						return RedirectToAction(nameof(RedditGetSubreddit),
 								new { name = viewRequest.SubredditName });
 					}
