@@ -140,7 +140,7 @@ namespace GlanceReddit.Controllers
 		{
 			if (!IsRefreshTokenSet())
 			{
-				AwaitRedirect();
+				//AwaitRedirect();
 			}
 
 			TempData["ErrorMessage"] = AlreadyAuthError;
