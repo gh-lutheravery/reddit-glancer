@@ -23,6 +23,7 @@ using Newtonsoft.Json.Linq;
 using GlanceReddit.ViewModels;
 using Azure.Containers.ContainerRegistry;
 using Azure.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace GlanceReddit.Controllers
 {
@@ -52,6 +53,12 @@ namespace GlanceReddit.Controllers
 
 		readonly int SubmissionLimit = 15;
 		readonly int SearchSubmissionLimit = 25;
+		private readonly ILogger<ApiController> _logger;
+
+		public ApiController(ILogger<ApiController> logger)
+		{ 
+			_logger = logger;
+		}
 
 		private bool IsRefreshTokenSet()
 		{
