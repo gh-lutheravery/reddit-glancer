@@ -24,6 +24,8 @@ using GlanceReddit.ViewModels;
 using Azure.Containers.ContainerRegistry;
 using Azure.Identity;
 using Microsoft.Extensions.Logging;
+using uhttpsharp.Headers;
+using Microsoft.Extensions.Primitives;
 
 namespace GlanceReddit.Controllers
 {
@@ -76,6 +78,36 @@ namespace GlanceReddit.Controllers
 		[Route("auth-redirect")]
 		public ActionResult AuthRedirect()
 		{
+			OauthController oauthController = new OauthController();
+			string state = string.Empty;
+			string code = string.Empty;
+
+			StringValues stateVals = new StringValues();
+			bool stateResult = Request.Query.TryGetValue("state", out stateVals);
+			if (stateResult)
+			{
+				state = stateVals.ToString();
+			}
+
+			StringValues codeVals = new StringValues();
+			bool codeResult = Request.Query.TryGetValue("code", out codeVals);
+			if (codeResult)
+			{
+				code = codeVals.ToString();
+			}
+
+			if (!codeResult || !stateResult)
+			{
+				_logger.LogError("Code and/or state fetching failed.");
+				throw new Exception("Code success: " + codeResult + " State success: " + stateResult);
+			}
+
+			string token = oauthController.FetchToken(code, state).RefreshToken;
+			SignIn(token);
+
+			return View();
+
+			/*
 			bool apiError = false;
 			string jsonResult = string.Empty;
 			using (var httpClient = new HttpClient())
@@ -96,10 +128,7 @@ namespace GlanceReddit.Controllers
 				throw new Exception("API Redirect endpoint failed");
 
 			string token = JsonSerializer.Deserialize<OAuthToken>(jsonResult).RefreshToken;
-
-			SignIn(token);
-
-			return View(); 
+			*/
 		}
 
 		public string GenerateKey()
