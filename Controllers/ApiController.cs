@@ -204,7 +204,7 @@ namespace GlanceReddit.Controllers
 			var authProperties = new AuthenticationProperties
 			{
 				AllowRefresh = true,
-				IsPersistent = false,
+				IsPersistent = true,
 				IssuedUtc = DateTime.UtcNow,
 				RedirectUri = "/profile"
 			};
