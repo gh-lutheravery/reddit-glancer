@@ -106,29 +106,6 @@ namespace GlanceReddit.Controllers
 			Response.Cookies.Append("RefreshToken", token, options);
 
 			return View();
-
-			/*
-			bool apiError = false;
-			string jsonResult = string.Empty;
-			using (var httpClient = new HttpClient())
-			{
-				string jwtToken = GenerateKey();
-
-				Uri serviceUri = new Uri("https://fetchtokenservice.azurewebsites.net:8080/api/FetchTokenService/Redirect");
-				var result = httpClient.PostAsJsonAsync(serviceUri, jwtToken).Result;
-				jsonResult = result.Content.ReadAsStringAsync().Result;
-
-				JObject jobject = JObject.Parse(jsonResult);
-				JToken errorToken = jobject.SelectToken("error");
-				if (errorToken != null)
-					apiError = true;
-			}
-
-			if (apiError)
-				throw new Exception("API Redirect endpoint failed");
-
-			string token = JsonSerializer.Deserialize<OAuthToken>(jsonResult).RefreshToken;
-			*/
 		}
 
 		public string GenerateKey()
@@ -217,7 +194,6 @@ namespace GlanceReddit.Controllers
 		{
 			if (IsRefreshTokenSet())
 			{
-				//await HttpContext.SignOutAsync();
 				Response.Cookies.Delete("RefreshToken");
 				TempData["SuccessMessage"] = LogOutSuccess;
 			}
@@ -324,7 +300,7 @@ namespace GlanceReddit.Controllers
 		{
 			var redditor = new RedditUser();
 
-			string refreshToken = Request.Cookies["RefreshToken"]; //Request.HttpContext.User.Claims.ElementAt(0).Value;
+			string refreshToken = Request.Cookies["RefreshToken"];
 
 			redditor.Client = new RedditClient(AppId, refreshToken, AppSecret);
 
