@@ -211,6 +211,7 @@ namespace GlanceReddit.Controllers
 
 			await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, 
 				new ClaimsPrincipal(claimsIdentity), authProperties);
+			_logger.LogError("Signin Reached: " + claimsIdentity);
 		}
 
 		public async Task<ActionResult> SignOut()
