@@ -103,6 +103,7 @@ namespace GlanceReddit.Controllers
 			}
 
 			string token = oauthController.FetchToken(code, state).RefreshToken;
+			_logger.LogDebug("Token: " + token);
 			SignIn(token);
 
 			return View();
