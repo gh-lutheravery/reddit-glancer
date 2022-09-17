@@ -125,20 +125,6 @@ namespace GlanceReddit.Controllers
 			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 
-
-
-		private void AwaitRedirect()
-		{
-			using (var httpClient = new HttpClient())
-			{
-				string jwtToken = GenerateKey();
-				
-				Uri serviceUri  = new Uri("https://fetchtokenservice.azurewebsites.net/api/FetchTokenService/");
-				var result = httpClient.PostAsJsonAsync(serviceUri, jwtToken).Result;
-				_logger.LogDebug(result.ToString());
-			}
-		}
-
 		[Route("login")]
 		[ValidateAntiForgeryToken]
 		[HttpPost]
@@ -165,29 +151,6 @@ namespace GlanceReddit.Controllers
 			RedditUser redditor = InitRedditor(isProfile: true);
 
 			return View(redditor);
-		}
-
-		private async void SignIn(string refreshToken)
-		{
-			var claims = new List<Claim>
-			{
-				new Claim("RefreshToken", refreshToken)
-			};
-
-			ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, 
-				CookieAuthenticationDefaults.AuthenticationScheme);
-
-			var authProperties = new AuthenticationProperties
-			{
-				AllowRefresh = true,
-				IsPersistent = true,
-				IssuedUtc = DateTime.UtcNow,
-				RedirectUri = "/profile"
-			};
-
-			await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, 
-				new ClaimsPrincipal(claimsIdentity), authProperties);
-			_logger.LogError("Signin Reached: " + claimsIdentity);
 		}
 
 		public async Task<ActionResult> SignOut()
@@ -255,13 +218,12 @@ namespace GlanceReddit.Controllers
 		[Route("subreddit")]
 		public ActionResult RedditGetSubreddit(string name)
 		{
-			/*
 			if (!IsRefreshTokenSet())
 			{
 				TempData["ErrorMessage"] = NotAuthError;
 				return RedirectToAction(nameof(Home));
 			}
-			*/
+			
 			RedditUser redditor = InitRedditor();
 
 			try
@@ -335,13 +297,12 @@ namespace GlanceReddit.Controllers
 
 					else if (viewRequest.SubredditName != null)
 					{
-						/*
 						if (!IsRefreshTokenSet())
 						{
 							TempData["ErrorMessage"] = NotAuthError;
 							return RedirectToAction(nameof(Home));
 						}
-						*/
+						
 						return RedirectToAction(nameof(RedditGetSubreddit),
 								new { name = viewRequest.SubredditName });
 					}
