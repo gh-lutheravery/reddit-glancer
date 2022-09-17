@@ -340,10 +340,6 @@ namespace GlanceReddit.Controllers
 				redditor.TcCommentHistory = redditor.Client.Account.Me.GetCommentHistory(limit: SubmissionLimit).ToArray();
 			}
 			
-
-			else
-				return null;
-			
 			return redditor;
 		}
 
