@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -43,6 +44,9 @@ namespace GlanceReddit.ViewComponents
 				vm.VideoURL = GetRedditUrl(post);
 				vm.IsRedditVideo = true;
 				vm.IsValid = true;
+
+				if (vm.VideoURL == null)
+					vm.IsValid = false;
 			}
 
 			else
@@ -116,9 +120,16 @@ namespace GlanceReddit.ViewComponents
 			Reddit.Controllers.LinkPost linkPost = ((Reddit.Controllers.LinkPost)post);
 			JObject mediaJson = (JObject)post.Listing.Media;
 
-			string url = mediaJson.SelectToken("reddit_video.fallback_url").ToString();
+			try 
+			{
+				string url = mediaJson.SelectToken("reddit_video.fallback_url").ToString();
+				return url;
+			}
 
-			return url;
+			catch (NullReferenceException)
+			{ 
+				return null;
+			}
 		}
     }
 }
