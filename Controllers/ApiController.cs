@@ -104,7 +104,12 @@ namespace GlanceReddit.Controllers
 
 			string token = oauthController.FetchToken(code, state).RefreshToken;
 			_logger.LogError("Token: " + token);
-			SignIn(token);
+			//SignIn(token);
+
+			CookieOptions options = new CookieOptions();
+			options.Expires = DateTime.Now.AddDays(2);
+			options.Secure = true;
+			Response.Cookies.Append("RefreshToken", token, options);
 
 			return View();
 
@@ -218,7 +223,8 @@ namespace GlanceReddit.Controllers
 		{
 			if (IsRefreshTokenSet())
 			{
-				await HttpContext.SignOutAsync();
+				//await HttpContext.SignOutAsync();
+				Response.Cookies.Delete("RefreshToken");
 				TempData["SuccessMessage"] = LogOutSuccess;
 			}
 
@@ -323,8 +329,8 @@ namespace GlanceReddit.Controllers
 		private RedditUser InitRedditor(bool isProfile = false)
 		{
 			var redditor = new RedditUser();
-			
-			string refreshToken = Request.HttpContext.User.Claims.ElementAt(0).Value;
+
+			string refreshToken = Request.Cookies["RefreshToken"]; //Request.HttpContext.User.Claims.ElementAt(0).Value;
 
 			redditor.Client = new RedditClient(AppId, refreshToken, AppSecret);
 
