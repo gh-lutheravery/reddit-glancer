@@ -73,37 +73,32 @@ namespace GlanceReddit.Controllers
 			return false;
 		}
 
+		private string GetQueryString(string key)
+		{
+			StringValues stateVals = new StringValues();
+
+			bool result = Request.Query.TryGetValue(key, out stateVals);
+			if (result)
+				return stateVals.ToString();
+			
+			else
+			{
+				string err = key + " fetching failed, throwing exception.";
+				_logger.LogError(err);
+				throw new Exception(err);
+			}
+		}
+
 		// redirect uri that reddit uses in oauth process
 		[Route("auth-redirect")]
 		public ActionResult AuthRedirect()
 		{
 			OauthController oauthController = new OauthController();
-			string state = string.Empty;
-			string code = string.Empty;
 
-			StringValues stateVals = new StringValues();
-			bool stateResult = Request.Query.TryGetValue("state", out stateVals);
-			if (stateResult)
-			{
-				state = stateVals.ToString();
-			}
-
-			StringValues codeVals = new StringValues();
-			bool codeResult = Request.Query.TryGetValue("code", out codeVals);
-			if (codeResult)
-			{
-				code = codeVals.ToString();
-			}
-
-			if (!codeResult || !stateResult)
-			{
-				_logger.LogError("Code and/or state fetching failed.");
-				throw new Exception("Code success: " + codeResult + " State success: " + stateResult);
-			}
+			string state = GetQueryString("state");
+			string code = GetQueryString("code");
 
 			string token = oauthController.FetchToken(code, state).RefreshToken;
-			_logger.LogError("Token: " + token);
-			//SignIn(token);
 
 			CookieOptions options = new CookieOptions();
 			options.Expires = DateTime.Now.AddDays(2);
