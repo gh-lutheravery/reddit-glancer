@@ -66,8 +66,7 @@ namespace GlanceReddit.Controllers
 		{
 			if (Request != null)
 			{
-				IEnumerable<Claim> claims = Request.HttpContext.User.Claims;
-				if (claims.Where(c => c.Type == "RefreshToken").Count() == 1)
+				if (Request.Cookies["RefreshToken"] != null)
 					return true;
 			}
 
