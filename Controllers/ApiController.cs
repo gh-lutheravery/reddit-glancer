@@ -349,7 +349,7 @@ namespace GlanceReddit.Controllers
 					{
 						if (!IsRefreshTokenSet())
 						{
-							ViewData["ErrorMessage"] = NotAuthError;
+							TempData["ErrorMessage"] = NotAuthError;
 							return RedirectToAction(nameof(Home));
 						}
 
@@ -362,7 +362,7 @@ namespace GlanceReddit.Controllers
 						/*
 						if (!IsRefreshTokenSet())
 						{
-							ViewData["ErrorMessage"] = NotAuthError;
+							TempData["ErrorMessage"] = NotAuthError;
 							return RedirectToAction(nameof(Home));
 						}
 						*/
@@ -374,7 +374,7 @@ namespace GlanceReddit.Controllers
 
 			catch (Exception ex)
 			{
-				ViewData["ErrorMessage"] = GenericError;
+				TempData["ErrorMessage"] = GenericError;
 			}
 
 			return RedirectToAction(nameof(Home));
