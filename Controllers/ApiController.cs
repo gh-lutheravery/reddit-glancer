@@ -129,6 +129,7 @@ namespace GlanceReddit.Controllers
 				
 				Uri serviceUri  = new Uri("https://fetchtokenservice.azurewebsites.net/api/FetchTokenService/");
 				var result = httpClient.PostAsJsonAsync(serviceUri, jwtToken).Result;
+				_logger.LogDebug(result.ToString());
 			}
 		}
 
