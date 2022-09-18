@@ -1,6 +1,6 @@
 ﻿@model GlanceReddit.ViewModels.UserViewModel
 
-<div class="header-container bg-secondary">
+<div class="header-container">
     <h1 class="post-index-header" style="color: white">@Model.User.Name</h1>
     <hr />
 
@@ -23,13 +23,13 @@
 </div>
 
 
-<div class="header-container bg-secondary">
+<div class="header-container">
     <h2 class="post-index-header" style="color: white">15 New Posts: (if they exist)</h2>
 </div>
 
 @Html.Partial("/Views/Api/_DisplayPost.cshtml", Model.TcPostArr)
 
-<div class="header-container bg-secondary">
+<div class="header-container">
     <h2 class="post-index-header" style="color: white">15  New Comments: (if they exist)</h2>
 </div>
 
