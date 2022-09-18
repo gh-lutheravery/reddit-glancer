@@ -50,6 +50,10 @@ ul {
     border: 0;
 }
 
+    #search-id:focus {
+        background-color: #15181B;
+    }
+
 a.article-title:hover {
     color: #428bca;
     text-decoration: none;
