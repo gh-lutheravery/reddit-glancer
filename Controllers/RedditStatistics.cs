@@ -8,7 +8,7 @@ namespace GlanceReddit.Controllers
 {
 	public class RedditStatistics : Controller
 	{
-		public SubredditStats GetSubredditStats(Reddit.Controllers.Subreddit sub)
+		public SubredditStats GetSubredditStats(Reddit.Controllers.Subreddit sub, List<Reddit.Controllers.Post> queryList)
 		{
 			//-- the most commonly linked websites can be shown
 
@@ -16,6 +16,7 @@ namespace GlanceReddit.Controllers
 
 			List<Reddit.Controllers.Post> totalLinkPosts = sub.Posts.Hot
 				.Where(post => post.Listing.URL != null).ToList();
+			
 
 			// get all link posts not from reddit
 
@@ -53,13 +54,11 @@ namespace GlanceReddit.Controllers
 
 			stats.Percents = percents;
 
-			//-- the most common subreddits that crosspost to it
+			//-- the most common subreddits that crosspost to it (difficult/impossible to be accurate with api's tools)
 
 			// get all crossposts from other first raw data list
 
-			Reddit.Controllers.Subreddit b = new Reddit.Controllers.Subreddit();
 			// for self post, permalink is body, link post is nothing rn
-			b.About().Posts.IHot[0].;
 
 			// identify all subs from results
 
@@ -75,21 +74,56 @@ namespace GlanceReddit.Controllers
 
 			// get all users that made submissions in the sub
 
+			List<string> usernames = queryList.Select(post => post.Author).ToList();
 
 
 			// get all posts from each
 
+			Reddit.Inputs.Search.SearchGetSearchInput q =
+					new Reddit.Inputs.Search.SearchGetSearchInput(username)
+					{ type = "user" };
+
+			List<Reddit.Controllers.User> users = usernames.Select(u => redditor.Client.User(u).About());
+
+			List<Reddit.Controllers.Post> postHistories = new List<Reddit.Controllers.Post>();
+
+			foreach (Reddit.Controllers.User user in users)
+			{ 
+				postHistories.AddRange(user.PostHistory);
+			}
+
 			// filter all that are from the current sub
+
+			List<string> subs = postHistories.Select(p => p.Subreddit).ToList();
 
 			// identify all subs from results
 
 			// make a list of all subs
 
-			// find number of duplicates
+			List<string> foreignSubs = subs.Where(s => s != sub.Name).ToList();
+
+			stats.Percents = GetPercents(foreignSubs);
+		}
+
+		private Dictionary<string, float> GetPercents(List<string> list)
+		{
+			Dictionary<string, int> dups = list.GroupBy(host => host)
+			  .Where(grouping => grouping.Count() > 1)
+			  .ToDictionary(g => g.Key, g => g.Count());
+
+			int sum = dups.Values.Sum();
 
 			// make nums into percentages
 
-			// insert into obj
+			Dictionary<string, float> percents = new Dictionary<string, float>();
+
+			foreach (var pair in dups)
+			{
+				float percent = pair.Value / sum * 100;
+				percents.Add(pair.Key, percent);
+			}
+
+			return percents;
 		}
 
 		public SearchStats GetSearchStats(Reddit.Controllers.Subreddit sub)
