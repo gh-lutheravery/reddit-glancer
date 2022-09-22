@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,17 +28,38 @@ namespace GlanceReddit.Controllers
 
 			// identify all sites from results
 
-
+			List<string> hosts = sites.Select(site => new Uri(site))
+								.Select(post => post.Host).ToList();
 
 			// find number of duplicates
 
+			Dictionary<string, int> dups = hosts.GroupBy(host => host)
+			  .Where(grouping => grouping.Count() > 1)
+			  .ToDictionary(g => g.Key, g => g.Count());
+
+			int sum = dups.Values.Sum();
+
 			// make nums into percentages
 
+			Dictionary<string, float> percents = new Dictionary<string, float>();
+
+			foreach (var pair in dups)
+			{ 
+				float percent = pair.Value / sum * 100;
+				percents.Add(pair.Key, percent);
+			}
+
 			// insert into obj
+
+			stats.Percents = percents;
 
 			//-- the most common subreddits that crosspost to it
 
 			// get all crossposts from other first raw data list
+
+			Reddit.Controllers.Subreddit b = new Reddit.Controllers.Subreddit();
+			// for self post, permalink is body, link post is nothing rn
+			b.About().Posts.IHot[0].;
 
 			// identify all subs from results
 
@@ -52,6 +74,8 @@ namespace GlanceReddit.Controllers
 			//-- this sub community's other frequented subs
 
 			// get all users that made submissions in the sub
+
+
 
 			// get all posts from each
 
