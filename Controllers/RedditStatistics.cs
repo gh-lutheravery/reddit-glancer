@@ -39,21 +39,7 @@ namespace GlanceReddit.Controllers
 
 			stats.Percents = GetPercents(hosts);
 
-			//-- the most common subreddits that crosspost to it (difficult/impossible to be accurate with api's tools)
-
-			// get all crossposts from other first raw data list
-
-			// for self post, permalink is body, link post is nothing rn
-
-			// identify all subs from results
-
-			// make a list of all subs
-
-			// find number of duplicates
-
-			// make nums into percentages
-
-			// insert into obj
+			
 
 			//-- this sub community's other frequented subs
 
@@ -110,6 +96,49 @@ namespace GlanceReddit.Controllers
 
 			return percents;
 		}
+
+
+		public SearchStats GetCrosspostedSubs(Reddit.Controllers.Subreddit sub)
+		{
+			// get all crossposts from other first raw data list
+			var crosspostables = sub.Posts.Hot.Where(p => p.Listing.IsCrosspostable);
+
+			if (!crosspostables.Any())
+			{
+				return null;
+			}
+
+			var crossposts = crosspostables.Where(p => p.Listing.URL.StartsWith("/r/"));
+
+			var crosspostSubs = new List<string>();
+
+			foreach (Reddit.Controllers.Post p in crossposts)
+			{
+				string trimmed = p.Listing.URL.Remove(0, 3);
+				int firstSlash = trimmed.IndexOf('/');
+
+				int count = trimmed.Length - firstSlash;
+				string subName = trimmed.Remove(firstSlash, count);
+				crosspostSubs.Add(subName);
+			}
+
+			stats.Percents = GetPercents(crosspostSubs);
+		}
+		//-- the most common subreddits that crosspost to it (difficult/impossible to be accurate with api's tools)
+
+		// get all crossposts from other first raw data list
+
+		// for self post, permalink is body, link post is nothing rn
+
+		// identify all subs from results
+
+		// make a list of all subs
+
+		// find number of duplicates
+
+		// make nums into percentages
+
+		// insert into obj
 
 		public SearchStats GetQueryPopularity(RedditUser redditor, string query)
 		{
