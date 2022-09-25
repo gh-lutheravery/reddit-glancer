@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GlanceReddit.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -34,25 +35,9 @@ namespace GlanceReddit.Controllers
 
 			// find number of duplicates
 
-			Dictionary<string, int> dups = hosts.GroupBy(host => host)
-			  .Where(grouping => grouping.Count() > 1)
-			  .ToDictionary(g => g.Key, g => g.Count());
-
-			int sum = dups.Values.Sum();
-
-			// make nums into percentages
-
-			Dictionary<string, float> percents = new Dictionary<string, float>();
-
-			foreach (var pair in dups)
-			{ 
-				float percent = pair.Value / sum * 100;
-				percents.Add(pair.Key, percent);
-			}
-
 			// insert into obj
 
-			stats.Percents = percents;
+			stats.Percents = GetPercents(hosts);
 
 			//-- the most common subreddits that crosspost to it (difficult/impossible to be accurate with api's tools)
 
@@ -126,17 +111,70 @@ namespace GlanceReddit.Controllers
 			return percents;
 		}
 
+		public SearchStats GetQueryPopularity(RedditUser redditor, string query)
+		{
+			// find dates of posts right now
+			Reddit.Inputs.Search.SearchGetSearchInput q =
+					new Reddit.Inputs.Search.SearchGetSearchInput(query)
+					{ t = "month", limit = 100, sort = "top" };
+
+			var monthList = redditor.Client.Search(q).ToList();
+
+			var nowDates = monthList.Select(p => p.Listing.CreatedUTC).ToList();
+
+
+			// find dates a month before
+			var beforeAnchorPost = monthList.OrderByDescending(p => p.Listing.CreatedUTC).ToList()[0];
+
+			Reddit.Inputs.Search.SearchGetSearchInput q2 =
+					new Reddit.Inputs.Search.SearchGetSearchInput(query) { after = "t3_" + beforeAnchorPost.Id, count = 100 };
+
+			var beforeMonthList = redditor.Client.Search(q2).ToList();
+
+			var beforeDates = beforeMonthList.Select(p => p.Listing.CreatedUTC).ToList();
+
+
+
+			// check frequency of each block of posts
+			List<TimeSpan> nowTs = nowDates.Select((d, i) => d - nowDates[i + 1]).ToList();
+			List<TimeSpan> beforeTs = beforeDates.Select((d, i) => d - nowDates[i + 1]).ToList();
+
+			double avgDistanceNow = nowTs.Average(p => p.Ticks);
+			double avgDistanceBefore = beforeTs.Average(p => p.Ticks);
+
+
+			// put data into object
+			int lesserVariance = avgDistanceBefore - Less;
+			int greaterVariance = avgDistanceBefore + More;
+
+			stats.DistBefore = avgDistanceBefore;
+			stats.DistNow = avgDistanceNow;
+
+			if (lesserVariance <= avgDistanceNow && avgDistanceNow <= greaterVariance)
+				stats.Similarity = true;
+
+			else
+			{
+				if (avgDistanceNow > moreVal)
+				{
+					stats.Decreasing = true;
+				}
+				else
+				{
+					stats.Increasing = true;
+				}
+			}
+		}
+
 		public SearchStats GetSearchStats(Reddit.Controllers.Subreddit sub)
 		{
 			//-- most common subreddits
 
 			// get all subreddits from post list
 
-			// find number of duplicates
+			List<string> subs = queryList.Select(p => p.Subreddit).ToList();
 
-			// make nums into percentages
-
-			// insert into obj
+			stats.Percents = GetPercents(subs);
 
 			//-- get the rate of interaction between subreddits
 
@@ -144,19 +182,6 @@ namespace GlanceReddit.Controllers
 
 			//-- show number of recent submissions mentioning search keyword(s)
 
-			// get dates of all posts from GetSearchResults
-
-			// get 100 block of posts from 3 months ago
-
-			// get dates of 3month posts
-
-			// find density of each date groups
-
-			// decide if density is similar or different
-
-			// decide if either density is high or low
-
-			// insert info into obj
 		}
 
 		// GET: RedditStatistics
