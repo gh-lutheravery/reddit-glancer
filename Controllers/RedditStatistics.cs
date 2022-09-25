@@ -31,7 +31,7 @@ namespace GlanceReddit.Controllers
 			return percents;
 		}
 
-		public SubredditStatsModel GetLinkedWebsites()
+		public Dictionary<string, float> GetLinkedWebsites(Reddit.Controllers.Subreddit sub)
 		{
 			// get all link posts from subreddit
 
@@ -52,7 +52,7 @@ namespace GlanceReddit.Controllers
 			List<string> hosts = sites.Select(site => new Uri(site))
 								.Select(post => post.Host).ToList();
 
-			stats.Percents = GetPercents(hosts);
+			return GetPercents(hosts);
 		}
 
 		public SubredditStatsModel GetRelatedSubreddits(Reddit.Controllers.Subreddit sub)
