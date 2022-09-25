@@ -1,4 +1,5 @@
 ﻿using GlanceReddit.ViewModels;
+using GlanceReddit.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,7 +10,28 @@ namespace GlanceReddit.Controllers
 {
 	public class RedditStatistics : Controller
 	{
-		public SubredditStats GetLinkedWebsites()
+		private Dictionary<string, float> GetPercents(List<string> list)
+		{
+			Dictionary<string, int> dups = list.GroupBy(host => host)
+			  .Where(grouping => grouping.Count() > 1)
+			  .ToDictionary(g => g.Key, g => g.Count());
+
+			int sum = dups.Values.Sum();
+
+			// make nums into percentages
+
+			Dictionary<string, float> percents = new Dictionary<string, float>();
+
+			foreach (var pair in dups)
+			{
+				float percent = pair.Value / sum * 100;
+				percents.Add(pair.Key, percent);
+			}
+
+			return percents;
+		}
+
+		public SubredditStatsModel GetLinkedWebsites()
 		{
 			// get all link posts from subreddit
 
@@ -33,7 +55,7 @@ namespace GlanceReddit.Controllers
 			stats.Percents = GetPercents(hosts);
 		}
 
-		public SubredditStats GetRelatedSubreddits(Reddit.Controllers.Subreddit sub)
+		public SubredditStatsModel GetRelatedSubreddits(Reddit.Controllers.Subreddit sub)
 		{
 			//-- this sub community's other frequented subs
 
@@ -65,29 +87,8 @@ namespace GlanceReddit.Controllers
 			stats.Percents = GetPercents(foreignSubs);
 		}
 
-		private Dictionary<string, float> GetPercents(List<string> list)
-		{
-			Dictionary<string, int> dups = list.GroupBy(host => host)
-			  .Where(grouping => grouping.Count() > 1)
-			  .ToDictionary(g => g.Key, g => g.Count());
 
-			int sum = dups.Values.Sum();
-
-			// make nums into percentages
-
-			Dictionary<string, float> percents = new Dictionary<string, float>();
-
-			foreach (var pair in dups)
-			{
-				float percent = pair.Value / sum * 100;
-				percents.Add(pair.Key, percent);
-			}
-
-			return percents;
-		}
-
-
-		public SearchStats GetCrosspostedSubs(Reddit.Controllers.Subreddit sub)
+		public SubredditStatsModel GetCrosspostedSubs(Reddit.Controllers.Subreddit sub)
 		{
 			// get all crossposts from other first raw data list
 			var crosspostables = sub.Posts.Hot.Where(p => p.Listing.IsCrosspostable);
@@ -114,7 +115,7 @@ namespace GlanceReddit.Controllers
 			stats.Percents = GetPercents(crosspostSubs);
 		}
 
-		public SearchStats GetQueryPopularity(RedditUser redditor, string query)
+		public SearchResultStatsModel GetQueryPopularity(RedditUser redditor, string query)
 		{
 			// find dates of posts right now
 			Reddit.Inputs.Search.SearchGetSearchInput q =
@@ -169,16 +170,11 @@ namespace GlanceReddit.Controllers
 			}
 		}
 
-		public SearchStats GetCommonSubreddits(Reddit.Controllers.Subreddit sub)
+		public SearchResultStatsModel GetCommonSubreddits(Reddit.Controllers.Subreddit sub)
 		{
 			List<string> subs = queryList.Select(p => p.Subreddit).ToList();
 
 			stats.Percents = GetPercents(subs);
-		}
-
-		public SearchStats GetInteractionRate(Reddit.Controllers.Subreddit sub)
-		{
-			// get results from last two methods in GetSubredditStats
 		}
 	}
 }
