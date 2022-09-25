@@ -9,15 +9,12 @@ namespace GlanceReddit.Controllers
 {
 	public class RedditStatistics : Controller
 	{
-		public SubredditStats GetSubredditStats(Reddit.Controllers.Subreddit sub, List<Reddit.Controllers.Post> queryList)
+		public SubredditStats GetLinkedWebsites()
 		{
-			//-- the most commonly linked websites can be shown
-
 			// get all link posts from subreddit
 
 			List<Reddit.Controllers.Post> totalLinkPosts = sub.Posts.Hot
 				.Where(post => post.Listing.URL != null).ToList();
-			
 
 			// get all link posts not from reddit
 
@@ -33,20 +30,16 @@ namespace GlanceReddit.Controllers
 			List<string> hosts = sites.Select(site => new Uri(site))
 								.Select(post => post.Host).ToList();
 
-			// find number of duplicates
-
-			// insert into obj
-
 			stats.Percents = GetPercents(hosts);
+		}
 
-			
-
+		public SubredditStats GetRelatedSubreddits(Reddit.Controllers.Subreddit sub)
+		{
 			//-- this sub community's other frequented subs
 
 			// get all users that made submissions in the sub
 
-			List<string> usernames = queryList.Select(post => post.Author).ToList();
-
+			List<string> usernames = sub.Posts.Hot.Select(post => post.Author).ToList();
 
 			// get all posts from each
 
@@ -66,10 +59,6 @@ namespace GlanceReddit.Controllers
 			// filter all that are from the current sub
 
 			List<string> subs = postHistories.Select(p => p.Subreddit).ToList();
-
-			// identify all subs from results
-
-			// make a list of all subs
 
 			List<string> foreignSubs = subs.Where(s => s != sub.Name).ToList();
 
@@ -124,21 +113,6 @@ namespace GlanceReddit.Controllers
 
 			stats.Percents = GetPercents(crosspostSubs);
 		}
-		//-- the most common subreddits that crosspost to it (difficult/impossible to be accurate with api's tools)
-
-		// get all crossposts from other first raw data list
-
-		// for self post, permalink is body, link post is nothing rn
-
-		// identify all subs from results
-
-		// make a list of all subs
-
-		// find number of duplicates
-
-		// make nums into percentages
-
-		// insert into obj
 
 		public SearchStats GetQueryPopularity(RedditUser redditor, string query)
 		{
@@ -195,97 +169,16 @@ namespace GlanceReddit.Controllers
 			}
 		}
 
-		public SearchStats GetSearchStats(Reddit.Controllers.Subreddit sub)
+		public SearchStats GetCommonSubreddits(Reddit.Controllers.Subreddit sub)
 		{
-			//-- most common subreddits
-
-			// get all subreddits from post list
-
 			List<string> subs = queryList.Select(p => p.Subreddit).ToList();
 
 			stats.Percents = GetPercents(subs);
+		}
 
-			//-- get the rate of interaction between subreddits
-
+		public SearchStats GetInteractionRate(Reddit.Controllers.Subreddit sub)
+		{
 			// get results from last two methods in GetSubredditStats
-
-			//-- show number of recent submissions mentioning search keyword(s)
-
-		}
-
-		// GET: RedditStatistics
-		public ActionResult Index()
-		{
-			return View();
-		}
-
-		// GET: RedditStatistics/Details/5
-		public ActionResult Details(int id)
-		{
-			return View();
-		}
-
-		// GET: RedditStatistics/Create
-		public ActionResult Create()
-		{
-			return View();
-		}
-
-		// POST: RedditStatistics/Create
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Create(IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		// GET: RedditStatistics/Edit/5
-		public ActionResult Edit(int id)
-		{
-			return View();
-		}
-
-		// POST: RedditStatistics/Edit/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Edit(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		// GET: RedditStatistics/Delete/5
-		public ActionResult Delete(int id)
-		{
-			return View();
-		}
-
-		// POST: RedditStatistics/Delete/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
 		}
 	}
 }
