@@ -55,7 +55,7 @@ namespace GlanceReddit.Controllers
 			return GetPercents(hosts);
 		}
 
-		public SubredditStatsModel GetRelatedSubreddits(Reddit.Controllers.Subreddit sub)
+		public Dictionary<string, float> GetRelatedSubreddits(Reddit.Controllers.Subreddit sub)
 		{
 			//-- this sub community's other frequented subs
 
@@ -84,11 +84,11 @@ namespace GlanceReddit.Controllers
 
 			List<string> foreignSubs = subs.Where(s => s != sub.Name).ToList();
 
-			stats.Percents = GetPercents(foreignSubs);
+			return GetPercents(foreignSubs);
 		}
 
 
-		public SubredditStatsModel GetCrosspostedSubs(Reddit.Controllers.Subreddit sub)
+		public Dictionary<string, float> GetCrosspostedSubs(Reddit.Controllers.Subreddit sub)
 		{
 			// get all crossposts from other first raw data list
 			var crosspostables = sub.Posts.Hot.Where(p => p.Listing.IsCrosspostable);
@@ -112,10 +112,10 @@ namespace GlanceReddit.Controllers
 				crosspostSubs.Add(subName);
 			}
 
-			stats.Percents = GetPercents(crosspostSubs);
+			return GetPercents(crosspostSubs);
 		}
 
-		public SearchResultStatsModel GetQueryPopularity(RedditUser redditor, string query)
+		public Dictionary<string, float> GetQueryPopularity(RedditUser redditor, string query)
 		{
 			// find dates of posts right now
 			Reddit.Inputs.Search.SearchGetSearchInput q =
@@ -170,11 +170,11 @@ namespace GlanceReddit.Controllers
 			}
 		}
 
-		public SearchResultStatsModel GetCommonSubreddits(Reddit.Controllers.Subreddit sub)
+		public Dictionary<string, float> GetCommonSubreddits(Reddit.Controllers.Subreddit sub)
 		{
 			List<string> subs = queryList.Select(p => p.Subreddit).ToList();
 
-			stats.Percents = GetPercents(subs);
+			return GetPercents(subs);
 		}
 	}
 }
