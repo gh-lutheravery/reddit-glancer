@@ -146,12 +146,12 @@ namespace GlanceReddit.Controllers
 			double avgDistanceNow = nowTs.Average(p => p.Ticks);
 			double avgDistanceBefore = beforeTs.Average(p => p.Ticks);
 
-			int lesserMargin = 0;
-			int greaterMargin = 0;
+			double lesserMargin = 0;
+			double greaterMargin = 0;
 
 			// put data into object
-			int lesserVariance = avgDistanceBefore - lesserMargin;
-			int greaterVariance = avgDistanceBefore + greaterMargin;
+			double lesserVariance = avgDistanceBefore - lesserMargin;
+			double greaterVariance = avgDistanceBefore + greaterMargin;
 
 			QueryPopularity queryPop = new QueryPopularity();
 
