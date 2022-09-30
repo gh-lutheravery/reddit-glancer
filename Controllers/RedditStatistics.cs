@@ -55,7 +55,7 @@ namespace GlanceReddit.Controllers
 			return GetPercents(hosts);
 		}
 
-		public Dictionary<string, float> GetRelatedSubreddits(Reddit.Controllers.Subreddit sub)
+		public Dictionary<string, float> GetRelatedSubreddits(Reddit.Controllers.Subreddit sub, RedditUser redditor)
 		{
 			//-- this sub community's other frequented subs
 
@@ -65,11 +65,7 @@ namespace GlanceReddit.Controllers
 
 			// get all posts from each
 
-			Reddit.Inputs.Search.SearchGetSearchInput q =
-					new Reddit.Inputs.Search.SearchGetSearchInput(username)
-					{ type = "user" };
-
-			List<Reddit.Controllers.User> users = usernames.Select(u => redditor.Client.User(u).About());
+			List<Reddit.Controllers.User> users = usernames.Select(u => redditor.Client.User(u).About()).ToList();
 
 			List<Reddit.Controllers.Post> postHistories = new List<Reddit.Controllers.Post>();
 
