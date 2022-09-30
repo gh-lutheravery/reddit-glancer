@@ -115,7 +115,7 @@ namespace GlanceReddit.Controllers
 			return GetPercents(crosspostSubs);
 		}
 
-		public Dictionary<string, float> GetQueryPopularity(RedditUser redditor, string query)
+		public QueryPopularity GetQueryPopularity(RedditUser redditor, string query)
 		{
 			// find dates of posts right now
 			Reddit.Inputs.Search.SearchGetSearchInput q =
