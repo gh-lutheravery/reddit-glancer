@@ -148,26 +148,18 @@ namespace GlanceReddit.Controllers
 
 
 			// put data into object
-			int lesserVariance = avgDistanceBefore - Less;
-			int greaterVariance = avgDistanceBefore + More;
+			int lesserVariance = avgDistanceBefore - lesserMargin;
+			int greaterVariance = avgDistanceBefore + greaterMargin;
 
-			stats.DistBefore = avgDistanceBefore;
-			stats.DistNow = avgDistanceNow;
+			QueryPopularity queryPop = new QueryPopularity();
+
+			queryPop.ResultFrequencyBefore = avgDistanceBefore;
+			queryPop.ResultFrequencyNow = avgDistanceNow;
 
 			if (lesserVariance <= avgDistanceNow && avgDistanceNow <= greaterVariance)
-				stats.Similarity = true;
+				queryPop.SimilarDifference = true;
 
-			else
-			{
-				if (avgDistanceNow > moreVal)
-				{
-					stats.Decreasing = true;
-				}
-				else
-				{
-					stats.Increasing = true;
-				}
-			}
+			return queryPop;
 		}
 
 		public Dictionary<string, float> GetCommonSubreddits(Reddit.Controllers.Subreddit sub)
