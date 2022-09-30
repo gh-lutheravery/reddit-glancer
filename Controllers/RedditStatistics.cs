@@ -10,7 +10,7 @@ namespace GlanceReddit.Controllers
 {
 	public class RedditStatistics : Controller
 	{
-		private Dictionary<string, float> GetPercents(List<string> list)
+		private Dictionary<string, double> GetPercents(List<string> list)
 		{
 			Dictionary<string, int> dups = list.GroupBy(host => host)
 			  .Where(grouping => grouping.Count() > 1)
@@ -20,18 +20,18 @@ namespace GlanceReddit.Controllers
 
 			// make nums into percentages
 
-			Dictionary<string, float> percents = new Dictionary<string, float>();
+			Dictionary<string, double> percents = new Dictionary<string, double>();
 
 			foreach (var pair in dups)
 			{
-				float percent = pair.Value / sum * 100;
+				double percent = pair.Value / sum * 100;
 				percents.Add(pair.Key, percent);
 			}
 
 			return percents;
 		}
 
-		public Dictionary<string, float> GetLinkedWebsites(Reddit.Controllers.Subreddit sub)
+		public Dictionary<string, double> GetLinkedWebsites(Reddit.Controllers.Subreddit sub)
 		{
 			// get all link posts from subreddit
 
@@ -55,7 +55,7 @@ namespace GlanceReddit.Controllers
 			return GetPercents(hosts);
 		}
 
-		public Dictionary<string, float> GetRelatedSubreddits(Reddit.Controllers.Subreddit sub, RedditUser redditor)
+		public Dictionary<string, double> GetRelatedSubreddits(Reddit.Controllers.Subreddit sub, RedditUser redditor)
 		{
 			//-- this sub community's other frequented subs
 
@@ -84,7 +84,7 @@ namespace GlanceReddit.Controllers
 		}
 
 
-		public Dictionary<string, float> GetCrosspostedSubs(Reddit.Controllers.Subreddit sub)
+		public Dictionary<string, double> GetCrosspostedSubs(Reddit.Controllers.Subreddit sub)
 		{
 			// get all crossposts from other first raw data list
 			var crosspostables = sub.Posts.Hot.Where(p => p.Listing.IsCrosspostable);
@@ -159,7 +159,7 @@ namespace GlanceReddit.Controllers
 			return queryPop;
 		}
 
-		public Dictionary<string, float> GetCommonSubreddits(List<Reddit.Controllers.Post> queryList)
+		public Dictionary<string, double> GetCommonSubreddits(List<Reddit.Controllers.Post> queryList)
 		{
 			List<string> subs = queryList.Select(p => p.Subreddit).ToList();
 
