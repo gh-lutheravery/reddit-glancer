@@ -139,15 +139,14 @@ namespace GlanceReddit.Controllers
 			List<TimeSpan> nowTs = nowDates.Select((d, i) => d - nowDates[i + 1]).ToList();
 			List<TimeSpan> beforeTs = beforeDates.Select((d, i) => d - nowDates[i + 1]).ToList();
 
-			double avgDistanceNow = nowTs.Average(p => p.Ticks);
-			double avgDistanceBefore = beforeTs.Average(p => p.Ticks);
+			double avgDistanceNow = nowTs.Average(p => p.Milliseconds);
+			double avgDistanceBefore = beforeTs.Average(p => p.Milliseconds);
 
-			double lesserMargin = 0;
-			double greaterMargin = 0;
+			double margin = 15000;
 
 			// put data into object
-			double lesserVariance = avgDistanceBefore - lesserMargin;
-			double greaterVariance = avgDistanceBefore + greaterMargin;
+			double lesserVariance = avgDistanceBefore - margin;
+			double greaterVariance = avgDistanceBefore + margin;
 
 			QueryPopularity queryPop = new QueryPopularity();
 
