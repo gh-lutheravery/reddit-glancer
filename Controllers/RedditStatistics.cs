@@ -146,6 +146,8 @@ namespace GlanceReddit.Controllers
 			double avgDistanceNow = nowTs.Average(p => p.Ticks);
 			double avgDistanceBefore = beforeTs.Average(p => p.Ticks);
 
+			int lesserMargin = 0;
+			int greaterMargin = 0;
 
 			// put data into object
 			int lesserVariance = avgDistanceBefore - lesserMargin;
@@ -162,7 +164,7 @@ namespace GlanceReddit.Controllers
 			return queryPop;
 		}
 
-		public Dictionary<string, float> GetCommonSubreddits(Reddit.Controllers.Subreddit sub)
+		public Dictionary<string, float> GetCommonSubreddits(List<Reddit.Controllers.Post> queryList)
 		{
 			List<string> subs = queryList.Select(p => p.Subreddit).ToList();
 
