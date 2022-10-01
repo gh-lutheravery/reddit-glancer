@@ -33,23 +33,18 @@ namespace GlanceReddit.Controllers
 
 		public Dictionary<string, double> GetLinkedWebsites(Reddit.Controllers.Subreddit sub)
 		{
-			// get all link posts from subreddit
+			// get all link posts from subreddit, then get the urls from them
 
-			List<Reddit.Controllers.Post> totalLinkPosts = sub.Posts.Hot
-				.Where(post => post.Listing.URL != null).ToList();
+			List<string> urls = sub.Posts.Hot.Where(post => post.Listing.URL != null).Select(p => p.Listing.URL).ToList();
 
-			// get all link posts not from reddit
+			// get all links not from reddit
 
-			List<Reddit.Controllers.Post> foreignLinkPosts = sub.Posts.Hot
-				.Where(post => !post.Listing.URL.Contains(".redd.it")).ToList();
-
-			// make a list of all sites
-
-			List<string> sites = foreignLinkPosts.Select(post => post.Listing.URL).ToList();
+			List<string> foreignUrls = urls
+				.Where(url => !url.Contains(".redd.it")).ToList();
 
 			// identify all sites from results
 
-			List<string> hosts = sites.Select(site => new Uri(site))
+			List<string> hosts = foreignUrls.Select(site => new Uri(site))
 								.Select(post => post.Host).ToList();
 
 			return GetPercents(hosts);
