@@ -31,15 +31,15 @@ namespace GlanceReddit.Controllers
 			return percents;
 		}
 
-		public Dictionary<string, double> GetLinkedWebsites(Reddit.Controllers.Subreddit sub)
+		public Dictionary<string, double> GetLinkedWebsites(List<string> urls)
 		{
 			// get all link posts from subreddit, then get the urls from them
 
-			List<string> urls = sub.Posts.Hot.Where(post => post.Listing.URL != null).Select(p => p.Listing.URL).ToList();
+			List<string> validUrls = urls.Where(u => !string.IsNullOrEmpty(u)).ToList();
 
 			// get all links not from reddit
 
-			List<string> foreignUrls = urls
+			List<string> foreignUrls = validUrls
 				.Where(url => !url.Contains(".redd.it")).ToList();
 
 			// identify all sites from results
