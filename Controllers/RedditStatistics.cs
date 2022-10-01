@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace GlanceReddit.Controllers
 {
-	public class RedditStatistics : Controller
+	public class RedditStatistics
 	{
 		private Dictionary<string, double> GetPercents(List<string> list)
 		{
