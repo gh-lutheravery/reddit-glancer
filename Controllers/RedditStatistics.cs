@@ -44,10 +44,7 @@ namespace GlanceReddit.Controllers
 
 			// identify all sites from results
 
-			List<string> hosts = foreignUrls.Select(site => new Uri(site))
-								.Select(post => post.Host).ToList();
-
-			return GetPercents(hosts);
+			return GetPercents(foreignUrls);
 		}
 
 		public Dictionary<string, double> GetRelatedSubreddits(Reddit.Controllers.Subreddit sub, RedditUser redditor)
