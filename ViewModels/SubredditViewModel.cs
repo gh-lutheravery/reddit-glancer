@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GlanceReddit.Models;
+using System;
 using System.Collections.Generic;
 
 namespace GlanceReddit.ViewModels
@@ -10,5 +11,7 @@ namespace GlanceReddit.ViewModels
         public Reddit.Controllers.Post[] TcPostArr { get; set; }
 
         public Reddit.Controllers.Comment[] TcComArr { get; set; }
-	}
+
+        public SubredditStatsModel StatsModel { get; set; }
+    }
 }

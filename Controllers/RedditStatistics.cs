@@ -33,25 +33,17 @@ namespace GlanceReddit.Controllers
 
 		public Dictionary<string, double> GetLinkedWebsites(List<string> urls)
 		{
-			// get all link posts from subreddit, then get the urls from them
-
 			List<string> validUrls = urls.Where(u => !string.IsNullOrEmpty(u)).ToList();
-
-			// get all links not from reddit
 
 			List<string> foreignUrls = validUrls
 				.Where(url => !url.Contains(".redd.it")).ToList();
-
-			// identify all sites from results
 
 			return GetPercents(foreignUrls);
 		}
 
 		public Dictionary<string, double> GetRelatedSubreddits(List<Reddit.Controllers.User> users, string subName)
 		{
-			//-- this sub community's other frequented subs
-
-			// get all users that made submissions in the sub
+			// this sub community's other frequented subs
 
 			List<Reddit.Controllers.Post> postHistories = new List<Reddit.Controllers.Post>();
 
@@ -59,8 +51,6 @@ namespace GlanceReddit.Controllers
 			{ 
 				postHistories.AddRange(user.PostHistory);
 			}
-
-			// filter all that are from the current sub
 
 			List<string> subs = postHistories.Select(p => p.Subreddit).ToList();
 
@@ -72,7 +62,6 @@ namespace GlanceReddit.Controllers
 
 		public Dictionary<string, double> GetCrosspostedSubs(Reddit.Controllers.Subreddit sub)
 		{
-			// get all crossposts from other first raw data list
 			var crosspostables = sub.Posts.Hot.Where(p => p.Listing.IsCrosspostable);
 
 			if (!crosspostables.Any())
