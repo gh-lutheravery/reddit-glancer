@@ -47,17 +47,11 @@ namespace GlanceReddit.Controllers
 			return GetPercents(foreignUrls);
 		}
 
-		public Dictionary<string, double> GetRelatedSubreddits(Reddit.Controllers.Subreddit sub, RedditUser redditor)
+		public Dictionary<string, double> GetRelatedSubreddits(List<Reddit.Controllers.User> users, string subName)
 		{
 			//-- this sub community's other frequented subs
 
 			// get all users that made submissions in the sub
-
-			List<string> usernames = sub.Posts.Hot.Select(post => post.Author).ToList();
-
-			// get all posts from each
-
-			List<Reddit.Controllers.User> users = usernames.Select(u => redditor.Client.User(u).About()).ToList();
 
 			List<Reddit.Controllers.Post> postHistories = new List<Reddit.Controllers.Post>();
 
@@ -70,7 +64,7 @@ namespace GlanceReddit.Controllers
 
 			List<string> subs = postHistories.Select(p => p.Subreddit).ToList();
 
-			List<string> foreignSubs = subs.Where(s => s != sub.Name).ToList();
+			List<string> foreignSubs = subs.Where(s => s != subName).ToList();
 
 			return GetPercents(foreignSubs);
 		}
