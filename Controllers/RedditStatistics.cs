@@ -24,6 +24,8 @@ namespace GlanceReddit.Controllers
 			  .Where(grouping => grouping.Count() > 1)
 			  .ToDictionary(g => g.Key, g => g.Count());
 
+			_logger.LogError("dups: " + dups.Count + ", " + dups.Keys.First());
+
 			int sum = dups.Values.Sum();
 
 			// make nums into percentages
@@ -35,6 +37,7 @@ namespace GlanceReddit.Controllers
 				double percent = pair.Value / sum * 100;
 				percents.Add(pair.Key, percent);
 			}
+			_logger.LogError("percents: " + percents.Keys.First() + ", " + percents.Values.First());
 
 			return percents;
 		}
@@ -45,8 +48,6 @@ namespace GlanceReddit.Controllers
 
 			List<string> foreignUrls = validUrls
 				.Where(url => !url.Contains(".redd.it")).ToList();
-
-			_logger.LogError("foreigns: " + foreignUrls.Count + ", " + foreignUrls[0]);
 
 			return GetPercents(foreignUrls);
 		}
