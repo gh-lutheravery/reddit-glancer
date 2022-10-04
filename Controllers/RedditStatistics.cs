@@ -11,9 +11,9 @@ namespace GlanceReddit.Controllers
 {
 	public class RedditStatistics : Controller
 	{
-		private readonly ILogger<RedditStatistics> _logger;
+		private readonly ILogger<ApiController> _logger;
 
-		public RedditStatistics(ILogger<RedditStatistics> logger)
+		public RedditStatistics(ILogger<ApiController> logger)
 		{
 			_logger = logger;
 		}

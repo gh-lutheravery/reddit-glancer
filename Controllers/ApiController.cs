@@ -219,7 +219,7 @@ namespace GlanceReddit.Controllers
 		{
 			_logger.LogError("PopulateSubredditStatsModel has begun execution.");
 			SubredditStatsModel statsModel = new SubredditStatsModel();
-			RedditStatistics redditStatistics = new RedditStatistics();
+			RedditStatistics redditStatistics = new RedditStatistics(_logger);
 
 			List<string> urls = sub.Posts.Hot.Select(p => p.Listing.URL).ToList();
 			_logger.LogError("urls count: " + urls.Count);
@@ -243,7 +243,7 @@ namespace GlanceReddit.Controllers
 		private SearchResultStatsModel PopulateSearchStatsModel(string query, RedditUser client, List<Reddit.Controllers.Post> queryList)
 		{
 			SearchResultStatsModel statsModel = new SearchResultStatsModel();
-			RedditStatistics redditStatistics = new RedditStatistics();
+			RedditStatistics redditStatistics = new RedditStatistics(_logger);
 
 			statsModel.SearchPopularity = redditStatistics.GetQueryPopularity(client, query);
 			statsModel.CommonResultSubreddits = redditStatistics.GetCommonSubreddits(queryList);
