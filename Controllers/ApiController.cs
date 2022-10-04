@@ -217,6 +217,7 @@ namespace GlanceReddit.Controllers
 
 		private SubredditStatsModel PopulateSubredditStatsModel(Reddit.Controllers.Subreddit sub, RedditUser client)
 		{
+			_logger.LogError("PopulateSubredditStatsModel has begun execution.");
 			SubredditStatsModel statsModel = new SubredditStatsModel();
 			RedditStatistics redditStatistics = new RedditStatistics();
 
@@ -231,6 +232,8 @@ namespace GlanceReddit.Controllers
 			statsModel.RelatedSubreddits = redditStatistics.GetRelatedSubreddits(users, sub.Name);
 
 			statsModel.CrosspostedSubreddits = redditStatistics.GetCrosspostedSubs(sub);
+
+			_logger.LogError("PopulateSubredditStatsModel has finished execution: " + statsModel.ForeignWebsites.Count);
 
 			return statsModel;
 		}
