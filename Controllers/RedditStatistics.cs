@@ -20,12 +20,12 @@ namespace GlanceReddit.Controllers
 
 		private Dictionary<string, double> GetPercents(List<string> list)
 		{
-			Dictionary<string, int> dups = list.GroupBy(host => host)
+			Dictionary<string, double> dups = list.GroupBy(host => host)
 			  .Where(grouping => grouping.Count() > 1)
-			  .ToDictionary(g => g.Key, g => g.Count());
+			  .ToDictionary(g => g.Key, g => (double)g.Count());
 
 
-			int sum = dups.Values.Sum();
+			double sum = dups.Values.Sum();
 			_logger.LogError("sum: " + sum);
 			_logger.LogError("percent: " + (dups.Values.First() / sum) * 100);
 
