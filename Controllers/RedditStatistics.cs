@@ -89,7 +89,7 @@ namespace GlanceReddit.Controllers
 			_logger.LogError("crosspostables: " + crosspostables.Count);
 
 			var crossposts = crosspostables.Cast<Reddit.Controllers.LinkPost>()
-				.Where(p => p.URL.StartsWith("/r/"));
+				.Where(p => !p.URL.Contains(sub.Name));
 
 			_logger.LogError("crossposts: " + crossposts.Count());
 
