@@ -222,7 +222,6 @@ namespace GlanceReddit.Controllers
 			RedditStatistics redditStatistics = new RedditStatistics(_logger);
 
 			List<string> urls = sub.Posts.Hot.Select(p => p.Listing.URL).ToList();
-			_logger.LogError("urls count: " + urls.Count);
 
 			statsModel.ForeignWebsites = redditStatistics.GetLinkedWebsites(urls);
 			_logger.LogError("GetLinkedWebsites has finished execution");
@@ -231,7 +230,7 @@ namespace GlanceReddit.Controllers
 			List<Reddit.Controllers.User> users = sub.Posts.Hot
 				.Select(p => client.Client.User(p.Author)).ToList();
 
-			statsModel.RelatedSubreddits = redditStatistics.GetRelatedSubreddits(users, sub.Name);
+			//statsModel.RelatedSubreddits = redditStatistics.GetRelatedSubreddits(users, sub.Name);
 
 			statsModel.CrosspostedSubreddits = redditStatistics.GetCrosspostedSubs(sub);
 
