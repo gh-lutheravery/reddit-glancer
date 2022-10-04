@@ -4,10 +4,10 @@ namespace GlanceReddit.Models
 {
 	public class SubredditStatsModel
 	{
-		public Dictionary<string, double> ForeignWebsites { get; set; }
+		public Dictionary<string, int> ForeignWebsites { get; set; }
 
-		public Dictionary<string, double> RelatedSubreddits { get; set; }
+		public Dictionary<string, int> RelatedSubreddits { get; set; }
 
-		public Dictionary<string, double> CrosspostedSubreddits { get; set; }
+		public Dictionary<string, int> CrosspostedSubreddits { get; set; }
 	}
 }
