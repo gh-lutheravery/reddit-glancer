@@ -101,14 +101,31 @@ namespace GlanceReddit.Controllers
 
 			var crosspostSubs = new List<string>();
 
-			foreach (Reddit.Controllers.Post p in crossposts)
+			foreach (Reddit.Controllers.LinkPost p in crossposts)
 			{
-				string trimmed = p.Listing.URL.Remove(0, 3);
-				int firstSlash = trimmed.IndexOf('/');
+				string trimmedUrl = p.URL;
 
-				int count = trimmed.Length - firstSlash;
-				string subName = trimmed.Remove(firstSlash, count);
-				crosspostSubs.Add(subName);
+				if (p.URL.StartsWith("http") && !p.URL.Contains('?'))
+				{
+					// delete https and reddit domain
+					trimmedUrl = p.URL.Remove(0, 22);
+				}
+
+				else if (p.URL.StartsWith("/r/"))
+				{
+					// remove /r/
+					trimmedUrl = trimmedUrl.Remove(0, 3);
+
+					// find the char that ends the subreddit name
+					int firstSlash = trimmedUrl.IndexOf('/');
+
+					// get the length of the subreddit name
+					int count = trimmedUrl.Length - firstSlash;
+
+					// chop off the rest of the url
+					string subName = trimmedUrl.Remove(firstSlash, count);
+					crosspostSubs.Add(subName);
+				}
 			}
 
 			_logger.LogError("crosspostSubs: " + crosspostSubs.Count());
