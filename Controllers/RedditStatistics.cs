@@ -91,7 +91,7 @@ namespace GlanceReddit.Controllers
 			var crossposts = crosspostables.Cast<Reddit.Controllers.LinkPost>()
 				.Where(p => !p.URL.Contains(sub.Name));
 
-			_logger.LogError("crossposts: " + crossposts.Count());
+			_logger.LogError("crossposts: " + string.Join(",", crossposts));
 
 			if (!crossposts.Any())
 			{
