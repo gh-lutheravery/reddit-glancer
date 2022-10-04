@@ -26,6 +26,8 @@ namespace GlanceReddit.Controllers
 
 
 			int sum = dups.Values.Sum();
+			_logger.LogError("sum: " + sum);
+			_logger.LogError("percent: " + (dups.Values.First() / sum) * 100);
 
 			// make nums into percentages
 
