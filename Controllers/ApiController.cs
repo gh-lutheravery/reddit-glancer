@@ -395,19 +395,19 @@ namespace GlanceReddit.Controllers
 			return View(vm);
 		}
 
-		private List<Reddit.Controllers.Post> Search(string query)
+		private List<Reddit.Controllers.Post> Search(string query, RedditUser redditor)
 		{
 			if (!IsRefreshTokenSet())
 			{
 				return null;
 			}
 
-			var redditor = InitRedditor();
-
 			Reddit.Inputs.Search.SearchGetSearchInput q =
 							new Reddit.Inputs.Search.SearchGetSearchInput(query) { limit = SearchSubmissionLimit };
 
 			var queryList = redditor.Client.Search(q).ToList();
+
+
 
 			return queryList;
 		}
@@ -415,7 +415,8 @@ namespace GlanceReddit.Controllers
 		[Route("search")]
 		public IActionResult SearchResult(int? page, string searchBar)
 		{
-			var queryList = Search(searchBar);
+			var redditor = InitRedditor();
+			var queryList = Search(searchBar, redditor);
 
 			if (queryList == null)
 			{
