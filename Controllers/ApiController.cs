@@ -433,6 +433,8 @@ namespace GlanceReddit.Controllers
 					queryList.ToPagedList(pageNumber, pageSize), 
 					searchBar);
 
+			vm.StatsModel = PopulateSearchStatsModel(searchBar, redditor, queryList);
+
 			return View(vm);
 		}
 	}
