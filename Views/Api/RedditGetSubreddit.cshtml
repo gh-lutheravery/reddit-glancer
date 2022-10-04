@@ -23,6 +23,13 @@
                 <li class="index-list-item">Looks like you have to be over 18 to view this subreddit.</li>
             }
         }
+
+        <h1>Related Subreddits by Rank</h1>
+        @foreach (var pair in @Model.StatsModel.ForeignWebsites)
+        {
+            <li class="index-list-item">@pair.Key</li>
+            <li class="index-list-item">@pair.Value</li>
+        }
     </ul>
 </div>
 
