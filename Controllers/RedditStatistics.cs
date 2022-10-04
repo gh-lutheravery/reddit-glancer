@@ -42,10 +42,11 @@ namespace GlanceReddit.Controllers
 		public Dictionary<string, double> GetLinkedWebsites(List<string> urls)
 		{
 			List<string> validUrls = urls.Where(u => !string.IsNullOrEmpty(u)).ToList();
-			_logger.LogError("validUrls: " + validUrls.Count);
 
 			List<string> foreignUrls = validUrls
 				.Where(url => !url.Contains(".redd.it")).ToList();
+
+			_logger.LogError("foreigns: " + foreignUrls.Count + ", " + foreignUrls[0]);
 
 			return GetPercents(foreignUrls);
 		}
