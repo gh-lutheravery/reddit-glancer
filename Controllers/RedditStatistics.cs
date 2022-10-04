@@ -86,10 +86,12 @@ namespace GlanceReddit.Controllers
 				return err;
 			}
 
-			_logger.LogError("crossposts: " + crosspostables[0].Listing.URL + ", crosspost2: " + crosspostables[1].Listing.URL);
+			_logger.LogError("crosspostables: " + crosspostables.Count);
 
 			var crossposts = crosspostables.Cast<Reddit.Controllers.LinkPost>()
 				.Where(p => p.URL.StartsWith("/r/"));
+
+			_logger.LogError("crossposts: " + crossposts.Count());
 
 			if (!crossposts.Any())
 			{
@@ -108,6 +110,8 @@ namespace GlanceReddit.Controllers
 				string subName = trimmed.Remove(firstSlash, count);
 				crosspostSubs.Add(subName);
 			}
+
+			_logger.LogError("crosspostSubs: " + crosspostSubs.Count());
 
 			return GetPercents(crosspostSubs);
 		}
