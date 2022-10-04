@@ -5,11 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace GlanceReddit.Controllers
 {
-	public class RedditStatistics
+	public class RedditStatistics : Controller
 	{
+		private readonly ILogger<RedditStatistics> _logger;
+
+		public RedditStatistics(ILogger<RedditStatistics> logger)
+		{
+			_logger = logger;
+		}
+
 		private Dictionary<string, double> GetPercents(List<string> list)
 		{
 			Dictionary<string, int> dups = list.GroupBy(host => host)
@@ -34,6 +42,7 @@ namespace GlanceReddit.Controllers
 		public Dictionary<string, double> GetLinkedWebsites(List<string> urls)
 		{
 			List<string> validUrls = urls.Where(u => !string.IsNullOrEmpty(u)).ToList();
+			_logger.LogError("validUrls: " + validUrls.Count);
 
 			List<string> foreignUrls = validUrls
 				.Where(url => !url.Contains(".redd.it")).ToList();
