@@ -73,12 +73,14 @@ namespace GlanceReddit.Controllers
 
 		public Dictionary<string, double> GetCrosspostedSubs(Reddit.Controllers.Subreddit sub)
 		{
-			var crosspostables = sub.Posts.Hot.Where(p => p.Listing.IsCrosspostable);
+			var crosspostables = sub.Posts.Hot.Where(p => p.Listing.IsCrosspostable).ToList();
 
 			if (!crosspostables.Any())
 			{
 				return null;
 			}
+
+			_logger.LogError("crossposts: " + crosspostables[0].Listing.URL + ", crosspost2: " + crosspostables[1].Listing.URL);
 
 			var crossposts = crosspostables.Where(p => p.Listing.URL.StartsWith("/r/"));
 
@@ -94,7 +96,7 @@ namespace GlanceReddit.Controllers
 				crosspostSubs.Add(subName);
 			}
 
-			_logger.LogError("crossposts: " + crossposts.Count() + ", crosspostSubs: " + crosspostSubs.Count());
+			
 
 			return GetPercents(crosspostSubs);
 		}
