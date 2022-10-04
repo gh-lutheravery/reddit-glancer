@@ -231,8 +231,8 @@ namespace GlanceReddit.Controllers
 
 			List<string> urls = sub.Posts.Hot.Select(p => p.Listing.URL).ToList();
 
-			var websiteOccurences = redditStatistics.GetLinkedWebsites(urls);
-			statsModel.ForeignWebsites = CastValueDoubleToInt(websiteOccurences);
+			//var websiteOccurences = redditStatistics.GetLinkedWebsites(urls);
+			//statsModel.ForeignWebsites = CastValueDoubleToInt(websiteOccurences);
 
 			_logger.LogError("GetLinkedWebsites has finished execution");
 
@@ -240,10 +240,10 @@ namespace GlanceReddit.Controllers
 			List<Reddit.Controllers.User> users = sub.Posts.Hot
 				.Select(p => client.Client.User(p.Author)).ToList();
 
-			//statsModel.RelatedSubreddits = redditStatistics.GetRelatedSubreddits(users, sub.Name);
+			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(users, sub.Name));
 
-			var crosspostedSubs = redditStatistics.GetCrosspostedSubs(sub);
-			statsModel.CrosspostedSubreddits = CastValueDoubleToInt(crosspostedSubs);
+			//var crosspostedSubs = redditStatistics.GetCrosspostedSubs(sub);
+			//statsModel.CrosspostedSubreddits = CastValueDoubleToInt(crosspostedSubs);
 
 
 			return statsModel;
