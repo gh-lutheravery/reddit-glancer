@@ -235,6 +235,17 @@ namespace GlanceReddit.Controllers
 			return statsModel;
 		}
 
+		private SearchResultStatsModel PopulateSearchStatsModel(string query, RedditUser client, List<Reddit.Controllers.Post> queryList)
+		{
+			SearchResultStatsModel statsModel = new SearchResultStatsModel();
+			RedditStatistics redditStatistics = new RedditStatistics();
+
+			statsModel.SearchPopularity = redditStatistics.GetQueryPopularity(client, query);
+			statsModel.CommonResultSubreddits = redditStatistics.GetCommonSubreddits(queryList);
+
+			return statsModel;
+		}
+
 		[Route("subreddit")]
 		public ActionResult RedditGetSubreddit(string name)
 		{
