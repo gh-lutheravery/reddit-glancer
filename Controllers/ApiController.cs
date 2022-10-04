@@ -235,7 +235,6 @@ namespace GlanceReddit.Controllers
 			return statsModel;
 		}
 
-
 		[Route("subreddit")]
 		public ActionResult RedditGetSubreddit(string name)
 		{
@@ -255,7 +254,7 @@ namespace GlanceReddit.Controllers
 				vm.Sub = subreddit;
 				vm.TcPostArr = subreddit.Posts.GetNew(limit: SubmissionLimit).ToArray();
 				vm.TcComArr = subreddit.Comments.GetNew(limit: SubmissionLimit).ToArray();
-				vm.StatsModel = PopulateSubStatsModel(subreddit, redditor);
+				vm.StatsModel = PopulateSubredditStatsModel(subreddit, redditor);
 
 				return View(vm);
 			}
