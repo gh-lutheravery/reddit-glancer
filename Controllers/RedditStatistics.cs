@@ -77,12 +77,19 @@ namespace GlanceReddit.Controllers
 
 			if (!crosspostables.Any())
 			{
-				return null;
+				var err = new Dictionary<string, double>() { { "Error: No crosspostables.", 0 } };
+				return err;
 			}
 
 			_logger.LogError("crossposts: " + crosspostables[0].Listing.URL + ", crosspost2: " + crosspostables[1].Listing.URL);
 
 			var crossposts = crosspostables.Where(p => p.Listing.URL.StartsWith("/r/"));
+
+			if (!crossposts.Any())
+			{
+				var err = new Dictionary<string, double>() { { "Error: No crossposts in hot.", 0 } };
+				return err;
+			}
 
 			var crosspostSubs = new List<string>();
 
