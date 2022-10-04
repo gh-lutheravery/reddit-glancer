@@ -64,10 +64,13 @@ namespace GlanceReddit.Controllers
 			{ 
 				postHistories.AddRange(user.PostHistory);
 			}
+			_logger.LogError("Loop has finished execution: " + postHistories[0].Subreddit);
 
 			List<string> subs = postHistories.Select(p => p.Subreddit).ToList();
 
 			List<string> foreignSubs = subs.Where(s => s != subName).ToList();
+
+			_logger.LogError("foreignSub: " + foreignSubs[0]);
 
 			return GetPercents(foreignSubs);
 		}
