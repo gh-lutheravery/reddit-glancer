@@ -222,8 +222,10 @@ namespace GlanceReddit.Controllers
 			RedditStatistics redditStatistics = new RedditStatistics();
 
 			List<string> urls = sub.Posts.Hot.Select(p => p.Listing.URL).ToList();
+			_logger.LogError("urls count: " + urls.Count);
 
 			statsModel.ForeignWebsites = redditStatistics.GetLinkedWebsites(urls);
+			_logger.LogError("GetLinkedWebsites has finished execution");
 
 			// for every post selected, generate a user object from the author string
 			List<Reddit.Controllers.User> users = sub.Posts.Hot
@@ -233,7 +235,7 @@ namespace GlanceReddit.Controllers
 
 			statsModel.CrosspostedSubreddits = redditStatistics.GetCrosspostedSubs(sub);
 
-			_logger.LogError("PopulateSubredditStatsModel has finished execution: " + statsModel.ForeignWebsites.Count);
+			
 
 			return statsModel;
 		}
