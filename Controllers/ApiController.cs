@@ -215,6 +215,14 @@ namespace GlanceReddit.Controllers
 			}
 		}
 
+		private Dictionary<string, int> CastValueDoubleToInt(Dictionary<string, double> originalDict)
+		{
+			// convert each value to an int from websiteOccurences dictionary
+			return originalDict.Select(p =>
+				new KeyValuePair<string, int>(p.Key, (int)p.Value))
+				.ToDictionary(p => p.Key, p => p.Value);
+		}
+
 		private SubredditStatsModel PopulateSubredditStatsModel(Reddit.Controllers.Subreddit sub, RedditUser client)
 		{
 			_logger.LogError("PopulateSubredditStatsModel has begun execution.");
@@ -223,7 +231,9 @@ namespace GlanceReddit.Controllers
 
 			List<string> urls = sub.Posts.Hot.Select(p => p.Listing.URL).ToList();
 
-			statsModel.ForeignWebsites = redditStatistics.GetLinkedWebsites(urls);
+			var websiteOccurences = redditStatistics.GetLinkedWebsites(urls);
+			statsModel.ForeignWebsites = CastValueDoubleToInt(websiteOccurences);
+
 			_logger.LogError("GetLinkedWebsites has finished execution");
 
 			// for every post selected, generate a user object from the author string
@@ -232,9 +242,9 @@ namespace GlanceReddit.Controllers
 
 			//statsModel.RelatedSubreddits = redditStatistics.GetRelatedSubreddits(users, sub.Name);
 
-			statsModel.CrosspostedSubreddits = redditStatistics.GetCrosspostedSubs(sub);
+			var crosspostedSubs = redditStatistics.GetCrosspostedSubs(sub);
+			statsModel.CrosspostedSubreddits = CastValueDoubleToInt(crosspostedSubs);
 
-			
 
 			return statsModel;
 		}
