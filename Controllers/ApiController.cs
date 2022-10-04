@@ -26,6 +26,7 @@ using Azure.Identity;
 using Microsoft.Extensions.Logging;
 using uhttpsharp.Headers;
 using Microsoft.Extensions.Primitives;
+using GlanceReddit.Models;
 
 namespace GlanceReddit.Controllers
 {
@@ -214,6 +215,26 @@ namespace GlanceReddit.Controllers
 			}
 		}
 
+		private SubredditStatsModel PopulateSubredditStatsModel(Reddit.Controllers.Subreddit sub, RedditUser client)
+		{
+			SubredditStatsModel statsModel = new SubredditStatsModel();
+			RedditStatistics redditStatistics = new RedditStatistics();
+
+			List<string> urls = sub.Posts.Hot.Select(p => p.Listing.URL).ToList();
+
+			statsModel.ForeignWebsites = redditStatistics.GetLinkedWebsites(urls);
+
+			// for every post selected, generate a user object from the author string
+			List<Reddit.Controllers.User> users = sub.Posts.Hot
+				.Select(p => client.Client.User(p.Author)).ToList();
+
+			statsModel.RelatedSubreddits = redditStatistics.GetRelatedSubreddits(users, sub.Name);
+
+			statsModel.CrosspostedSubreddits = redditStatistics.GetCrosspostedSubs(sub);
+
+			return statsModel;
+		}
+
 
 		[Route("subreddit")]
 		public ActionResult RedditGetSubreddit(string name)
@@ -234,6 +255,7 @@ namespace GlanceReddit.Controllers
 				vm.Sub = subreddit;
 				vm.TcPostArr = subreddit.Posts.GetNew(limit: SubmissionLimit).ToArray();
 				vm.TcComArr = subreddit.Comments.GetNew(limit: SubmissionLimit).ToArray();
+				vm.StatsModel = PopulateSubStatsModel(subreddit, redditor);
 
 				return View(vm);
 			}
