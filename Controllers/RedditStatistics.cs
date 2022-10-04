@@ -49,7 +49,9 @@ namespace GlanceReddit.Controllers
 			List<string> foreignUrls = validUrls
 				.Where(url => !url.Contains(".redd.it")).ToList();
 
-			return GetPercents(foreignUrls);
+			List<string> hosts = foreignUrls.Select(u => new Uri(u).Host).ToList();
+
+			return GetPercents(hosts);
 		}
 
 		public Dictionary<string, double> GetRelatedSubreddits(List<Reddit.Controllers.User> users, string subName)
