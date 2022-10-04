@@ -24,7 +24,6 @@ namespace GlanceReddit.Controllers
 			  .Where(grouping => grouping.Count() > 1)
 			  .ToDictionary(g => g.Key, g => g.Count());
 
-			_logger.LogError("dups: " + dups.Count + ", " + dups.Keys.First());
 
 			int sum = dups.Values.Sum();
 
@@ -34,10 +33,9 @@ namespace GlanceReddit.Controllers
 
 			foreach (var pair in dups)
 			{
-				double percent = pair.Value / sum * 100;
+				double percent = (pair.Value / sum) * 100;
 				percents.Add(pair.Key, percent);
 			}
-			_logger.LogError("percents: " + percents.Keys.First() + ", " + percents.Values.First());
 
 			return percents;
 		}
@@ -95,6 +93,8 @@ namespace GlanceReddit.Controllers
 				string subName = trimmed.Remove(firstSlash, count);
 				crosspostSubs.Add(subName);
 			}
+
+			_logger.LogError("crossposts: " + crossposts.Count() + ", crosspostSubs: " + crosspostSubs.Count());
 
 			return GetPercents(crosspostSubs);
 		}
