@@ -161,7 +161,7 @@ namespace GlanceReddit.Controllers
 
 			var beforeDates = beforeMonthList.Select(p => p.Listing.CreatedUTC).ToList();
 
-			_logger.LogError("beforeDates element: " + beforeDates[0].ToString());
+			//_logger.LogError("beforeDates element: " + beforeDates[0].ToString());
 
 			int lastIndex = nowDates.Count - 1;
 
@@ -173,8 +173,8 @@ namespace GlanceReddit.Controllers
 			//_logger.LogError("timespans: " + string.Join(", ", nowTs.Select(p => p.TotalMilliseconds)));
 			//_logger.LogError("beforeTimespans: " + string.Join(", ", beforeTs.Select(p => p.TotalMilliseconds)));
 
-			double avgDistanceNow = nowTs.Average(p => p.TotalMilliseconds);
-			double avgDistanceBefore = beforeTs.Average(p => p.TotalMilliseconds);
+			double avgDistanceNow = nowTs.Average(p => p.TotalSeconds);
+			double avgDistanceBefore = beforeTs.Average(p => p.TotalSeconds);
 
 			_logger.LogError("distances: " + avgDistanceNow + ", " + avgDistanceBefore);
 
