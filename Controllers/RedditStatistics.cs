@@ -160,9 +160,8 @@ namespace GlanceReddit.Controllers
 						sort = "top"
 					};
 
-			//_logger.LogError("monthList: " + string.Join(", ", monthList.Select(p => p.Listing.CreatedUTC.ToString())));
-
 			var beforeMonthList = redditor.Client.Search(q2).ToList();
+			_logger.LogError("beforeMonthList: " + beforeMonthList.Count);
 
 			// get dates, then sort to get post frequency correctly
 			var beforeDates = beforeMonthList.Select(p => p.Listing.CreatedUTC)
