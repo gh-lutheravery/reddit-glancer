@@ -195,6 +195,7 @@ namespace GlanceReddit.Controllers
 
 			queryPop.ResultFrequencyBefore = avgDistanceBefore;
 			queryPop.ResultFrequencyNow = avgDistanceNow;
+			queryPop.PercentDifference = (avgDistanceNow - avgDistanceBefore) / avgDistanceBefore * 100;
 
 			// is the post frequency right now somewhat similar to a month before?
 			if (lesserVariance <= avgDistanceNow && avgDistanceNow <= greaterVariance)
