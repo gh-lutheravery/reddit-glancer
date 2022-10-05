@@ -142,11 +142,15 @@ namespace GlanceReddit.Controllers
 
 			var monthList = redditor.Client.Search(q).ToList();
 
+			_logger.LogError("monthList count and element: " + monthList.Count);
+
 			var nowDates = monthList.Select(p => p.Listing.CreatedUTC).ToList();
 
 
 			// find dates a month before
 			var beforeAnchorPost = monthList.OrderByDescending(p => p.Listing.CreatedUTC).ToList()[0];
+
+			_logger.LogError("beforeAnchorPost: " + beforeAnchorPost.Id);
 
 			Reddit.Inputs.Search.SearchGetSearchInput q2 =
 					new Reddit.Inputs.Search.SearchGetSearchInput(query) { after = "t3_" + beforeAnchorPost.Id, count = 100 };
