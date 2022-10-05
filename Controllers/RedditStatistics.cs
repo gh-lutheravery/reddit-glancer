@@ -170,7 +170,8 @@ namespace GlanceReddit.Controllers
 
 			List<TimeSpan> beforeTs = beforeDates.Select((d, i) => GetDistanceOfDates(d, beforeDates)).ToList();
 
-			_logger.LogError("timespans: " + nowTs.Count + ", " + beforeTs.Count);
+			_logger.LogError("timespans: " + string.Join(", ", nowTs.Select(p => p.TotalMilliseconds)));
+			_logger.LogError("beforeTimespans: " + string.Join(", ", beforeTs.Select(p => p.TotalMilliseconds)));
 
 			double avgDistanceNow = nowTs.Average(p => p.TotalMilliseconds);
 			double avgDistanceBefore = beforeTs.Average(p => p.TotalMilliseconds);
