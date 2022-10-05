@@ -154,7 +154,6 @@ namespace GlanceReddit.Controllers
 					new Reddit.Inputs.Search.SearchGetSearchInput(query)
 					{
 						after = "t3_" + beforeAnchorPost.Id,
-						count = 100,
 						limit = 100,
 						q = query,
 						t = "month",
