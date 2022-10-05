@@ -172,8 +172,8 @@ namespace GlanceReddit.Controllers
 
 			_logger.LogError("timespans: " + nowTs.Count + ", " + beforeTs.Count);
 
-			double avgDistanceNow = nowTs.Average(p => p.Milliseconds);
-			double avgDistanceBefore = beforeTs.Average(p => p.Milliseconds);
+			double avgDistanceNow = nowTs.Average(p => p.TotalMilliseconds);
+			double avgDistanceBefore = beforeTs.Average(p => p.TotalMilliseconds);
 
 			_logger.LogError("distances: " + avgDistanceNow + ", " + avgDistanceBefore);
 
@@ -190,6 +190,7 @@ namespace GlanceReddit.Controllers
 			queryPop.ResultFrequencyBefore = avgDistanceBefore;
 			queryPop.ResultFrequencyNow = avgDistanceNow;
 
+			// is the post frequency right now somewhat similar to a month before?
 			if (lesserVariance <= avgDistanceNow && avgDistanceNow <= greaterVariance)
 				queryPop.SimilarDifference = true;
 
