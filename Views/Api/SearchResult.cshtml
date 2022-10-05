@@ -18,6 +18,18 @@
             }
             <p>A month before: @Model.StatsModel.SearchPopularity.ResultFrequencyBefore</p>
             <p>Now: @Model.StatsModel.SearchPopularity.ResultFrequencyNow</p>
+
+            @if (@Model.StatsModel.SearchPopularity.PercentDifference < 0)
+            {
+                <p>The popularity of this search term has declined by</p> 
+                <p class="text-danger">@Model.StatsModel.SearchPopularity.PercentDifference</p> <p class="text-danger">%</p>
+            }
+            else
+            {
+                <p>The popularity of this search term has increased by</p> 
+                <p class="text-success">@Model.StatsModel.SearchPopularity.PercentDifference</p> <p class="text-success">%</p>
+            }
+
             
 
             <h1>Related Subreddits</h1>
