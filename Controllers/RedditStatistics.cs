@@ -142,7 +142,7 @@ namespace GlanceReddit.Controllers
 
 			var monthList = redditor.Client.Search(q).ToList();
 
-			_logger.LogError("monthList count and element: " + monthList.Count);
+			//_logger.LogError("monthList count and element: " + monthList.Count);
 
 			var nowDates = monthList.Select(p => p.Listing.CreatedUTC).ToList();
 
@@ -176,7 +176,7 @@ namespace GlanceReddit.Controllers
 			double avgDistanceNow = nowTs.Average(p => p.TotalSeconds);
 			double avgDistanceBefore = beforeTs.Average(p => p.TotalSeconds);
 
-			_logger.LogError("distances: " + avgDistanceNow + ", " + avgDistanceBefore);
+			//_logger.LogError("distances: " + avgDistanceNow + ", " + avgDistanceBefore);
 
 			double margin = 15000;
 
@@ -184,7 +184,7 @@ namespace GlanceReddit.Controllers
 			double lesserVariance = avgDistanceBefore - margin;
 			double greaterVariance = avgDistanceBefore + margin;
 
-			_logger.LogError("variances: " + lesserVariance + ", " + greaterVariance);
+			//_logger.LogError("variances: " + lesserVariance + ", " + greaterVariance);
 
 			QueryPopularity queryPop = new QueryPopularity();
 
@@ -204,9 +204,16 @@ namespace GlanceReddit.Controllers
 			int currentIndex = dateList.IndexOf(date);
 
 			if (currentIndex != lastIndex)
+			{
+				_logger.LogError("condition reached");
 				return date - dateList[currentIndex];
+			}
+				
 			else
+			{
+				_logger.LogError("condition not reached");
 				return new TimeSpan();
+			}
 		}
 
 		public Dictionary<string, double> GetCommonSubreddits(List<Reddit.Controllers.Post> queryList)
