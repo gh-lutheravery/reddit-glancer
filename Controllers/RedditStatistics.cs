@@ -166,12 +166,12 @@ namespace GlanceReddit.Controllers
 			int lastIndex = nowDates.Count - 1;
 
 			// check frequency of each block of posts
-			List<TimeSpan> nowTs = nowDates.Select((d, i) => GetDistanceOfDates(d, nowDates)).ToList();
+			List<TimeSpan> nowTs = nowDates.Select(d => GetDistanceOfDates(d, nowDates)).ToList();
 
-			List<TimeSpan> beforeTs = beforeDates.Select((d, i) => GetDistanceOfDates(d, beforeDates)).ToList();
+			List<TimeSpan> beforeTs = beforeDates.Select(d => GetDistanceOfDates(d, beforeDates)).ToList();
 
-			//_logger.LogError("timespans: " + string.Join(", ", nowTs.Select(p => p.TotalMilliseconds)));
-			//_logger.LogError("beforeTimespans: " + string.Join(", ", beforeTs.Select(p => p.TotalMilliseconds)));
+			_logger.LogError("timespans: " + string.Join(", ", nowTs.Select(p => p.TotalMilliseconds)));
+			_logger.LogError("beforeTimespans: " + string.Join(", ", beforeTs.Select(p => p.TotalMilliseconds)));
 
 			double avgDistanceNow = nowTs.Average(p => p.TotalSeconds);
 			double avgDistanceBefore = beforeTs.Average(p => p.TotalSeconds);
@@ -205,13 +205,11 @@ namespace GlanceReddit.Controllers
 
 			if (currentIndex != lastIndex)
 			{
-				_logger.LogError("condition reached");
-				return date - dateList[currentIndex];
+				return date - dateList[currentIndex + 1];
 			}
 				
 			else
 			{
-				_logger.LogError("condition not reached");
 				return new TimeSpan();
 			}
 		}
