@@ -153,7 +153,7 @@ namespace GlanceReddit.Controllers
 
 			var beforeMonthList = redditor.Client.Search(q2).ToList();
 
-			_logger.LogError("beforeMonthList count and element: " + beforeMonthList.Count + ", " + beforeMonthList[^1]);
+			_logger.LogError("beforeMonthList count and element: " + beforeMonthList.Count);
 
 			var beforeDates = beforeMonthList.Select(p => p.Listing.CreatedUTC).ToList();
 
@@ -164,7 +164,7 @@ namespace GlanceReddit.Controllers
 
 			List<TimeSpan> beforeTs = beforeDates.Select((d, i) => GetDistanceOfDates(d, beforeDates)).ToList();
 
-			_logger.LogError("beforeTs count and element: " + beforeTs.Count + ", " + beforeTs[^1].ToString());
+			_logger.LogError("beforeTs count and element: " + beforeTs.Count);
 
 			double avgDistanceNow = nowTs.Average(p => p.Milliseconds);
 			double avgDistanceBefore = beforeTs.Average(p => p.Milliseconds);
