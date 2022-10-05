@@ -142,8 +142,6 @@ namespace GlanceReddit.Controllers
 
 			var monthList = redditor.Client.Search(q).ToList();
 
-			_logger.LogError("monthList count and element: " + monthList.Count);
-
 			var nowDates = monthList.Select(p => p.Listing.CreatedUTC).ToList();
 
 
@@ -159,8 +157,6 @@ namespace GlanceReddit.Controllers
 
 			var beforeMonthList = redditor.Client.Search(q2).ToList();
 
-			_logger.LogError("beforeMonthList count and element: " + beforeMonthList.Count);
-
 			var beforeDates = beforeMonthList.Select(p => p.Listing.CreatedUTC).ToList();
 
 			int lastIndex = nowDates.Count - 1;
@@ -170,16 +166,20 @@ namespace GlanceReddit.Controllers
 
 			List<TimeSpan> beforeTs = beforeDates.Select((d, i) => GetDistanceOfDates(d, beforeDates)).ToList();
 
-			_logger.LogError("beforeTs count and element: " + beforeTs.Count);
+			_logger.LogError("timespans: " + nowTs.Count, beforeTs.Count);
 
 			double avgDistanceNow = nowTs.Average(p => p.Milliseconds);
 			double avgDistanceBefore = beforeTs.Average(p => p.Milliseconds);
+
+			_logger.LogError("distances: " + avgDistanceNow, avgDistanceBefore);
 
 			double margin = 15000;
 
 			// put data into object
 			double lesserVariance = avgDistanceBefore - margin;
 			double greaterVariance = avgDistanceBefore + margin;
+
+			_logger.LogError("variances: " + lesserVariance, greaterVariance);
 
 			QueryPopularity queryPop = new QueryPopularity();
 
