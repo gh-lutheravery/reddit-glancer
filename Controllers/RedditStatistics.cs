@@ -153,8 +153,9 @@ namespace GlanceReddit.Controllers
 
 			var beforeMonthList = redditor.Client.Search(q2).ToList();
 
-			var beforeDates = beforeMonthList.Select(p => p.Listing.CreatedUTC).ToList();
+			_logger.LogError("beforeMonthList count and element: " + beforeMonthList.Count + ", " + beforeMonthList[^1]);
 
+			var beforeDates = beforeMonthList.Select(p => p.Listing.CreatedUTC).ToList();
 
 			int lastIndex = nowDates.Count - 1;
 
@@ -162,6 +163,8 @@ namespace GlanceReddit.Controllers
 			List<TimeSpan> nowTs = nowDates.Select((d, i) => GetDistanceOfDates(d, nowDates)).ToList();
 
 			List<TimeSpan> beforeTs = beforeDates.Select((d, i) => GetDistanceOfDates(d, beforeDates)).ToList();
+
+			_logger.LogError("beforeTs count and element: " + beforeTs.Count + ", " + beforeTs[^1].ToString());
 
 			double avgDistanceNow = nowTs.Average(p => p.Milliseconds);
 			double avgDistanceBefore = beforeTs.Average(p => p.Milliseconds);
@@ -197,6 +200,8 @@ namespace GlanceReddit.Controllers
 		public Dictionary<string, double> GetCommonSubreddits(List<Reddit.Controllers.Post> queryList)
 		{
 			List<string> subs = queryList.Select(p => p.Subreddit).ToList();
+
+			_logger.LogError("subs count and element: " + subs.Count + ", " + subs[^1]);
 
 			return GetPercents(subs);
 		}
