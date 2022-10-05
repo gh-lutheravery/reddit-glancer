@@ -147,7 +147,7 @@ namespace GlanceReddit.Controllers
 			var nowDates = monthList.Select(p => p.Listing.CreatedUTC).ToList();
 
 
-			// find dates a month before
+			// find dates month before
 			var beforeAnchorPost = monthList.OrderByDescending(p => p.Listing.CreatedUTC).ToList()[0];
 
 			_logger.LogError("monthList: " + string.Join(", ", monthList.Select(p => p.Listing.CreatedUTC.ToString())));
