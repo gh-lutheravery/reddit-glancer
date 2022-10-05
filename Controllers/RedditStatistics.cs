@@ -142,7 +142,8 @@ namespace GlanceReddit.Controllers
 
 			var monthList = redditor.Client.Search(q).ToList();
 
-			var nowDates = monthList.Select(p => p.Listing.CreatedUTC).ToList();
+			var nowDates = monthList.Select(p => p.Listing.CreatedUTC)
+				.OrderByDescending(d => d).ToList();
 
 			//_logger.LogError("monthList count and element: " + monthList.Count);
 
@@ -165,7 +166,8 @@ namespace GlanceReddit.Controllers
 			var beforeMonthList = redditor.Client.Search(q2).ToList();
 
 			// get dates, then sort to get post frequency correctly
-			var beforeDates = beforeMonthList.Select(p => p.Listing.CreatedUTC).ToList();
+			var beforeDates = beforeMonthList.Select(p => p.Listing.CreatedUTC)
+				.OrderByDescending(d => d).ToList();
 
 			//_logger.LogError("beforeDates element: " + beforeDates[0].ToString());
 
