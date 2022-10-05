@@ -8,6 +8,6 @@
 
 		public bool SimilarDifference { get; set; }
 
-		public double PercentDifference { get; set; }
+		public int PercentDifference { get; set; }
 	}
 }
