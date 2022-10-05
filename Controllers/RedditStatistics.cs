@@ -142,36 +142,39 @@ namespace GlanceReddit.Controllers
 
 			var monthList = redditor.Client.Search(q).ToList();
 
-			//_logger.LogError("monthList count and element: " + monthList.Count);
-
 			var nowDates = monthList.Select(p => p.Listing.CreatedUTC).ToList();
 
+			//_logger.LogError("monthList count and element: " + monthList.Count);
 
 			// find dates month before
 			var beforeAnchorPost = monthList.OrderBy(p => p.Listing.CreatedUTC).ToList()[0];
 
-			//_logger.LogError("monthList: " + string.Join(", ", monthList.Select(p => p.Listing.CreatedUTC.ToString())));
-
 			Reddit.Inputs.Search.SearchGetSearchInput q2 =
-					new Reddit.Inputs.Search.SearchGetSearchInput(query) 
-					{ after = "t3_" + beforeAnchorPost.Id, count = 100, 
-					limit = 100, q = query, t = "month", sort = "top" };
+					new Reddit.Inputs.Search.SearchGetSearchInput(query)
+					{
+						after = "t3_" + beforeAnchorPost.Id,
+						count = 100,
+						limit = 100,
+						q = query,
+						t = "month",
+						sort = "top"
+					};
+
+			//_logger.LogError("monthList: " + string.Join(", ", monthList.Select(p => p.Listing.CreatedUTC.ToString())));
 
 			var beforeMonthList = redditor.Client.Search(q2).ToList();
 
+			// get dates, then sort to get post frequency correctly
 			var beforeDates = beforeMonthList.Select(p => p.Listing.CreatedUTC).ToList();
 
 			//_logger.LogError("beforeDates element: " + beforeDates[0].ToString());
 
-			int lastIndex = nowDates.Count - 1;
-
-			// check frequency of each block of posts
+			// check frequency of each dates before and dates now
 			List<TimeSpan> nowTs = nowDates.Select(d => GetDistanceOfDates(d, nowDates)).ToList();
-
 			List<TimeSpan> beforeTs = beforeDates.Select(d => GetDistanceOfDates(d, beforeDates)).ToList();
 
-			_logger.LogError("timespans: " + string.Join(", ", nowTs.Select(p => p.TotalMilliseconds)));
-			_logger.LogError("beforeTimespans: " + string.Join(", ", beforeTs.Select(p => p.TotalMilliseconds)));
+			//_logger.LogError("timespans: " + string.Join(", ", nowTs.Select(p => p.TotalMilliseconds)));
+			//_logger.LogError("beforeTimespans: " + string.Join(", ", beforeTs.Select(p => p.TotalMilliseconds)));
 
 			double avgDistanceNow = nowTs.Average(p => p.TotalSeconds);
 			double avgDistanceBefore = beforeTs.Average(p => p.TotalSeconds);
