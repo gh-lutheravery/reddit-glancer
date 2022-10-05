@@ -156,10 +156,12 @@ namespace GlanceReddit.Controllers
 			var beforeDates = beforeMonthList.Select(p => p.Listing.CreatedUTC).ToList();
 
 
+			int lastIndex = nowDates.Count - 1;
 
 			// check frequency of each block of posts
-			List<TimeSpan> nowTs = nowDates.Select((d, i) => d - nowDates[i + 1]).ToList();
-			List<TimeSpan> beforeTs = beforeDates.Select((d, i) => d - nowDates[i + 1]).ToList();
+			List<TimeSpan> nowTs = nowDates.Select((d, i) => GetDistanceOfDates(d, nowDates)).ToList();
+
+			List<TimeSpan> beforeTs = beforeDates.Select((d, i) => GetDistanceOfDates(d, beforeDates)).ToList();
 
 			double avgDistanceNow = nowTs.Average(p => p.Milliseconds);
 			double avgDistanceBefore = beforeTs.Average(p => p.Milliseconds);
@@ -179,6 +181,17 @@ namespace GlanceReddit.Controllers
 				queryPop.SimilarDifference = true;
 
 			return queryPop;
+		}
+
+		private TimeSpan GetDistanceOfDates(DateTime date, List<DateTime> dateList)
+		{
+			int lastIndex = dateList.Count - 1;
+			int currentIndex = dateList.IndexOf(date);
+
+			if (currentIndex != lastIndex)
+				return date - dateList[currentIndex];
+			else
+				return new TimeSpan();
 		}
 
 		public Dictionary<string, double> GetCommonSubreddits(List<Reddit.Controllers.Post> queryList)
