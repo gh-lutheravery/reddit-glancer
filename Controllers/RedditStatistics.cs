@@ -156,7 +156,7 @@ namespace GlanceReddit.Controllers
 						after = "t3_" + beforeAnchorPost.Id,
 						limit = 100,
 						q = query,
-						t = "month",
+						t = "all",
 						sort = "top"
 					};
 
