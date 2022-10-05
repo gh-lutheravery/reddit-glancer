@@ -10,6 +10,21 @@
             <h2 class="post-index-header" style="color: white">Search Results</h2>
             <hr>
             <h4 style="color: white">Page @Model.QueryList.PageNumber</h4>
+
+            <h2>Interest</h2>
+            @if (Model.StatsModel.SearchPopularity.SimilarDifference)
+            {
+                <p class="text-primary">The Interest for this topic hasn't changed much in the last month: </p>
+            }
+            <p>A month before: @Model.StatsModel.SearchPopularity.ResultFrequencyBefore</p>
+            <p>Now: @Model.StatsModel.SearchPopularity.ResultFrequencyNow</p>
+
+            <h1>Related Subreddits</h1>
+            @foreach (var pair in @Model.StatsModel.CommonResultSubreddits)
+            {
+                <li class="index-list-item">@pair.Key</li>
+                <li class="index-list-item">@pair.Value</li>
+            }
         </div>
         @Html.Partial("/Views/Api/_DisplayPost.cshtml", Model.QueryList.ToArray())
     }

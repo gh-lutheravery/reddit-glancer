@@ -111,7 +111,7 @@ namespace GlanceReddit.Controllers
 					trimmedUrl = p.URL.Remove(0, 22);
 				}
 
-				else if (p.URL.StartsWith("/r/"))
+				if (p.URL.StartsWith("/r/"))
 				{
 					// remove /r/
 					trimmedUrl = trimmedUrl.Remove(0, 3);
