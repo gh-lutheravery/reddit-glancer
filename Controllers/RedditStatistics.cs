@@ -185,11 +185,13 @@ namespace GlanceReddit.Controllers
 
 			//_logger.LogError("distances: " + avgDistanceNow + ", " + avgDistanceBefore);
 
-			double margin = 15000;
+			int PopularTopicThreshold = 50000;
+
+			double similarityMargin = avgDistanceBefore < PopularTopicThreshold ? 5000 : 15000;
 
 			// put data into object
-			double lesserVariance = avgDistanceBefore - margin;
-			double greaterVariance = avgDistanceBefore + margin;
+			double lesserVariance = avgDistanceBefore - similarityMargin;
+			double greaterVariance = avgDistanceBefore + similarityMargin;
 
 			_logger.LogError("Distance: " + avgDistanceNow + ", " + avgDistanceBefore);
 			_logger.LogError("variances: " + lesserVariance + ", " + greaterVariance);
