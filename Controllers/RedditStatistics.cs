@@ -156,9 +156,14 @@ namespace GlanceReddit.Controllers
 						after = "t3_" + beforeAnchorPost.Id,
 						limit = 100,
 						q = query,
-						t = "all",
+						t = "month",
 						sort = "top"
 					};
+
+			if (redditor.Client.Search(q2).Count == 0)
+			{ 
+				q2.t = "all";
+			}
 
 			var beforeMonthList = redditor.Client.Search(q2).ToList();
 			_logger.LogError("beforeMonthList: " + beforeMonthList.Count);
