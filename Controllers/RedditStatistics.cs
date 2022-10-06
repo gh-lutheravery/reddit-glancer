@@ -191,7 +191,8 @@ namespace GlanceReddit.Controllers
 			double lesserVariance = avgDistanceBefore - margin;
 			double greaterVariance = avgDistanceBefore + margin;
 
-			//_logger.LogError("variances: " + lesserVariance + ", " + greaterVariance);
+			_logger.LogError("Distance: " + avgDistanceNow + ", " + avgDistanceBefore);
+			_logger.LogError("variances: " + lesserVariance + ", " + greaterVariance);
 
 			QueryPopularity queryPop = new QueryPopularity();
 
