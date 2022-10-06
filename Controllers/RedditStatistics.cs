@@ -134,6 +134,8 @@ namespace GlanceReddit.Controllers
 
 		public QueryPopularity GetQueryPopularity(RedditUser redditor, string query)
 		{
+			QueryPopularity queryPop = new QueryPopularity();
+
 			// find dates of posts right now
 			Reddit.Inputs.Search.SearchGetSearchInput q =
 					new Reddit.Inputs.Search.SearchGetSearchInput(query)
@@ -174,8 +176,15 @@ namespace GlanceReddit.Controllers
 			//_logger.LogError("beforeDates element: " + beforeDates[0].ToString());
 
 			// check frequency of each dates before and dates now
+			int LowDataThreshold = 40;
 			List<TimeSpan> nowTs = nowDates.Select(d => GetDistanceOfDates(d, nowDates)).ToList();
 			List<TimeSpan> beforeTs = beforeDates.Select(d => GetDistanceOfDates(d, beforeDates)).ToList();
+
+			if (beforeTs.Count < LowDataThreshold)
+			{
+				List<TimeSpan> trimmedNowTs = nowTs.Take(beforeTs.Count).ToList();
+				queryPop.LowData = true;
+			}
 
 			//_logger.LogError("timespans: " + string.Join(", ", nowTs.Select(p => p.TotalMilliseconds)));
 			//_logger.LogError("beforeTimespans: " + string.Join(", ", beforeTs.Select(p => p.TotalMilliseconds)));
@@ -186,8 +195,6 @@ namespace GlanceReddit.Controllers
 			//_logger.LogError("distances: " + avgDistanceNow + ", " + avgDistanceBefore);
 
 			// put data into object
-			QueryPopularity queryPop = new QueryPopularity();
-
 			queryPop.ResultFrequencyBefore = avgDistanceBefore;
 			queryPop.ResultFrequencyNow = avgDistanceNow;
 			queryPop.PercentDifference = (int)Math.Round(((avgDistanceNow - avgDistanceBefore) / avgDistanceBefore * 100));

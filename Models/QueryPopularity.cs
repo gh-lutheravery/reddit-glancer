@@ -9,5 +9,7 @@
 		public bool SimilarDifference { get; set; }
 
 		public int PercentDifference { get; set; }
+
+		public bool LowData { get; set; }
 	}
 }
