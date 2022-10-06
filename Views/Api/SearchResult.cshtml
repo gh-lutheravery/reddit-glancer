@@ -21,14 +21,14 @@
 
                 if (@Model.StatsModel.SearchPopularity.PercentDifference < 0)
                 {
-                    <p>The popularity of this search term has declined by</p> 
-                    <p class="text-danger">@(Model.StatsModel.SearchPopularity.PercentDifference)%</p>
+                    <p>The popularity of this search term has increased by</p> 
+                    <p class="text-success">@(Model.StatsModel.SearchPopularity.PercentDifference)%</p>
                 }
 
                 else
                 {
-                    <p>The popularity of this search term has increased by</p> 
-                    <p class="text-success">@(Model.StatsModel.SearchPopularity.PercentDifference)%</p>
+                    <p>The popularity of this search term has declined by</p> 
+                    <p class="text-danger">@(Model.StatsModel.SearchPopularity.PercentDifference)%</p>
                 }
             }
 
