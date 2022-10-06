@@ -14,6 +14,12 @@
             <h2>Interest</h2>
 
             @{
+                if (Model.StatsModel.SearchPopularity.LowData)
+                {
+                    <p class="text-primary">Hmmm, your search doesn't have much data; results may be slightly inaccurate.
+                    Try a more general term.</p>
+                }
+
                 if (Model.StatsModel.SearchPopularity.SimilarDifference)
                 {
                     <p class="text-primary">The Interest for this topic hasn't changed much in the last month: </p>
