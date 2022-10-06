@@ -185,24 +185,24 @@ namespace GlanceReddit.Controllers
 
 			//_logger.LogError("distances: " + avgDistanceNow + ", " + avgDistanceBefore);
 
-			int PopularTopicThreshold = 50000;
-
-			double similarityMargin = avgDistanceBefore < PopularTopicThreshold ? 5000 : 15000;
-
 			// put data into object
-			double lesserVariance = avgDistanceBefore - similarityMargin;
-			double greaterVariance = avgDistanceBefore + similarityMargin;
-
-			_logger.LogError("Distance: " + avgDistanceNow + ", " + avgDistanceBefore);
-			_logger.LogError("variances: " + lesserVariance + ", " + greaterVariance);
-
 			QueryPopularity queryPop = new QueryPopularity();
 
 			queryPop.ResultFrequencyBefore = avgDistanceBefore;
 			queryPop.ResultFrequencyNow = avgDistanceNow;
 			queryPop.PercentDifference = (int)Math.Round(((avgDistanceNow - avgDistanceBefore) / avgDistanceBefore * 100));
 
-			// is the post frequency right now somewhat similar to a month before?
+			// check if frequency now is effectively the same as before
+			int PopularTopicThreshold = 50000;
+
+			double similarityMargin = avgDistanceBefore < PopularTopicThreshold ? 5000 : 15000;
+
+			double lesserVariance = avgDistanceBefore - similarityMargin;
+			double greaterVariance = avgDistanceBefore + similarityMargin;
+
+			_logger.LogError("Distance: " + avgDistanceNow + ", " + avgDistanceBefore);
+			_logger.LogError("variances: " + lesserVariance + ", " + greaterVariance);
+
 			if (lesserVariance <= avgDistanceNow && avgDistanceNow <= greaterVariance)
 				queryPop.SimilarDifference = true;
 
