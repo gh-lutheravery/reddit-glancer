@@ -415,7 +415,7 @@ namespace GlanceReddit.Controllers
 			}
 
 			Reddit.Inputs.Search.SearchGetSearchInput q =
-							new Reddit.Inputs.Search.SearchGetSearchInput(query) { limit = SearchSubmissionLimit };
+							new Reddit.Inputs.Search.SearchGetSearchInput(query) { limit = SearchSubmissionLimit, sort = "hot" };
 
 			var queryList = redditor.Client.Search(q).ToList();
 
