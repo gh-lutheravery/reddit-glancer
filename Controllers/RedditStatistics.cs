@@ -23,13 +23,9 @@ namespace GlanceReddit.Controllers
 			Dictionary<string, double> dups = list.GroupBy(host => host)
 			  .ToDictionary(g => g.Key, g => (double)g.Count());
 
-
 			double sum = dups.Values.Sum();
-			_logger.LogError("sum: " + sum);
-			_logger.LogError("percent: " + (dups.Values.First() / sum) * 100);
 
 			// make nums into percentages
-
 			Dictionary<string, double> percents = new Dictionary<string, double>();
 
 			foreach (var pair in dups)
