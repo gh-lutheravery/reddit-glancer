@@ -435,8 +435,14 @@ namespace GlanceReddit.Controllers
 				TempData["ErrorMessage"] = NotAuthError;
 				return RedirectToAction(nameof(Home));
 			}
-			
 
+			else if (!queryList.Any())
+			{ 
+				return View(new SearchResultViewModel(
+					queryList.ToPagedList(0, 0),
+					searchBar));
+			}
+			
 			int pageSize = 5;
 			int pageNumber = (page ?? 1);
 
