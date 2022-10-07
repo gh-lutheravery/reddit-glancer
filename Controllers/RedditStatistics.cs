@@ -54,7 +54,6 @@ namespace GlanceReddit.Controllers
 		{
 			// this sub community's other frequented subs
 			List<string> subs = new List<string>();
-
 			subs = users.Select(u => u.PostHistory.Select(p => p.Subreddit)).SelectMany(p => p).ToList();
 
 			_logger.LogError("Loop has finished execution: " + subs[0]);
@@ -64,6 +63,14 @@ namespace GlanceReddit.Controllers
 			_logger.LogError("foreignSub: " + foreignSubs[0]);
 
 			return GetPercents(foreignSubs);
+		}
+
+		private List<string> GetSubreddits(List<Reddit.Controllers.Post> post, int index, int lastIndex)
+		{
+			if (index == lastIndex)
+				return new List<string>();
+
+			return GetSubreddits(post, index + 1, lastIndex).Append(post[index].Subreddit).ToList();
 		}
 
 
