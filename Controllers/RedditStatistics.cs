@@ -196,7 +196,7 @@ namespace GlanceReddit.Controllers
 
 			// get rounded percentage, then negate positive/negative
 			int percent = (int)Math.Round(((avgDistanceNow - avgDistanceBefore) / avgDistanceBefore * 100));
-			percent = percent > 0 ? -percent : Math.Abs(percent);
+			percent = percent * -1;
 
 			queryPop.PercentDifference = percent;
 
