@@ -56,7 +56,7 @@ namespace GlanceReddit.Controllers
 			List<string> subs = new List<string>();
 
 			subs = users.Select((u, i) =>
-				GetSubreddits(u.PostHistory.Take(5).ToList(), i, u.PostHistory.Count - 1))
+				GetSubreddits(u.PostHistory.Take(5).ToList(), i, u.PostHistory.Take(5).Count() - 1))
 				.SelectMany(p => p)
 				.ToList();
 
