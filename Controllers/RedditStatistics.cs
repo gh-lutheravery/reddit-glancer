@@ -55,8 +55,8 @@ namespace GlanceReddit.Controllers
 			// this sub community's other frequented subs
 			List<string> subs = new List<string>();
 
-			subs = users.Select((u, i) =>
-				GetSubreddits(u.PostHistory.Take(5).ToList(), i, u.PostHistory.Take(5).Count() - 1))
+			subs = users.Select((u, i) => 
+				GetSubreddits(u.PostHistory, i, u.PostHistory.Count - 1))
 				.SelectMany(p => p)
 				.ToList();
 
@@ -139,6 +139,7 @@ namespace GlanceReddit.Controllers
 
 		public QueryPopularity GetQueryPopularity(RedditUser redditor, string query)
 		{
+			_logger.LogError("GetQueryPopularity begun");
 			QueryPopularity queryPop = new QueryPopularity();
 
 			// find dates of posts right now
@@ -150,8 +151,6 @@ namespace GlanceReddit.Controllers
 
 			var nowDates = monthList.Select(p => p.Listing.CreatedUTC)
 				.OrderByDescending(d => d).ToList();
-
-			//_logger.LogError("monthList count and element: " + monthList.Count);
 
 			// find dates month before
 			var beforeAnchorPost = monthList.OrderBy(p => p.Listing.CreatedUTC).ToList()[0];
@@ -217,12 +216,13 @@ namespace GlanceReddit.Controllers
 			double lesserVariance = avgDistanceBefore - similarityMargin;
 			double greaterVariance = avgDistanceBefore + similarityMargin;
 
-			_logger.LogError("Distance: " + avgDistanceNow + ", " + avgDistanceBefore);
-			_logger.LogError("variances: " + lesserVariance + ", " + greaterVariance);
+			//_logger.LogError("Distance: " + avgDistanceNow + ", " + avgDistanceBefore);
+			//_logger.LogError("variances: " + lesserVariance + ", " + greaterVariance);
 
 			if (lesserVariance <= avgDistanceNow && avgDistanceNow <= greaterVariance)
 				queryPop.SimilarDifference = true;
 
+			_logger.LogError("GetQueryPopularity ended");
 			return queryPop;
 		}
 
