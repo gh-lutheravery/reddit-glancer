@@ -235,7 +235,7 @@ namespace GlanceReddit.Controllers
 
 			// for every post selected, generate a user object from the author string
 			_logger.LogError("creating users");
-			List<Reddit.Controllers.User> users = sub.Posts.Top.Take(5)
+			List<Reddit.Controllers.User> users = sub.Posts.Top
 				.Select(p => client.Client.User(p.Author)).ToList();
 
 			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(users, sub.Name));

@@ -55,8 +55,8 @@ namespace GlanceReddit.Controllers
 			// this sub community's other frequented subs
 			List<string> subs = new List<string>();
 
-			subs = users.Select((u, i) => 
-				GetSubreddits(u.PostHistory, i, u.PostHistory.Count - 1))
+			subs = users.Select((u, i) =>
+				GetSubreddits(u.PostHistory.Take(5).ToList(), i, u.PostHistory.Count - 1))
 				.SelectMany(p => p)
 				.ToList();
 
