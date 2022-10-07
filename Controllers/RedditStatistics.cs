@@ -74,7 +74,9 @@ namespace GlanceReddit.Controllers
 			if (index == lastIndex)
 				return new List<string>();
 
-			return GetSubreddits(posts, index + 1, lastIndex).Append(posts[index].Subreddit).ToList();
+			return GetSubreddits(posts, index + 1, lastIndex)
+				.Append(posts[index].Subreddit)
+				.ToList();
 		}
 
 
