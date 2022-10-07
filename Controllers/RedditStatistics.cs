@@ -53,13 +53,11 @@ namespace GlanceReddit.Controllers
 		public Dictionary<string, double> GetRelatedSubreddits(List<Reddit.Controllers.User> users, string subName)
 		{
 			// this sub community's other frequented subs
-			List<Reddit.Controllers.Post> postHistories = new List<Reddit.Controllers.Post>();
+			List<string> subs = new List<string>();
 
-			postHistories = users.SelectMany(u => u.PostHistory).ToList();
+			subs = users.Select(u => u.PostHistory.Select(p => p.Subreddit)).SelectMany(p => p).ToList();
 
-			_logger.LogError("Loop has finished execution: " + postHistories[0].Subreddit);
-
-			List<string> subs = postHistories.Select(p => p.Subreddit).ToList();
+			_logger.LogError("Loop has finished execution: " + subs[0]);
 
 			List<string> foreignSubs = subs.Where(s => s != subName).ToList();
 
