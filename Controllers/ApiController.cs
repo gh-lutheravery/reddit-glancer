@@ -225,23 +225,23 @@ namespace GlanceReddit.Controllers
 
 		private SubredditStatsModel PopulateSubredditStatsModel(Reddit.Controllers.Subreddit sub, RedditUser client)
 		{
-			_logger.LogError("PopulateSubredditStatsModel has begun execution.");
 			SubredditStatsModel statsModel = new SubredditStatsModel();
 			RedditStatistics redditStatistics = new RedditStatistics(_logger);
 
-			List<string> urls = sub.Posts.Hot.Select(p => p.Listing.URL).ToList();
+			//List<string> urls = sub.Posts.Hot.Select(p => p.Listing.URL).ToList();
 
 			//var websiteOccurences = redditStatistics.GetLinkedWebsites(urls);
 			//statsModel.ForeignWebsites = CastValueDoubleToInt(websiteOccurences);
 
 			// for every post selected, generate a user object from the author string
-			//List<Reddit.Controllers.User> users = sub.Posts.Hot
-			//	.Select(p => client.Client.User(p.Author)).ToList();
+			_logger.LogError("creating users");
+			List<Reddit.Controllers.User> users = sub.Posts.Top.Take(5)
+				.Select(p => client.Client.User(p.Author)).ToList();
 
-			//statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(users, sub.Name));
+			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(users, sub.Name));
 
-			var crosspostedSubs = redditStatistics.GetCrosspostedSubs(sub);
-			statsModel.CrosspostedSubreddits = CastValueDoubleToInt(crosspostedSubs);
+			//var crosspostedSubs = redditStatistics.GetCrosspostedSubs(sub);
+			//statsModel.CrosspostedSubreddits = CastValueDoubleToInt(crosspostedSubs);
 
 
 			return statsModel;

@@ -49,16 +49,14 @@ namespace GlanceReddit.Controllers
 			return GetPercents(hosts);
 		}
 
+		
 		public Dictionary<string, double> GetRelatedSubreddits(List<Reddit.Controllers.User> users, string subName)
 		{
 			// this sub community's other frequented subs
-
 			List<Reddit.Controllers.Post> postHistories = new List<Reddit.Controllers.Post>();
 
-			foreach (Reddit.Controllers.User user in users)
-			{ 
-				postHistories.AddRange(user.PostHistory);
-			}
+			postHistories = users.SelectMany(u => u.PostHistory).ToList();
+
 			_logger.LogError("Loop has finished execution: " + postHistories[0].Subreddit);
 
 			List<string> subs = postHistories.Select(p => p.Subreddit).ToList();
