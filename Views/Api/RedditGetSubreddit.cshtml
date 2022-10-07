@@ -25,7 +25,7 @@
         }
 
         <h1>Related Subreddits by Rank</h1>
-        @foreach (var pair in @Model.StatsModel.CrosspostedSubreddits)
+        @foreach (var pair in @Model.StatsModel.RelatedSubreddits)
         {
             <li class="index-list-item">@pair.Key</li>
             <li class="index-list-item">@pair.Value</li>
