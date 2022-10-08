@@ -53,6 +53,7 @@ namespace GlanceReddit.Controllers
 		
 		public Dictionary<string, double> GetRelatedSubreddits(List<Reddit.Controllers.User> users, string subName)
 		{
+			_logger.LogError("begin");
 			// this sub community's other frequented subs
 			List<string> subs = new List<string>();
 
@@ -68,7 +69,7 @@ namespace GlanceReddit.Controllers
 
 			*/
 			List<string> foreignSubs = subs.Where(s => s != subName).ToList();
-
+			_logger.LogError("end");
 			return GetPercents(foreignSubs);
 		}
 
