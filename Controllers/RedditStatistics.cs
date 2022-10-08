@@ -57,7 +57,7 @@ namespace GlanceReddit.Controllers
 			// this sub community's other frequented subs
 			List<string> subs = new List<string>();
 
-			var postHist = users.SelectMany(u => u.PostHistory);
+			var postHist = users.SelectMany(u => u.PostHistory.Take(5));
 
 			subs = postHist.Select(p => p.Subreddit).ToList();
 
