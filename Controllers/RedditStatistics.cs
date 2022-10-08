@@ -139,7 +139,6 @@ namespace GlanceReddit.Controllers
 
 		public QueryPopularity GetQueryPopularity(RedditUser redditor, string query)
 		{
-			_logger.LogError("GetQueryPopularity begun");
 			QueryPopularity queryPop = new QueryPopularity();
 
 			// find dates of posts right now
@@ -179,6 +178,7 @@ namespace GlanceReddit.Controllers
 
 			//_logger.LogError("beforeDates element: " + beforeDates[0].ToString());
 
+			_logger.LogError("GetQueryPopularity begun");
 			// check frequency of each dates before and dates now
 			int LowDataThreshold = 40;
 			List<TimeSpan> nowTs = nowDates.Select(d => GetDistanceOfDates(d, nowDates)).ToList();
