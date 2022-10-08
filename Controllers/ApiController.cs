@@ -247,12 +247,12 @@ namespace GlanceReddit.Controllers
 			return statsModel;
 		}
 
-		private SearchResultStatsModel PopulateSearchStatsModel(string query, RedditUser client, List<Reddit.Controllers.Post> queryList)
+		private async Task<SearchResultStatsModel> PopulateSearchStatsModel(string query, RedditUser client, List<Reddit.Controllers.Post> queryList)
 		{
 			SearchResultStatsModel statsModel = new SearchResultStatsModel();
 			RedditStatistics redditStatistics = new RedditStatistics(_logger);
 
-			statsModel.SearchPopularity = redditStatistics.GetQueryPopularity(client, query);
+			statsModel.SearchPopularity = await redditStatistics.GetQueryPopularity(client, query);
 			statsModel.CommonResultSubreddits = redditStatistics.GetCommonSubreddits(queryList);
 
 			return statsModel;
@@ -425,7 +425,7 @@ namespace GlanceReddit.Controllers
 		}
 
 		[Route("search")]
-		public IActionResult SearchResult(int? page, string searchBar)
+		public async Task<IActionResult> SearchResult(int? page, string searchBar)
 		{
 			var redditor = InitRedditor();
 			var queryList = Search(searchBar, redditor);
@@ -451,7 +451,7 @@ namespace GlanceReddit.Controllers
 					queryList.ToPagedList(pageNumber, pageSize), 
 					searchBar);
 
-			vm.StatsModel = PopulateSearchStatsModel(searchBar, redditor, queryList);
+			vm.StatsModel = await PopulateSearchStatsModel(searchBar, redditor, queryList);
 
 			return View(vm);
 		}

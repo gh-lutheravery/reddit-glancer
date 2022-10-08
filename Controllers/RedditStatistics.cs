@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace GlanceReddit.Controllers
 {
@@ -137,7 +138,20 @@ namespace GlanceReddit.Controllers
 			return GetPercents(crosspostSubs);
 		}
 
-		public QueryPopularity GetQueryPopularity(RedditUser redditor, string query)
+		public async Task<List<Reddit.Controllers.Post>> RedditSearchAsync(
+			RedditUser redditor,
+			Reddit.Inputs.Search.SearchGetSearchInput searchInput
+			)
+		{
+			Func<List<Reddit.Controllers.Post>> searchFunc = 
+				new Func<List<Reddit.Controllers.Post>>(() => 
+				redditor.Client.Search(searchInput)
+				.ToList());
+
+			return await Task.Run(searchFunc);
+		}
+
+		public async Task<QueryPopularity> GetQueryPopularity(RedditUser redditor, string query)
 		{
 			QueryPopularity queryPop = new QueryPopularity();
 
@@ -146,7 +160,7 @@ namespace GlanceReddit.Controllers
 					new Reddit.Inputs.Search.SearchGetSearchInput(query)
 					{ t = "month", limit = 100, sort = "top" };
 
-			var monthList = redditor.Client.Search(q).ToList();
+			var monthList = await RedditSearchAsync(redditor, q);
 
 			var nowDates = monthList.Select(p => p.Listing.CreatedUTC)
 				.OrderByDescending(d => d).ToList();
@@ -164,12 +178,14 @@ namespace GlanceReddit.Controllers
 						sort = "top"
 					};
 
-			if (redditor.Client.Search(q2).Count == 0)
-			{ 
+			var beforeMonthList = await RedditSearchAsync(redditor, q2);
+
+			if (beforeMonthList.Count == 0)
+			{
 				q2.t = "all";
+				beforeMonthList = await RedditSearchAsync(redditor, q2);
 			}
 
-			var beforeMonthList = redditor.Client.Search(q2).ToList();
 			_logger.LogError("beforeMonthList: " + beforeMonthList.Count);
 
 			// get dates, then sort to get post frequency correctly
