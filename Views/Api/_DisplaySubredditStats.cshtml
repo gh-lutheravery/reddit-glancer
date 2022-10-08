@@ -1,15 +1,42 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model SubredditStatsModel
+
 @{
+    <div>
+    <table style="width:100%">
+    <tr>
+        <th>Websites mentioned</th>
+    </tr>
+
+    @foreach (var pair in @Model.ForeignWebsites)
+    {
+        <tr>
+            <td>@pair.Key</td>
+            <td>@(pair.Value)%</td>   
+        </tr>
+    }
+
+    </table>
+
+    <table style="width:100%">
+    <tr>
+        <th>Related subreddits</th>
+    </tr>
+
+    @foreach (var pair in @Model.RelatedSubreddits)
+    {
+        <tr>
+            <td>@pair.Key</td>
+            <td>@(pair.Value)%</td>   
+        </tr>
+    }
+
+    </table>
+    </div>
 }
 
-@model SubredditStatsModel
-<!DOCTYPE html>
-<html>
 <style>
-td {
 
+td {
   padding: 12px
 }
 
@@ -33,69 +60,4 @@ div {
     padding: 4px;
 }
 
-body {
-	background-color: #F7F7F7;
-}
 </style>
-
-@{
-    <table style="width:100%">
-    <tr>
-        <th>Company</th>
-    </tr>
-    @foreach (var pair in @Model.ForeignWebsites)
-    {
-        <tr>
-            <td>@pair.Key</td>
-            <td>@(pair.Value)%</td>   
-        </tr>
-    }
-    </table>
-
-    <table style="width:100%">
-    <tr>
-        <th>Company</th>
-    </tr>
-    @foreach (var pair in @Model.RelatedSubreddits)
-    {
-        <tr>
-            <td>@pair.Key</td>
-            <td>@(pair.Value)%</td>   
-        </tr>
-    }
-    </table>
-}
-
-<body>
-
-
-<h2>A basic HTML table</h2>
-
-<div>
-<table style="width:100%">
-  <tr>
-    <th>Company</th>
-  </tr>
-  <tr>
-    <td>Alfreds Futterkiste</td>
-    <td>33%</td>   
-  </tr>
-  <tr>
-    <td>Grif</td>
-    <td>11%</td>
-  </tr>
-  <tr>
-    <td>Peter</td>
-    <td>3%</td>
-  </tr>
-  <tr>
-    <td>Lois</td>
-    <td>1%</td>
-  </tr>
-</table>
-</div>
-<p>To understand the example better, we have added borders to the table.</p>
-
-</body>
-</html>
-
