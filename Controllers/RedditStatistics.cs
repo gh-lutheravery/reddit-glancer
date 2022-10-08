@@ -63,6 +63,8 @@ namespace GlanceReddit.Controllers
 
 			*/
 
+			users.RemoveAll(u => u.PostHistory.Count < 5);
+
 			subs = users.Select((u, i) => 
 				GetSubreddits(u.PostHistory.Take(5).ToList(), i, 4))
 				.SelectMany(p => p)
