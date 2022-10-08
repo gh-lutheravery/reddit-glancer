@@ -1,32 +1,32 @@
 ﻿@model SubredditStatsModel
 
 @{
-    <div>
-    <table style="width:100%">
+    <div id="stats-container">
+    <table style="width:50%">
     <tr>
-        <th>Websites mentioned</th>
+        <th class="stats-header">Websites mentioned</th>
     </tr>
 
     @foreach (var pair in @Model.ForeignWebsites)
     {
-        <tr>
-            <td>@pair.Key</td>
-            <td>@(pair.Value)%</td>   
+        <tr class="stats-row">
+            <td class="stats-data">@pair.Key</td>
+            <td class="stats-data">@(pair.Value)%</td>   
         </tr>
     }
 
     </table>
 
-    <table style="width:100%">
+    <table style="width:50%">
     <tr>
-        <th>Related subreddits</th>
+        <th class="stats-header">Related subreddits</th>
     </tr>
 
     @foreach (var pair in @Model.RelatedSubreddits)
     {
-        <tr>
-            <td>@pair.Key</td>
-            <td>@(pair.Value)%</td>   
+        <tr class="stats-row">
+            <td class="stats-data">@pair.Key</td>
+            <td class="stats-data">@(pair.Value)%</td>   
         </tr>
     }
 
@@ -36,22 +36,22 @@
 
 <style>
 
-td {
+.stats-data {
   padding: 12px
 }
 
-th {
+.stats-header {
 	text-align: left;
     font-size: 29px;
     padding-bottom: 7px;
 }
 
-tr:nth-child(even) {
+.stats-row:nth-child(even) {
   background-color: #FF8E64;
   
 }
 
-div {
+#stats-container {
 	background-color: white;
     width: 100%;
     box-shadow: 0 2px 2px 0 rgba(0,0,0,.12);
