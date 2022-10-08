@@ -235,10 +235,12 @@ namespace GlanceReddit.Controllers
 
 			// for every post selected, generate a user object from the author string
 			_logger.LogError("creating users");
-			List<Reddit.Controllers.User> users = sub.Posts.Top
-				.Select(p => client.Client.User(p.Author)).ToList();
+			var names = sub.Moderators.Select(m => m.Name).Take(50);
 
-			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(users, sub.Name));
+			List <Reddit.Controllers.User> mods = names
+				.Select(n => client.Client.User(n)).ToList();
+
+			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(mods, sub.Name));
 
 			//var crosspostedSubs = redditStatistics.GetCrosspostedSubs(sub);
 			//statsModel.CrosspostedSubreddits = CastValueDoubleToInt(crosspostedSubs);

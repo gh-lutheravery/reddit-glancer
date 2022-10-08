@@ -56,11 +56,17 @@ namespace GlanceReddit.Controllers
 			// this sub community's other frequented subs
 			List<string> subs = new List<string>();
 
+			var postHist = users.SelectMany(u => u.PostHistory);
+
+			subs = postHist.Select(p => p.Subreddit).ToList();
+
+			/*
 			subs = users.Select((u, i) => 
 				GetSubreddits(u.PostHistory, i, u.PostHistory.Count - 1))
 				.SelectMany(p => p)
 				.ToList();
 
+			*/
 			List<string> foreignSubs = subs.Where(s => s != subName).ToList();
 
 			return GetPercents(foreignSubs);
