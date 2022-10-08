@@ -61,11 +61,7 @@ namespace GlanceReddit.Controllers
 				.SelectMany(p => p)
 				.ToList();
 
-			_logger.LogError("Loop has finished execution: " + subs[0]);
-
 			List<string> foreignSubs = subs.Where(s => s != subName).ToList();
-
-			_logger.LogError("foreignSub: " + foreignSubs[0]);
 
 			return GetPercents(foreignSubs);
 		}
@@ -78,64 +74,6 @@ namespace GlanceReddit.Controllers
 			return GetSubreddits(posts, index + 1, lastIndex)
 				.Append(posts[index].Subreddit)
 				.ToList();
-		}
-
-
-		public Dictionary<string, double> GetCrosspostedSubs(Reddit.Controllers.Subreddit sub)
-		{
-			var crosspostables = sub.Posts.Hot.Where(p => p.Listing.IsCrosspostable && !p.Listing.IsSelf).ToList();
-
-			if (!crosspostables.Any())
-			{
-				var err = new Dictionary<string, double>() { { "Error: No crosspostables.", 0 } };
-				return err;
-			}
-
-			_logger.LogError("crosspostables: " + crosspostables.Count);
-
-			var crossposts = crosspostables.Cast<Reddit.Controllers.LinkPost>()
-				.Where(p => !p.URL.Contains(sub.Name));
-
-			_logger.LogError("crossposts: " + string.Join(",", crossposts.Select(c => c.URL)));
-
-			if (!crossposts.Any())
-			{
-				var err = new Dictionary<string, double>() { { "Error: No crossposts in hot.", 0 } };
-				return err;
-			}
-
-			var crosspostSubs = new List<string>();
-
-			foreach (Reddit.Controllers.LinkPost p in crossposts)
-			{
-				string trimmedUrl = p.URL;
-
-				if (p.URL.StartsWith("http") && !p.URL.Contains('?'))
-				{
-					// delete https and reddit domain
-					trimmedUrl = p.URL.Remove(0, 22);
-				}
-
-				if (p.URL.StartsWith("/r/"))
-				{
-					// remove /r/
-					trimmedUrl = trimmedUrl.Remove(0, 3);
-
-					// find the char that ends the subreddit name
-					int firstSlash = trimmedUrl.IndexOf('/');
-
-					// get the length of the subreddit name
-					int count = trimmedUrl.Length - firstSlash;
-
-					// chop off the rest of the url
-					string subName = trimmedUrl.Remove(firstSlash, count);
-					crosspostSubs.Add(subName);
-				}
-			}
-
-			_logger.LogError("crosspostSubs: " + crosspostSubs.Count());
-
-			return GetPercents(crosspostSubs);
 		}
 
 		public async Task<List<Reddit.Controllers.Post>> RedditSearchAsync(
@@ -153,15 +91,18 @@ namespace GlanceReddit.Controllers
 
 		public async Task<QueryPopularity> GetQueryPopularity(RedditUser redditor, string query)
 		{
-			_logger.LogError("GetQueryPopularity begun");
 			QueryPopularity queryPop = new QueryPopularity();
 
 			// find dates of posts right now
-			Reddit.Inputs.Search.SearchGetSearchInput q =
+			Reddit.Inputs.Search.SearchGetSearchInput searchPostsNow =
 					new Reddit.Inputs.Search.SearchGetSearchInput(query)
-					{ t = "month", limit = 100, sort = "top" };
+					{ 
+						t = "month", 
+						limit = 100, 
+						sort = "top" 
+					};
 
-			var monthList = await RedditSearchAsync(redditor, q);
+			var monthList = await RedditSearchAsync(redditor, searchPostsNow);
 
 			var nowDates = monthList.Select(p => p.Listing.CreatedUTC)
 				.OrderByDescending(d => d).ToList();
@@ -169,7 +110,7 @@ namespace GlanceReddit.Controllers
 			// find dates month before
 			var beforeAnchorPost = monthList.OrderBy(p => p.Listing.CreatedUTC).ToList()[0];
 
-			Reddit.Inputs.Search.SearchGetSearchInput q2 =
+			Reddit.Inputs.Search.SearchGetSearchInput searchPostsBefore =
 					new Reddit.Inputs.Search.SearchGetSearchInput(query)
 					{
 						after = "t3_" + beforeAnchorPost.Id,
@@ -179,21 +120,16 @@ namespace GlanceReddit.Controllers
 						sort = "top"
 					};
 
-			var beforeMonthList = await RedditSearchAsync(redditor, q2);
+			var beforeMonthList = await RedditSearchAsync(redditor, searchPostsBefore);
 
 			if (beforeMonthList.Count == 0)
 			{
-				q2.t = "all";
-				beforeMonthList = await RedditSearchAsync(redditor, q2);
+				searchPostsBefore.t = "all";
+				beforeMonthList = await RedditSearchAsync(redditor, searchPostsBefore);
 			}
 
-			_logger.LogError("beforeMonthList: " + beforeMonthList.Count);
-
-			// get dates, then sort to get post frequency correctly
 			var beforeDates = beforeMonthList.Select(p => p.Listing.CreatedUTC)
 				.OrderByDescending(d => d).ToList();
-
-			//_logger.LogError("beforeDates element: " + beforeDates[0].ToString());
 
 			// check frequency of each dates before and dates now
 			int LowDataThreshold = 40;
@@ -206,13 +142,8 @@ namespace GlanceReddit.Controllers
 				queryPop.LowData = true;
 			}
 
-			//_logger.LogError("timespans: " + string.Join(", ", nowTs.Select(p => p.TotalMilliseconds)));
-			//_logger.LogError("beforeTimespans: " + string.Join(", ", beforeTs.Select(p => p.TotalMilliseconds)));
-
 			double avgDistanceNow = nowTs.Average(p => p.TotalSeconds);
 			double avgDistanceBefore = beforeTs.Average(p => p.TotalSeconds);
-
-			//_logger.LogError("distances: " + avgDistanceNow + ", " + avgDistanceBefore);
 
 			// put data into object
 			queryPop.ResultFrequencyBefore = avgDistanceBefore;
@@ -220,7 +151,7 @@ namespace GlanceReddit.Controllers
 
 			// get rounded percentage, then negate positive/negative
 			int percent = (int)Math.Round(((avgDistanceNow - avgDistanceBefore) / avgDistanceBefore * 100));
-			percent = percent * -1;
+			percent *= -1;
 
 			queryPop.PercentDifference = percent;
 
@@ -232,13 +163,9 @@ namespace GlanceReddit.Controllers
 			double lesserVariance = avgDistanceBefore - similarityMargin;
 			double greaterVariance = avgDistanceBefore + similarityMargin;
 
-			//_logger.LogError("Distance: " + avgDistanceNow + ", " + avgDistanceBefore);
-			//_logger.LogError("variances: " + lesserVariance + ", " + greaterVariance);
-
 			if (lesserVariance <= avgDistanceNow && avgDistanceNow <= greaterVariance)
 				queryPop.SimilarDifference = true;
 
-			_logger.LogError("GetQueryPopularity ended");
 			return queryPop;
 		}
 
