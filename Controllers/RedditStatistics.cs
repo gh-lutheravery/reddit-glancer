@@ -45,6 +45,8 @@ namespace GlanceReddit.Controllers
 			List<string> foreignUrls = validUrls
 				.Where(url => !url.Contains(".redd.it")).ToList();
 
+			foreignUrls.RemoveAll(u => UriHostNameType.Unknown == Uri.CheckHostName(u));
+
 			List<string> hosts = foreignUrls.Select(u => new Uri(u).Host).ToList();
 
 			return GetPercents(hosts);
