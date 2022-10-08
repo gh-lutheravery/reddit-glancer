@@ -228,10 +228,10 @@ namespace GlanceReddit.Controllers
 			SubredditStatsModel statsModel = new SubredditStatsModel();
 			RedditStatistics redditStatistics = new RedditStatistics(_logger);
 
-			//List<string> urls = sub.Posts.Hot.Select(p => p.Listing.URL).ToList();
+			List<string> urls = sub.Posts.Hot.Select(p => p.Listing.URL).ToList();
 
-			//var websiteOccurences = redditStatistics.GetLinkedWebsites(urls);
-			//statsModel.ForeignWebsites = CastValueDoubleToInt(websiteOccurences);
+			var websiteOccurences = redditStatistics.GetLinkedWebsites(urls);
+			statsModel.ForeignWebsites = CastValueDoubleToInt(websiteOccurences);
 
 			// for every post selected, generate a user object from the author string
 			_logger.LogError("creating users");
@@ -241,6 +241,10 @@ namespace GlanceReddit.Controllers
 				.Select(n => client.Client.User(n)).ToList();
 
 			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(mods, sub.Name));
+
+			statsModel.ForeignWebsites.OrderByDescending(p => p.Value);
+			statsModel.RelatedSubreddits.OrderByDescending(p => p.Value);
+
 
 			//var crosspostedSubs = redditStatistics.GetCrosspostedSubs(sub);
 			//statsModel.CrosspostedSubreddits = CastValueDoubleToInt(crosspostedSubs);

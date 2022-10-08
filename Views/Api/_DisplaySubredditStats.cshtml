@@ -51,6 +51,19 @@ body {
         </tr>
     }
     </table>
+
+    <table style="width:100%">
+    <tr>
+        <th>Company</th>
+    </tr>
+    @foreach (var pair in @Model.RelatedSubreddits)
+    {
+        <tr>
+            <td>@pair.Key</td>
+            <td>@(pair.Value)%</td>   
+        </tr>
+    }
+    </table>
 }
 
 <body>
