@@ -2,13 +2,13 @@
 
 
 <div id="stats-container">
-    <table style="width:50%">
+    <table style="width:49.5%">
         <tr>
             <th class="stats-header">Websites mentioned</th>
         </tr>
 
         
-        @if (@Model.ForeignWebsites.Any())
+        @if (!@Model.ForeignWebsites.ContainsKey("No Websites"))
         {
             @foreach (var pair in @Model.ForeignWebsites)
             {
@@ -19,7 +19,7 @@
             }
         }
 
-        @if (!@Model.ForeignWebsites.Any())
+        @if (@Model.ForeignWebsites.ContainsKey("No Websites"))
         {
             <h1>No websites mentioned in subreddit.</h1>
         }
