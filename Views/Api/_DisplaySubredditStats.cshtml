@@ -8,7 +8,7 @@
         </tr>
 
         
-        @if (@Model.ForeignWebsites != null)
+        @if (@Model.ForeignWebsites.Any())
         {
             @foreach (var pair in @Model.ForeignWebsites)
             {
@@ -19,7 +19,7 @@
             }
         }
 
-        @if (@Model.ForeignWebsites == null)
+        @if (!@Model.ForeignWebsites.Any())
         {
             <h1>No websites mentioned in subreddit.</h1>
         }

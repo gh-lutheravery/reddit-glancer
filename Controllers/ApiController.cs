@@ -232,7 +232,7 @@ namespace GlanceReddit.Controllers
 
 			var websiteOccurences = redditStatistics.GetLinkedWebsites(urls);
 
-			if (websiteOccurences != null)
+			if (websiteOccurences.Any())
 				statsModel.ForeignWebsites = CastValueDoubleToInt(websiteOccurences);
 
 			// for every post selected, generate a user object from the author string
