@@ -2,45 +2,49 @@
 
 
 <div id="stats-container">
-    <table style="width:49.5%">
-        <tr>
-            <th class="stats-header">Websites mentioned</th>
-        </tr>
+    <div id="stat-container">
+        <table style="width:49.5%">
+            <tr>
+                <th class="stats-header">Websites mentioned</th>
+            </tr>
 
         
-        @if (!@Model.ForeignWebsites.ContainsKey("No Websites"))
-        {
-            @foreach (var pair in @Model.ForeignWebsites)
+            @if (!@Model.ForeignWebsites.ContainsKey("No Websites"))
+            {
+                @foreach (var pair in @Model.ForeignWebsites)
+                {
+                    <tr class="stats-row">
+                        <td class="stats-data">@pair.Key</td>
+                        <td class="stats-data">@(pair.Value)%</td>   
+                    </tr>
+                }
+            }
+
+            @if (@Model.ForeignWebsites.ContainsKey("No Websites"))
+            {
+                <h1>No websites mentioned in subreddit.</h1>
+            }
+        
+
+        </table>
+    </div>
+
+    <div id="stat-container">
+        <table style="width:50%">
+            <tr>
+                <th class="stats-header">Related subreddits</th>
+            </tr>
+
+            @foreach (var pair in @Model.RelatedSubreddits)
             {
                 <tr class="stats-row">
                     <td class="stats-data">@pair.Key</td>
                     <td class="stats-data">@(pair.Value)%</td>   
                 </tr>
             }
-        }
 
-        @if (@Model.ForeignWebsites.ContainsKey("No Websites"))
-        {
-            <h1>No websites mentioned in subreddit.</h1>
-        }
-        
-
-    </table>
-
-    <table style="width:50%">
-        <tr>
-            <th class="stats-header">Related subreddits</th>
-        </tr>
-
-        @foreach (var pair in @Model.RelatedSubreddits)
-        {
-            <tr class="stats-row">
-                <td class="stats-data">@pair.Key</td>
-                <td class="stats-data">@(pair.Value)%</td>   
-            </tr>
-        }
-
-    </table>
+        </table>
+    </div>
 </div>
 
 
@@ -72,6 +76,11 @@ table {
     border-radius: 6px;
     border: 0.001px solid black;
     padding: 4px;
+}
+
+#stat-container {
+    height: 20px;
+    overflow: auto;
 }
 
 </style>
