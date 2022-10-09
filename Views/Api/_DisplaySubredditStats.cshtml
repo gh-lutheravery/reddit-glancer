@@ -8,7 +8,8 @@
         </tr>
 
         @{
-            if (@Model.ForeignWebsites != null)
+            bool checkForeignWebsites = @Model.ForeignWebsites != null;
+            if (checkForeignWebsites)
             {
                 foreach (var pair in @Model.ForeignWebsites)
                 {
