@@ -7,15 +7,22 @@
                 <th class="stats-header">Websites mentioned</th>
             </tr>
 
-            @foreach (var pair in @Model.ForeignWebsites)
+            @if (@Model.ForeignWebsites != null)
             {
-                <tr class="stats-row">
-                    <td class="stats-data">@pair.Key</td>
-                    <td class="stats-data">@(pair.Value)%</td>   
-                </tr>
+                @foreach (var pair in @Model.ForeignWebsites)
+                {
+                    <tr class="stats-row">
+                        <td class="stats-data">@pair.Key</td>
+                        <td class="stats-data">@(pair.Value)%</td>   
+                    </tr>
+                }
+            }
+        </table>
+            else
+            {
+                <h1>No websites mentioned in subreddit.</h1>
             }
 
-            </table>
 
             <table style="width:50%">
             <tr>
