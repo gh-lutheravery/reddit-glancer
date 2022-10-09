@@ -9,7 +9,8 @@
 
         @{
             bool checkForeignWebsites = @Model.ForeignWebsites != null;
-            throw new Exception(checkForeignWebsites.ToString());
+            bool checkForeignWebsites2 = @Model.RelatedSubreddits != null;
+            throw new Exception(checkForeignWebsites.ToString() + ", " + checkForeignWebsites2.ToString());
             if (checkForeignWebsites)
             {
                 foreach (var pair in @Model.ForeignWebsites)
