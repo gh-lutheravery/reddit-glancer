@@ -10,7 +10,7 @@
         @{
             if (@Model.ForeignWebsites != null)
             {
-                @foreach (var pair in @Model.ForeignWebsites)
+                foreach (var pair in @Model.ForeignWebsites)
                 {
                     <tr class="stats-row">
                         <td class="stats-data">@pair.Key</td>
