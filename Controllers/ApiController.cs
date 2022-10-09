@@ -244,7 +244,7 @@ namespace GlanceReddit.Controllers
 
 			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(mods, sub.Name));
 
-			statsModel.RelatedSubreddits = statsModel.ForeignWebsites?.OrderByDescending(p => p.Value)
+			statsModel.ForeignWebsites = statsModel.ForeignWebsites?.OrderByDescending(p => p.Value)
 				.ToDictionary(p => p.Key, p => p.Value);
 
 			statsModel.RelatedSubreddits = statsModel.RelatedSubreddits?.OrderByDescending(p => p.Value)
