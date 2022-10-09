@@ -46,7 +46,11 @@ namespace GlanceReddit.Controllers
 				.Where(url => !url.Contains("redd")).ToList();
 
 			if (foreignUrls.Count == 0)
-				return new Dictionary<string, double>();
+			{
+				Dictionary<string, double> dict = new Dictionary<string, double>();
+				dict.Add("No websites found.", 0);
+				return dict;
+			}
 
 			foreignUrls.RemoveAll(u => UriHostNameType.Unknown == Uri.CheckHostName(u));
 
