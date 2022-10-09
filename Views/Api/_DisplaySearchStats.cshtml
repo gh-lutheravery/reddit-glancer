@@ -1,5 +1,91 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model SearchResultStatsModel
+
+
+<div id="stats-container">
+    <span id="stat-container">
+        <h1>Interest</h1>
+
+            @{
+                if (Model.SearchPopularity.LowData)
+                {
+                    <h4 class="text-primary text-muted">Hmmm, your search doesn't have much data; results may be slightly inaccurate.
+                    Try a more general term.</h4>
+                }
+
+                if (Model.SearchPopularity.SimilarDifference)
+                {
+                    <h3 class="text-primary">The Interest for this topic hasn't changed much in the last month: </h3>
+                }
+
+                if (Model.SearchPopularity.PercentDifference < 0)
+                {
+                    <h2>The popularity of this search term has increased by</h2> 
+                    <h2 class="text-success">@(Model.SearchPopularity.PercentDifference)%</h2>
+                }
+
+                else
+                {
+                    <h2>The popularity of this search term has declined by</h2> 
+                    <h2 class="text-danger">@(Model.SearchPopularity.PercentDifference)%</h2>
+                }
+            }
+    </span>
+
+    <span id="stat-container" style="width: 49.5%">
+        <table style="width:50%">
+            <tr>
+                <th class="stats-header">Related subreddits</th>
+            </tr>
+
+            @foreach (var pair in @Model.CommonResultSubreddits)
+            {
+                <tr class="stats-row">
+                    <td class="stats-data">@pair.Key</td>
+                    <td class="stats-data">@(pair.Value)%</td>
+                </tr>
+            }
+
+        </table>
+    </span>
+</div>
+
+
+<style>
+
+table {
+    display:inline-table;
+    width: 100%;
 }
+
+.stats-data {
+  padding: 12px
+}
+
+.stats-header {
+	text-align: left;
+    font-size: 29px;
+    padding-bottom: 7px;
+}
+
+.stats-row:nth-child(even) {
+  background-color: #FF8E64;
+  
+}
+
+#stats-container {
+	background-color: #FC1810;
+    width: 100%;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.12);
+    border-radius: 6px;
+    border: 0.001px solid black;
+    padding: 4px;
+}
+
+#stat-container {
+    height: 500px;
+    overflow: auto;
+    display: inline-block;
+    width: 50%;
+}
+
+</style>
