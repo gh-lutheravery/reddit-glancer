@@ -63,6 +63,7 @@ namespace GlanceReddit.Controllers
 			List<string> subs = new List<string>();
 			
 			var postHist = users.SelectMany(u => u.PostHistory.Take(5));
+			_logger.LogError("end");
 
 			subs = postHist.Select(p => p.Subreddit).ToList();
 
@@ -75,7 +76,6 @@ namespace GlanceReddit.Controllers
 			*/
 			
 			List<string> foreignSubs = subs.Where(s => s != subName).ToList();
-			_logger.LogError("end");
 			return GetPercents(foreignSubs);
 		}
 
