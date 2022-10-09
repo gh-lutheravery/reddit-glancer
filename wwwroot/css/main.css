@@ -144,12 +144,13 @@ a.article-title:hover {
 
 .index-list-item {
     color: white;
+    padding: 0px 16px 0px 16px;
 }
 
 .header-container {
     margin: 2rem 0rem 2rem 0rem;
     border: 1px solid #dddddd;
-    border-radius: .25rem;
+    border-radius: .5rem;
     padding: 1rem 1rem 1rem 1rem;
     box-shadow: 2px 2px .5px #141414;
     background-color: #FF4500;
