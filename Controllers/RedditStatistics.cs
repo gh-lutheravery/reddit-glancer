@@ -43,8 +43,11 @@ namespace GlanceReddit.Controllers
 			List<string> validUrls = urls.Where(u => !string.IsNullOrEmpty(u)).ToList();
 
 			List<string> foreignUrls = validUrls
-				.Where(url => !url.Contains(".redd.it")).ToList();
-			_logger.LogError(string.Join(',', foreignUrls));
+				.Where(url => !url.Contains("redd")).ToList();
+
+			if (foreignUrls.Count == 0)
+				return null;
+
 			foreignUrls.RemoveAll(u => UriHostNameType.Unknown == Uri.CheckHostName(u));
 
 			List<string> hosts = foreignUrls.Select(u => new Uri(u).Host).ToList();

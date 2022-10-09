@@ -231,7 +231,9 @@ namespace GlanceReddit.Controllers
 			List<string> urls = sub.Posts.Hot.Select(p => p.Listing.URL).ToList();
 
 			var websiteOccurences = redditStatistics.GetLinkedWebsites(urls);
-			statsModel.ForeignWebsites = CastValueDoubleToInt(websiteOccurences);
+
+			if (websiteOccurences != null)
+				statsModel.ForeignWebsites = CastValueDoubleToInt(websiteOccurences);
 
 			// for every post selected, generate a user object from the author string
 			_logger.LogError("creating users");
