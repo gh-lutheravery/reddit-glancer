@@ -244,8 +244,8 @@ namespace GlanceReddit.Controllers
 
 			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(mods, sub.Name));
 
-			statsModel.ForeignWebsites.OrderByDescending(p => p.Value);
-			statsModel.RelatedSubreddits.OrderByDescending(p => p.Value);
+			statsModel.ForeignWebsites?.OrderByDescending(p => p.Value);
+			statsModel.RelatedSubreddits?.OrderByDescending(p => p.Value);
 
 
 			//var crosspostedSubs = redditStatistics.GetCrosspostedSubs(sub);
