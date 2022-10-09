@@ -61,32 +61,31 @@ namespace GlanceReddit.Controllers
 			_logger.LogError("begin");
 			// this sub community's other frequented subs
 			List<string> subs = new List<string>();
-			/*
+			
 			var postHist = users.SelectMany(u => u.PostHistory.Take(5));
 
 			subs = postHist.Select(p => p.Subreddit).ToList();
 
-			*/
-
+			
+			/*
 			subs = users.Select((u, i) => 
 				GetSubreddits(u.PostHistory, i, u.PostHistory.Count - 1))
 				.SelectMany(p => p)
 				.ToList();
-
+			*/
 			
 			List<string> foreignSubs = subs.Where(s => s != subName).ToList();
 			_logger.LogError("end");
 			return GetPercents(foreignSubs);
 		}
 
-		private List<string> GetSubreddits(List<Reddit.Controllers.Post> posts, int index, int lastIndex)
+		private IEnumerable<string> GetSubreddits(List<Reddit.Controllers.Post> posts, int index, int lastIndex)
 		{
 			if (index == lastIndex)
 				return new List<string>();
 
 			return GetSubreddits(posts, index + 1, lastIndex)
-				.Append(posts[index].Subreddit)
-				.ToList();
+				.Append(posts[index].Subreddit);
 		}
 
 		public async Task<List<Reddit.Controllers.Post>> RedditSearchAsync(
