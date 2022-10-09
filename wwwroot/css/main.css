@@ -45,14 +45,24 @@ ul {
 }
 
 #search-id {
-    background-color: #15181B;
+    background-color: #FC1810;
     color: white;
     border: 0;
 }
 
     #search-id:focus {
-        background-color: #15181B;
+        background-color: #FC1810;
     }
+
+.nav-link-gr {
+    color: dimgrey;
+}
+
+.gr-footer {
+    margin-top: 100px;
+    text-align: center;
+    margin-bottom: 50px;
+}
 
 a.article-title:hover {
     color: #428bca;
