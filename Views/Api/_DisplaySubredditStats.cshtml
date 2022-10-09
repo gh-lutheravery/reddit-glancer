@@ -2,7 +2,7 @@
 
 
 <div id="stats-container">
-    <div id="stat-container">
+    <span id="stat-container">
         <table style="width:49.5%">
             <tr>
                 <th class="stats-header">Websites mentioned</th>
@@ -27,9 +27,9 @@
         
 
         </table>
-    </div>
+    </span>
 
-    <div id="stat-container">
+    <span id="stat-container" style="width: 49.5%">
         <table style="width:50%">
             <tr>
                 <th class="stats-header">Related subreddits</th>
@@ -39,19 +39,20 @@
             {
                 <tr class="stats-row">
                     <td class="stats-data">@pair.Key</td>
-                    <td class="stats-data">@(pair.Value)%</td>   
+                    <td class="stats-data">@(pair.Value)%</td>
                 </tr>
             }
 
         </table>
-    </div>
+    </span>
 </div>
 
 
 <style>
 
 table {
-    display:inline-table
+    display:inline-table;
+    width: 100%;
 }
 
 .stats-data {
@@ -79,8 +80,10 @@ table {
 }
 
 #stat-container {
-    height: 20px;
+    height: 500px;
     overflow: auto;
+    display: inline-block;
+    width: 50%;
 }
 
 </style>
