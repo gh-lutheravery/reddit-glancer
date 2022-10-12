@@ -45,7 +45,13 @@ ul {
 }
 
 .title-container {
-    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.title-container-text {
+    font-size: 4rem;
+    color: #fff;
+    margin-top: revert;
 }
 
 #search-id {
@@ -60,6 +66,8 @@ ul {
 
 .nav-link-gr {
     color: dimgrey !important;
+    font-weight: 530;
+}
 }
 
 
@@ -88,6 +96,11 @@ ul {
     margin-top: 1rem;
 }
 
+#login-desc {
+    color: #fff;
+    margin-left: 52.5rem;
+}
+
 .home-col {
     flex-grow: 1;
 }
@@ -106,6 +119,11 @@ ul {
     text-align: center;
     margin-bottom: 50px;
 }
+
+    .gr-footer a::after {
+        content: '  ';
+        padding: 0 0.5rem;
+    }
 
 a.article-title:hover {
     color: #428bca;
