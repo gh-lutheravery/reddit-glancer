@@ -1,73 +1,23 @@
 ﻿@model GlanceReddit.ViewModels.HomeViewModel
 
-<h2 class="text-danger msg" onloadstart="setMargin(e)">@Model.ErrorMessage</h2>
+<h2 class="text-danger msg text-margin" onloadstart="setMargin(e)">@Model.ErrorMessage</h2>
 
-<h2 class="text-success fade-in msg" onloadstart="setMargin(e)">@Model.SuccessMessage</h2>
+<h2 class="text-success fade-in msg text-margin" onloadstart="setMargin(e)">@Model.SuccessMessage</h2>
 
 <div class="home-container">
     <div class="home-col">
-        <div class="title-container" style="border-bottom: 5px solid #FC1810">
+        <div class="title-container text-margin" style="border-bottom: 5px solid #FC1810">
             <h1 class="">Analyze Reddit to guage your audience.</h1>
             <h4 class="">No username or password needed.</h4>
         </div>
 
-        <div style="border-radius: 0.5rem" class="login-btn btn btn-primary"><a href="https://www.reddit.com/api/v1/authorize.compact?client_id=KV5zFP-MPNjCUT-M8GM8AA&amp;response_type=code&amp;state=eaa33b4cba48eb5921cd7c89632355c582c4bef798b3d10edd01c5516f100cc8c55835904fc53f57754fc5e4ca352ec8076162ce4b20e442af1d26d6f7e59f5f&amp;redirect_uri=https://redditmanager.onrender.com/user/login&amp;duration=permanent&amp;scope=vote%20history%20identity%20read%20save"
+        <div style="border-radius: 0.5rem" class="login-btn btn btn-primary text-margin"><a href="https://www.reddit.com/api/v1/authorize.compact?client_id=KV5zFP-MPNjCUT-M8GM8AA&amp;response_type=code&amp;state=eaa33b4cba48eb5921cd7c89632355c582c4bef798b3d10edd01c5516f100cc8c55835904fc53f57754fc5e4ca352ec8076162ce4b20e442af1d26d6f7e59f5f&amp;redirect_uri=https://redditmanager.onrender.com/user/login&amp;duration=permanent&amp;scope=vote%20history%20identity%20read%20save"
             >Login with Reddit</a></div>
 
-        <div class="login-desc">No data from reddit is stored on this websites servers.</div>
+        <div class="login-desc text-margin">No data from reddit is stored on this websites servers.</div>
     </div>
-</div>
 
-
-
-<div class="content-section" id="home-container" style="margin-top: 2rem">
-    <h1 style="margin-bottom: 0">Search Reddit</h1>
-    <p class="text-muted">Must already be authenticated to search, and only one search box can be used at a time.</p>
-        
-    @if (!Model.IsAuth)
-    {
-        @using (Html.BeginForm("BeginLogin", "Api", FormMethod.Post, new { @autocomplete = "off" }))
-        {
-            @Html.AntiForgeryToken()          
-            <a onclick="this.parentNode.submit()" class="btn btn-primary" href="@Model.RedditUrl" target="_blank">Authenticate to Reddit</a>
-
-            <div class="form-check" style="margin-bottom: 0.25rem">
-                @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input", @id = "flexCheckDefault"})
-                <label class="form-check-label" for="flexCheckDefault">Remember me</label>
-            </div>
-        }
-    }
-
-    @using (Html.BeginForm("ApiRequest", "Api", FormMethod.Post, new { @autocomplete = "off" }))
-    {
-        @Html.AntiForgeryToken()
-        <fieldset class="form-group">
-            @Html.LabelFor(m => m.RedditorName, "Redditor Search")
-            @Html.TextBoxFor(m => m.RedditorName, "", new { @class = "form-control home-form-control", @placeholder = "Search for a Redditor" })
-            @Html.ValidationMessageFor(m => m.RedditorName, "", new { @class = "badge badge-danger" })
-
-            @Html.LabelFor(m => m.SubredditName, "Subreddit Search")
-            @Html.TextBoxFor(m => m.SubredditName, "", new { @class = "form-control home-form-control", @placeholder = "Search for a Subreddit" })
-            @Html.ValidationMessageFor(m => m.SubredditName, "", new { @class = "badge badge-danger" })
-
-            <input type="submit" name="submit" class="btn btn-primary" value="Search" />
-        </fieldset>
-    }
-
-   <script>
-        /*
-        function isHidden(el) {
-            return (el.offsetParent === null)
-        }
-
-        function removeHomeContainerMargin(e) {
-            if (!isHidden(e)) {
-                let homeCont = document.getElementById("home-container");
-                homeCont.style.marginTop = 0
-            }
-        }
-        */
-
+    <script>
        let msg = document.getElementsByClassName("msg");
        let tally = 0;
 
@@ -82,8 +32,7 @@
                }
            }
            tally++;
-       }
-
-       
+       }     
    </script>
+
 </div>

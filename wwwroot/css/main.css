@@ -150,9 +150,17 @@ a.article-title:hover {
     margin: auto;
 }
 
-.container {
+.container-gr {
     max-width: 100vw;
     width: 100%;
+}
+
+.navbar-text-margin {
+    margin: 0px 8vw 0px 8vw;
+}
+
+.text-margin {
+    margin: 0px 9vw 0px 9vw;
 }
 
 .grid-body {
