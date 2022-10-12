@@ -54,6 +54,10 @@ ul {
     margin-top: revert;
 }
 
+.title-container-text-small {
+    color: #fff;
+}
+
 #search-id {
     background-color: #FC1810;
     color: white;
@@ -68,7 +72,7 @@ ul {
     color: dimgrey !important;
     font-weight: 530;
 }
-}
+
 
 
 #search-id::placeholder {
@@ -94,6 +98,7 @@ ul {
     height: 2.5rem;
     margin-left: 52.5rem;
     margin-top: 1rem;
+    background-color: #FC1810;
 }
 
 #login-desc {
