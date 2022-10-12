@@ -44,7 +44,7 @@ ul {
     font-size: 1.75rem;
 }
 
-title-container {
+.title-container {
     margin-top: 1.5rem;
 }
 
@@ -62,11 +62,13 @@ title-container {
     color: dimgrey;
 }
 
-::placeholder {
-    color: dimgrey;
+
+#search-id::placeholder {
+    color: white;
+    font-weight: bold;
 }
 
-home-container {
+.home-container {
     display: flex;
     background-image: url("home-img.jpg");
     background-color: #cccccc;
@@ -79,7 +81,7 @@ home-container {
     mask-image: linear-gradient(to bottom right, rgba(255,0,0,0), rgba(255,0,0,1));
 }
 
-home-col {
+.home-col {
     flex-grow: 1;
 }
 
