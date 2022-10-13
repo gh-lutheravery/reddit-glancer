@@ -54,10 +54,6 @@ ul {
     margin-top: revert;
 }
 
-.title-container-text-small {
-    color: #fff;
-}
-
 #search-id {
     background-color: #FC1810;
     color: white;
@@ -70,7 +66,7 @@ ul {
 
 .nav-link-gr {
     color: dimgrey !important;
-    font-weight: 530;
+    font-weight: 600;
 }
 
 
@@ -118,6 +114,10 @@ ul {
     flex-grow: 1;
 }
 
+#info-background {
+
+}
+
 #info-container {
     display: flex;
 }
@@ -146,7 +146,7 @@ ul {
 .gr-footer {
     margin-top: 100px;
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 100px;
 }
 
     .gr-footer a::after {
