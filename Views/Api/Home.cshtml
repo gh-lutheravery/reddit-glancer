@@ -1,26 +1,6 @@
 ﻿@model GlanceReddit.ViewModels.HomeViewModel
 
-<h2 class="text-danger msg text-margin" onloadstart="setMargin(e)">@Model.ErrorMessage</h2>
-
-<h2 class="text-success fade-in msg text-margin" onloadstart="setMargin(e)">@Model.SuccessMessage</h2>
-
-<div class="home-container">
-    <div class="home-col">
-        <div class="title-container text-margin" style="border-bottom: 5px solid darkslategray">
-            <h1 class="title-container-text">Analyze Reddit to guage your audience.</h1>
-            <h3 class="title-container-text-small">No username or password needed.</h3>
-            <h3 class="title-container-text-small">No data from Reddit is stored on this website's servers.</h3>
-        </div>
-
-        <div style="border-radius: 0.5rem" id="home-btn" class="login-btn btn text-margin">
-            <a href="https://www.reddit.com/api/v1/authorize.compact?client_id=KV5zFP-MPNjCUT-M8GM8AA&amp;response_type=code&amp;state=eaa33b4cba48eb5921cd7c89632355c582c4bef798b3d10edd01c5516f100cc8c55835904fc53f57754fc5e4ca352ec8076162ce4b20e442af1d26d6f7e59f5f&amp;redirect_uri=https://redditmanager.onrender.com/user/login&amp;duration=permanent&amp;scope=vote%20history%20identity%20read%20save"
-            style="color: white;">Login with Reddit</a>
-        </div>
-
-        <div id="login-desc" class="text-margin">No data from reddit is stored on this websites servers.</div>
-    </div>
-
-    <script>
+<script>
        let msg = document.getElementsByClassName("msg");
        let tally = 0;
 
@@ -36,7 +16,24 @@
            }
            tally++;
        }     
-   </script>
+</script>
+
+<h2 class="text-danger msg text-margin" onloadstart="setMargin(e)">@Model.ErrorMessage</h2>
+
+<h2 class="text-success fade-in msg text-margin" onloadstart="setMargin(e)">@Model.SuccessMessage</h2>
+
+<div class="home-container">
+    <div class="home-col">
+        <div class="title-container text-margin" style="border-bottom: 5px solid darkslategray">
+            <h1 class="title-container-text">Analyze Reddit to guage your audience.</h1>
+        </div>
+
+        <div style="border-radius: 0.5rem" id="home-btn" class="login-btn btn text-margin">
+            <a href="https://www.reddit.com/api/v1/authorize.compact?client_id=KV5zFP-MPNjCUT-M8GM8AA&amp;response_type=code&amp;state=eaa33b4cba48eb5921cd7c89632355c582c4bef798b3d10edd01c5516f100cc8c55835904fc53f57754fc5e4ca352ec8076162ce4b20e442af1d26d6f7e59f5f&amp;redirect_uri=https://redditmanager.onrender.com/user/login&amp;duration=permanent&amp;scope=vote%20history%20identity%20read%20save"
+            style="color: white; font-size: x-large;">Login with Reddit</a>
+        </div>
+
+    </div>
 </div>
 
 <div id="info-container" class="text-margin">
@@ -54,8 +51,8 @@
     <div id="feature-container">
         <h2 style="margin-bottom: 30px">Privacy</h2>
         <ul id="feature-list">
-            <li><h3 class="title-container-text-small">No data from Reddit is stored on this website's servers.</h3></li>
-            <li><h3 class="title-container-text-small">No username or password needed.</h3></li>
+            <li><h4 class="title-container-text-small">No data from Reddit is stored on this website's servers.</h4></li>
+            <li><h4 class="title-container-text-small">No username or password needed.</h4></li>
         </ul>
     </div>
 </div>
