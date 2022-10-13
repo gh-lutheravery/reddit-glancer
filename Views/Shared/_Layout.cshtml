@@ -19,10 +19,6 @@
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <div class="navbar-nav mr-auto ml-auto">
                     <div class="nav-item nav-link">
-                        @using (Html.BeginForm("SearchResult", "Api", FormMethod.Get, new { @autocomplete = "off" }))
-                        {
-                            <input id="search-id" name="searchBar" type="text" placeholder="Search All Posts" class="form-control-lg" />
-                        }
                     </div>
                 </div>
                 <div class="navbar-nav">
