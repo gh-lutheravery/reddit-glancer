@@ -103,11 +103,15 @@ ul {
 
 #login-desc {
     color: #fff;
-    margin-left: 52.5rem;
+    margin-left: 47.5rem;
 }
 
 .home-col {
     flex-grow: 1;
+}
+
+#info-container {
+    display: flex;
 }
 
 #feature-list {
@@ -119,6 +123,7 @@ ul {
 
 #feature-container {
     margin-top: 3rem;
+    flex-grow: 1;
 }
 
 .hero-text {
@@ -140,6 +145,11 @@ ul {
         content: '  ';
         padding: 0 0.5rem;
     }
+
+.gr-footer-item {
+    font-size: 1.5rem;
+    color: #212529;
+}
 
 a.article-title:hover {
     color: #428bca;
