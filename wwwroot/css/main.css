@@ -110,6 +110,14 @@ ul {
     flex-grow: 1;
 }
 
+#search-box-container {
+    display: flex;
+}
+
+.search-box {
+    flex-grow: 1;
+}
+
 #info-container {
     display: flex;
 }

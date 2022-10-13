@@ -24,6 +24,7 @@
 
 <div class="home-container">
     <div class="home-col">
+
         <div class="title-container text-margin" style="border-bottom: 5px solid darkslategray">
             <h1 class="title-container-text">Analyze Reddit to guage your audience.</h1>
         </div>
@@ -32,6 +33,39 @@
             <a href="https://www.reddit.com/api/v1/authorize.compact?client_id=KV5zFP-MPNjCUT-M8GM8AA&amp;response_type=code&amp;state=eaa33b4cba48eb5921cd7c89632355c582c4bef798b3d10edd01c5516f100cc8c55835904fc53f57754fc5e4ca352ec8076162ce4b20e442af1d26d6f7e59f5f&amp;redirect_uri=https://redditmanager.onrender.com/user/login&amp;duration=permanent&amp;scope=vote%20history%20identity%20read%20save"
             style="color: white; font-size: x-large;">Login with Reddit</a>
         </div>
+
+        @if (Model.IsAuth)
+        {
+            <div id="search-box-container">
+                <div class="search-box text-margin">
+                    @using (Html.BeginForm("SearchResult", "Api", FormMethod.Get, new { @autocomplete = "off" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input id="search-id" name="searchBar" type="text" placeholder="Search All Posts" class="form-control-lg" />
+                    }
+                </div>
+
+                <div class="search-box text-margin">
+                    @using (Html.BeginForm("ApiRequest", "Api", FormMethod.Get, new { @autocomplete = "off" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.TextBoxFor(m => m.SubredditName, "", new { @class = "form-control-lg", @id = "search-id", 
+                            @name = "searchBar", @type = "text", @placeholder = "Search for a Subreddit" 
+                        })
+                    }
+                </div>
+
+                <div class="search-box text-margin">
+                    @using (Html.BeginForm("ApiRequest", "Api", FormMethod.Get, new { @autocomplete = "off" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.TextBoxFor(m => m.RedditorName, "", new { @class = "form-control-lg", @type = "text", 
+                            @placeholder = "Search for users" 
+                        })
+                    }
+                </div>
+            </div>
+        }
 
     </div>
 </div>
