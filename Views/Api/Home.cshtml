@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="search-box text-margin">
-                    @using (Html.BeginForm("ApiRequest", "Api", FormMethod.Get, new { @autocomplete = "off" }))
+                    @using (Html.BeginForm("ApiRequest", "Api", FormMethod.Post, new { @autocomplete = "off" }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.TextBoxFor(m => m.SubredditName, "", new { @class = "form-control-lg", @id = "search-id", 
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="search-box text-margin">
-                    @using (Html.BeginForm("ApiRequest", "Api", FormMethod.Get, new { @autocomplete = "off" }))
+                    @using (Html.BeginForm("ApiRequest", "Api", FormMethod.Post, new { @autocomplete = "off" }))
                     {
                         @Html.AntiForgeryToken()
                         @Html.TextBoxFor(m => m.RedditorName, "", new { @class = "form-control-lg", @type = "text", 
