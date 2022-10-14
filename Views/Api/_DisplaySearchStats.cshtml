@@ -17,7 +17,7 @@
                         <h3 class="text-primary">The Interest for this topic hasn't changed much in the last month: </h3>
                     }
 
-                    if (Model.SearchPopularity.PercentDifference < 0)
+                    if (Model.SearchPopularity.PercentDifference > 0)
                     {
                         <h2>The popularity of this search term has increased by</h2> 
                         <h2 class="text-success">@(Model.SearchPopularity.PercentDifference)%</h2>
