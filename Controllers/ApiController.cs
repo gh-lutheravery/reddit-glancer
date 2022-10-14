@@ -236,13 +236,11 @@ namespace GlanceReddit.Controllers
 				statsModel.ForeignWebsites = CastValueDoubleToInt(websiteOccurences);
 
 			// for every post selected, generate a user object from the author string
-			_logger.LogError("creating users");
 			var names = sub.Moderators.Select(m => m.Name).Take(50);
 
 			List <Reddit.Controllers.User> mods = names
 				.Select(n => client.Client.User(n)).ToList();
 
-			_logger.LogError("mods: " + string.IsNullOrEmpty(mods.ToString()).ToString());
 			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(mods, sub.Name));
 
 			statsModel.ForeignWebsites = statsModel.ForeignWebsites?.OrderByDescending(p => p.Value)
@@ -251,7 +249,6 @@ namespace GlanceReddit.Controllers
 			statsModel.RelatedSubreddits = statsModel.RelatedSubreddits?.OrderByDescending(p => p.Value)
 				.ToDictionary(p => p.Key, p => p.Value);
 
-			_logger.LogError("mods: " + string.IsNullOrEmpty(statsModel.RelatedSubreddits.ToString()).ToString());
 			//var crosspostedSubs = redditStatistics.GetCrosspostedSubs(sub);
 			//statsModel.CrosspostedSubreddits = CastValueDoubleToInt(crosspostedSubs);
 
@@ -291,6 +288,7 @@ namespace GlanceReddit.Controllers
 				vm.TcComArr = subreddit.Comments.GetNew(limit: SubmissionLimit).ToArray();
 				vm.StatsModel = PopulateSubredditStatsModel(subreddit, redditor);
 
+				_logger.LogError("count: " + vm.StatsModel.RelatedSubreddits.Count);
 				return View(vm);
 			}
 

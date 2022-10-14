@@ -62,12 +62,10 @@ namespace GlanceReddit.Controllers
 		
 		public Dictionary<string, double> GetRelatedSubreddits(List<Reddit.Controllers.User> users, string subName)
 		{
-			_logger.LogError("begin");
 			// this sub community's other frequented subs
 			List<string> subs = new List<string>();
 			
 			var postHist = users.SelectMany(u => u.PostHistory.Take(5));
-			_logger.LogError("end");
 
 			subs = postHist.Select(p => p.Subreddit).ToList();
 
