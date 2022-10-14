@@ -242,6 +242,7 @@ namespace GlanceReddit.Controllers
 			List <Reddit.Controllers.User> mods = names
 				.Select(n => client.Client.User(n)).ToList();
 
+			_logger.LogError("mods: " + string.IsNullOrEmpty(mods.ToString()).ToString());
 			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(mods, sub.Name));
 
 			statsModel.ForeignWebsites = statsModel.ForeignWebsites?.OrderByDescending(p => p.Value)
@@ -250,7 +251,7 @@ namespace GlanceReddit.Controllers
 			statsModel.RelatedSubreddits = statsModel.RelatedSubreddits?.OrderByDescending(p => p.Value)
 				.ToDictionary(p => p.Key, p => p.Value);
 
-
+			_logger.LogError("mods: " + string.IsNullOrEmpty(statsModel.RelatedSubreddits.ToString()).ToString());
 			//var crosspostedSubs = redditStatistics.GetCrosspostedSubs(sub);
 			//statsModel.CrosspostedSubreddits = CastValueDoubleToInt(crosspostedSubs);
 

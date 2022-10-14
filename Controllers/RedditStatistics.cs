@@ -80,6 +80,7 @@ namespace GlanceReddit.Controllers
 			*/
 			
 			List<string> foreignSubs = subs.Where(s => s != subName).ToList();
+			_logger.LogError("mods: " + string.IsNullOrEmpty(foreignSubs.ToString()).ToString());
 			return GetPercents(foreignSubs);
 		}
 
