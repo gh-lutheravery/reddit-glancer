@@ -27,6 +27,10 @@
     </div>
 }
 
+@Html.PagedListPager(Model.QueryList, page => Url.Action("SearchResult", "Api", new { page = page }))
+
+@*
 @Html.PagedListPager(Model.QueryList, page => Url.Action("SearchResult",
     new { page, searchBar = Model.Query, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
     new PagedListRenderOptions { LiElementClasses = new string[] { "" }, PageClasses = new string[] { "btn btn-outline-info m-1 bg-light" } })
+*@
