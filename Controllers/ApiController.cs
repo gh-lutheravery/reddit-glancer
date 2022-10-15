@@ -284,8 +284,8 @@ namespace GlanceReddit.Controllers
 				SubredditViewModel vm = new SubredditViewModel();
 
 				vm.Sub = subreddit;
-				vm.TcPostArr = subreddit.Posts.GetNew(limit: SubmissionLimit).ToArray();
-				vm.TcComArr = subreddit.Comments.GetNew(limit: SubmissionLimit).ToArray();
+				vm.TcPostArr = subreddit.Posts.GetHot(limit: SubmissionLimit).ToArray();
+				vm.TcComArr = subreddit.Comments.GetHot(limit: SubmissionLimit).ToArray();
 				vm.StatsModel = PopulateSubredditStatsModel(subreddit, redditor);
 
 				_logger.LogError("count: " + vm.StatsModel.RelatedSubreddits.Count);
