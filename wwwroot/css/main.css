@@ -108,10 +108,8 @@ ul {
 
 #search-box-container {
     display: flex;
-}
-
-.search-box {
-    flex-grow: 1;
+    margin-top: 2rem;
+    justify-content: space-evenly;
 }
 
 #info-background {

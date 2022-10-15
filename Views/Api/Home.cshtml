@@ -25,19 +25,14 @@
 <div class="home-container">
     <div class="home-col">
 
-        <div class="title-container text-margin" style="border-bottom: 5px solid darkslategray">
+        <div class="title-container text-margin" style="border-bottom: 5px solid #242424">
             <h1 class="title-container-text">Analyze Reddit to guage your audience.</h1>
-        </div>
-
-        <div style="border-radius: 0.5rem" id="home-btn" class="login-btn btn text-margin">
-            <a href="@Model.RedditUrl"
-            style="color: white; font-size: x-large;">Login with Reddit</a>
         </div>
 
         @if (Model.IsAuth)
         {
-            <div id="search-box-container">
-                <div class="search-box text-margin">
+            <div id="search-box-container" class="text-margin">
+                <div>
                     @using (Html.BeginForm("SearchResult", "Api", FormMethod.Get, new { @autocomplete = "off" }))
                     {
                         @Html.AntiForgeryToken()
@@ -45,7 +40,7 @@
                     }
                 </div>
 
-                <div class="search-box text-margin">
+                <div>
                     @using (Html.BeginForm("ApiRequest", "Api", FormMethod.Post, new { @autocomplete = "off" }))
                     {
                         @Html.AntiForgeryToken()
@@ -55,7 +50,7 @@
                     }
                 </div>
 
-                <div class="search-box text-margin">
+                <div>
                     @using (Html.BeginForm("ApiRequest", "Api", FormMethod.Post, new { @autocomplete = "off" }))
                     {
                         @Html.AntiForgeryToken()
@@ -64,6 +59,13 @@
                         })
                     }
                 </div>
+            </div>
+        }
+
+        else
+        {
+            <div style="border-radius: 0.5rem" id="home-btn" class="login-btn btn text-margin">
+                <a href="@Model.RedditUrl" style="color: white; font-size: x-large;">Login with Reddit</a>
             </div>
         }
 
