@@ -29,6 +29,14 @@
                         <h2 class="text-danger">@(Model.SearchPopularity.PercentDifference)%</h2>
                     }
                 }
+
+                <h2>On average,</h2>
+
+                <h2>Redditors posted about this topic every 
+                    @(Model.SearchPopularity.ResultFrequencyBefore) seconds.</h2>
+
+                <h2>Now they post about this topic every 
+                    @(Model.SearchPopularity.ResultFrequencyNow) seconds.</h2>
         </span>
 
         <span id="stat-container" style="width: 49.5%">
