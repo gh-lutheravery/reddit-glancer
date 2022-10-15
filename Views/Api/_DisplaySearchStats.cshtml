@@ -8,13 +8,13 @@
                 @{
                     if (Model.SearchPopularity.LowData)
                     {
-                        <h4 class="text-primary text-muted">Hmmm, your search doesn't have much data; results may be slightly inaccurate.
+                        <h4 class="text-muted">Hmmm, your search doesn't have much data; results may be slightly inaccurate.
                         Try a more general term.</h4>
                     }
 
                     if (Model.SearchPopularity.SimilarDifference)
                     {
-                        <h3 class="text-primary">The Interest for this topic hasn't changed much in the last month: </h3>
+                        <h3>The Interest for this topic hasn't changed much in the last month: </h3>
                     }
 
                     if (Model.SearchPopularity.PercentDifference > 0)
@@ -30,13 +30,20 @@
                     }
                 }
 
-                <h2>On average,</h2>
+                <h2>A month ago,</h2>
 
                 <h2>Redditors posted about this topic every 
                     @(Model.SearchPopularity.ResultFrequencyBefore) seconds.</h2>
 
                 <h2>Now they post about this topic every 
                     @(Model.SearchPopularity.ResultFrequencyNow) seconds.</h2>
+
+                <div class="graph">
+                    <h2>A month before</h2>
+                    <div style="width: @(Model.SearchPopularity.ResultFrequencyBefore)px;" class="bar"></div>
+                    <h2>Now</h2>
+                    <div style="width: @(Model.SearchPopularity.ResultFrequencyNow)px;" class="bar"></div>
+                </div>
         </span>
 
         <span id="stat-container" style="width: 49.5%">
@@ -94,6 +101,20 @@ table {
     overflow: auto;
     display: inline-block;
     width: 50%;
+}
+
+.graph {
+    width: 500px;
+    height: 119px;
+    background-color: #eaeaea;
+}
+.bar {
+    height: 57px;
+    margin: 1px;
+    display: block;
+    position: relative;
+    background-color: #FF8E64;
+    vertical-align: baseline;
 }
 
 </style>
