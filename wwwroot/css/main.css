@@ -255,6 +255,10 @@ a.article-title:hover {
 
 .post-index-header {
     margin: 2rem 0rem 2rem 0rem;
+    color: #343a40;
+    font-weight: 600;
+    border-bottom: 4px solid #FC1810;
+    padding-bottom: 16px;
 }
 
 .index-list-item {
