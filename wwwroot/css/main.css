@@ -52,12 +52,14 @@ ul {
     font-size: 4rem;
     color: #fff;
     margin-top: revert;
+    text-shadow: 2px 2px #242424;
 }
 
 #search-id {
     background-color: #FC1810;
     color: white;
     border: 0;
+    width: 25rem;
 }
 
     #search-id:focus {
