@@ -219,6 +219,11 @@ a.article-title:hover {
     margin: 0px 8vw 0px 8vw;
 }
 
+.navbar-gr {
+    box-shadow: 0 4px 8px rgba(0,0,0,.28);
+    margin-bottom: 6px;
+}
+
 .text-margin {
     margin: 0px 9vw 0px 9vw;
 }
