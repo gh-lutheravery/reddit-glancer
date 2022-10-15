@@ -4,31 +4,33 @@
 @model GlanceReddit.ViewModels.SearchResultViewModel
 
 @{
-    if (Model.QueryList.Count != 0)
-    {
-        <div class="header-container">
-            <h2 class="post-index-header" style="color: white">Search Results</h2>
-            <hr>
-            <h4 style="color: white">Page @Model.QueryList.PageNumber</h4>
+    <div class="text-margin">
+        if (Model.QueryList.Count != 0)
+        {
+            <div class="header-container">
+                <h2 class="post-index-header" style="color: white">Search Results</h2>
+                <hr>
+                <h4 style="color: white">Page @Model.QueryList.PageNumber</h4>
 
-            @Html.Partial("/Views/Api/_DisplaySearchStats.cshtml", Model.StatsModel)
+                @Html.Partial("/Views/Api/_DisplaySearchStats.cshtml", Model.StatsModel)
 
-            <h1>Related Subreddits</h1> 
-            @foreach (var pair in @Model.StatsModel.CommonResultSubreddits)
-            {
-                <li class="index-list-item">@pair.Key</li>
-                <li class="index-list-item">@pair.Value</li>
-            }
-        </div>
-        @Html.Partial("/Views/Api/_DisplayPost.cshtml", Model.QueryList.ToArray())
-    }
+                <h1>Related Subreddits</h1> 
+                @foreach (var pair in @Model.StatsModel.CommonResultSubreddits)
+                {
+                    <li class="index-list-item">@pair.Key</li>
+                    <li class="index-list-item">@pair.Value</li>
+                }
+            </div>
+            @Html.Partial("/Views/Api/_DisplayPost.cshtml", Model.QueryList.ToArray())
+        }
 
-    else
-    {
-        <div>
-            <h1><b>No Search Results Found.</b></h1>
-        </div>
-    }  
+        else
+        {
+            <div>
+                <h1><b>No Search Results Found.</b></h1>
+            </div>
+        }  
+    </div>
 }
 
 @Html.PagedListPager(Model.QueryList, page => Url.Action("SearchResult",
