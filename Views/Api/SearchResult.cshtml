@@ -14,12 +14,6 @@
 
                 @Html.Partial("/Views/Api/_DisplaySearchStats.cshtml", Model.StatsModel)
 
-                <h1>Related Subreddits</h1> 
-                @foreach (var pair in @Model.StatsModel.CommonResultSubreddits)
-                {
-                    <li class="index-list-item">@pair.Key</li>
-                    <li class="index-list-item">@pair.Value</li>
-                }
             </div>
             @Html.Partial("/Views/Api/_DisplayPost.cshtml", Model.QueryList.ToArray())
         }
