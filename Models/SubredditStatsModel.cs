@@ -6,7 +6,7 @@ namespace GlanceReddit.Models
 	{
 		public Dictionary<string, int> ForeignWebsites { get; set; }
 
-		public Dictionary<string, int> RelatedSubreddits { get; set; }
+		public List<string> RelatedSubreddits { get; set; }
 
 		public Dictionary<string, int> CrosspostedSubreddits { get; set; }
 	}

@@ -77,7 +77,7 @@ namespace GlanceReddit.Controllers
 				return -1;
 		}
 
-		public Dictionary<string, double> GetRelatedSubreddits(RedditUser redditor, string subName)
+		public List<string> GetRelatedSubreddits(RedditUser redditor, string subName)
 		{
 			List<Reddit.Controllers.Subreddit> searchedSubs = redditor.Client
 				.SearchSubreddits(subName);
@@ -85,7 +85,7 @@ namespace GlanceReddit.Controllers
 			List<string> subs = searchedSubs.Select(p => p.Name).ToList();
 			subs.Remove(subs.Find(s => s == subName));
 
-			return GetPercents(subs);
+			return subs;
 		}
 
 		private IEnumerable<string> GetSubreddits(List<Reddit.Controllers.Post> posts, int index, int lastIndex)

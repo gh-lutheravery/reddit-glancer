@@ -235,7 +235,7 @@ namespace GlanceReddit.Controllers
 			if (websiteOccurences.Any())
 				statsModel.ForeignWebsites = CastValueDoubleToInt(websiteOccurences);
 
-			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(client, sub.Name));
+			statsModel.RelatedSubreddits = redditStatistics.GetRelatedSubreddits(client, sub.Name);
 
 			if (statsModel.ForeignWebsites == null)
 				_logger.LogError("ForeignWebsites is null");
@@ -244,9 +244,6 @@ namespace GlanceReddit.Controllers
 				_logger.LogError("RelatedSubreddits is null");
 
 			statsModel.ForeignWebsites = statsModel.ForeignWebsites.OrderByDescending(p => p.Value)
-				.ToDictionary(p => p.Key, p => p.Value);
-
-			statsModel.RelatedSubreddits = statsModel.RelatedSubreddits.OrderByDescending(p => p.Value)
 				.ToDictionary(p => p.Key, p => p.Value);
 
 			//var crosspostedSubs = redditStatistics.GetCrosspostedSubs(sub);

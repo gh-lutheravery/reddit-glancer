@@ -35,11 +35,10 @@
                 <th class="stats-header">Related subreddits</th>
             </tr>
 
-            @foreach (var pair in @Model.RelatedSubreddits)
+            @foreach (var sub in @Model.RelatedSubreddits)
             {
                 <tr class="stats-row">
-                    <td class="stats-data">@pair.Key</td>
-                    <td class="stats-data">@(pair.Value)%</td>
+                    <td class="stats-data">@sub</td>
                 </tr>
             }
 
