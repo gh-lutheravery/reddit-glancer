@@ -243,7 +243,11 @@ namespace GlanceReddit.Controllers
 
 			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(mods, sub.Name));
 
-			_logger.LogError("dups: " + statsModel.RelatedSubreddits.First().Key + ", " + statsModel.RelatedSubreddits.Count);
+			if (statsModel.ForeignWebsites == null)
+				_logger.LogError("ForeignWebsites is null");
+
+			if (statsModel.RelatedSubreddits == null)
+				_logger.LogError("RelatedSubreddits is null");
 
 			statsModel.ForeignWebsites = statsModel.ForeignWebsites.OrderByDescending(p => p.Value)
 				.ToDictionary(p => p.Key, p => p.Value);
