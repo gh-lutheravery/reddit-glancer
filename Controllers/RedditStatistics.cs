@@ -1,6 +1,5 @@
 ﻿using GlanceReddit.ViewModels;
 using GlanceReddit.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -43,12 +42,8 @@ namespace GlanceReddit.Controllers
 		{
 			List<string> validUrls = urls.Where(u => !string.IsNullOrEmpty(u)).ToList();
 
-			_logger.LogError("validUrls: " + validUrls.First() + ", " + validUrls.Count);
-
 			List<string> foreignUrls = validUrls
 				.Where(url => !url.Contains("redd")).ToList();
-
-			_logger.LogError("foreignUrls: " + foreignUrls.First() + ", " + foreignUrls.Count);
 
 			if (foreignUrls.Count == 0)
 			{
@@ -57,12 +52,8 @@ namespace GlanceReddit.Controllers
 				return dict;
 			}
 
-			_logger.LogError("removed foreignUrls: " + foreignUrls.First() + ", " + foreignUrls.Count);
-
 			// remove string slice after third slash occurence, leaving just the host
 			List<string> hosts = foreignUrls.Select(u => u.Remove(NthIndexOf(u, "/", 3))).ToList();
-
-			_logger.LogError("hosts: " + hosts.First() + ", " + hosts.Count);
 
 			return GetPercents(hosts);
 		}
@@ -86,15 +77,6 @@ namespace GlanceReddit.Controllers
 			subs.Remove(subs.Find(s => s == subName));
 
 			return subs;
-		}
-
-		private IEnumerable<string> GetSubreddits(List<Reddit.Controllers.Post> posts, int index, int lastIndex)
-		{
-			if (index == lastIndex)
-				return new List<string>();
-
-			return GetSubreddits(posts, index + 1, lastIndex)
-				.Append(posts[index].Subreddit);
 		}
 
 		public async Task<List<Reddit.Controllers.Post>> RedditSearchAsync(
@@ -210,8 +192,6 @@ namespace GlanceReddit.Controllers
 		public Dictionary<string, double> GetCommonSubreddits(List<Reddit.Controllers.Post> queryList)
 		{
 			List<string> subs = queryList.Select(p => p.Subreddit).ToList();
-
-			_logger.LogError("subs count and element: " + subs.Count + ", " + subs[^1]);
 
 			return GetPercents(subs);
 		}
