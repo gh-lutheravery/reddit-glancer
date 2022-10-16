@@ -21,7 +21,6 @@ namespace GlanceReddit.Controllers
 
 		private Dictionary<string, double> GetPercents(List<string> list)
 		{
-			_logger.LogError("list: " + list.First() + ", " + list.Count);
 			Dictionary<string, double> dups = list.GroupBy(host => host)
 			  .ToDictionary(g => g.Key, g => (double)g.Count());
 
@@ -35,8 +34,6 @@ namespace GlanceReddit.Controllers
 				double percent = (pair.Value / sum) * 100;
 				percents.Add(pair.Key, percent);
 			}
-
-			_logger.LogError("dups: " + dups.First().Key + ", " + dups.Count);
 
 			return percents;
 		}
@@ -70,17 +67,20 @@ namespace GlanceReddit.Controllers
 			
 			var postHist = users.SelectMany(u => u.PostHistory.Take(5));
 
-			subs = postHist.Select(p => p.Subreddit).ToList();
+			_logger.LogError("postHist: " + postHist.First() + ", " + postHist.Count());
 
-			
+			subs = postHist.Select(p => p.Subreddit).ToList();
+			_logger.LogError("subs: " + subs.First() + ", " + subs.Count);
+
 			/*
 			subs = users.Select((u, i) => 
 				GetSubreddits(u.PostHistory, i, u.PostHistory.Count - 1))
 				.SelectMany(p => p)
 				.ToList();
 			*/
-			
+
 			List<string> foreignSubs = subs.Where(s => s != subName).ToList();
+			_logger.LogError("foreignSubs: " + foreignSubs.First() + ", " + foreignSubs.Count);
 			return GetPercents(foreignSubs);
 		}
 
