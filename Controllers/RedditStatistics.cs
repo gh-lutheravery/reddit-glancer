@@ -77,24 +77,15 @@ namespace GlanceReddit.Controllers
 				return -1;
 		}
 
-		public Dictionary<string, double> GetRelatedSubreddits(List<Reddit.Controllers.User> users, string subName)
+		public Dictionary<string, double> GetRelatedSubreddits(RedditUser redditor, string subName)
 		{
-			// this sub community's other frequented subs
-			List<string> subs = new List<string>();
+			List<Reddit.Controllers.Subreddit> searchedSubs = redditor.Client
+				.SearchSubreddits(subName);
 
-			var postHist = users.SelectMany(u => u.PostHistory.Take(5));
+			List<string> subs = searchedSubs.Select(p => p.Name).ToList();
+			subs.Remove(subs.Find(s => s == subName));
 
-			subs = postHist.Select(p => p.Subreddit).ToList();
-
-			/*
-			subs = users.Select((u, i) => 
-				GetSubreddits(u.PostHistory, i, u.PostHistory.Count - 1))
-				.SelectMany(p => p)
-				.ToList();
-			*/
-
-			List<string> foreignSubs = subs.Where(s => s != subName).ToList();
-			return GetPercents(foreignSubs);
+			return GetPercents(subs);
 		}
 
 		private IEnumerable<string> GetSubreddits(List<Reddit.Controllers.Post> posts, int index, int lastIndex)
