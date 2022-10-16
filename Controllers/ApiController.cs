@@ -243,6 +243,8 @@ namespace GlanceReddit.Controllers
 
 			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(mods, sub.Name));
 
+			_logger.LogError("dups: " + statsModel.RelatedSubreddits.First().Key + ", " + statsModel.RelatedSubreddits.Count);
+
 			statsModel.ForeignWebsites = statsModel.ForeignWebsites.OrderByDescending(p => p.Value)
 				.ToDictionary(p => p.Key, p => p.Value);
 
@@ -288,7 +290,6 @@ namespace GlanceReddit.Controllers
 				vm.TcComArr = subreddit.Comments.GetTop(limit: SubmissionLimit).ToArray();
 				vm.StatsModel = PopulateSubredditStatsModel(subreddit, redditor);
 
-				_logger.LogError("count: " + vm.StatsModel.RelatedSubreddits.Count);
 				return View(vm);
 			}
 

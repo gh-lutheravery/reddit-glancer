@@ -35,6 +35,8 @@ namespace GlanceReddit.Controllers
 				percents.Add(pair.Key, percent);
 			}
 
+			_logger.LogError("dups: " + dups.First().Key + ", " + dups.Count);
+
 			return percents;
 		}
 
@@ -78,7 +80,6 @@ namespace GlanceReddit.Controllers
 			*/
 			
 			List<string> foreignSubs = subs.Where(s => s != subName).ToList();
-			_logger.LogError("subs: " + String.Join(", ", foreignSubs));
 			return GetPercents(foreignSubs);
 		}
 
