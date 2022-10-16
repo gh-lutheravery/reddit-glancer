@@ -235,13 +235,7 @@ namespace GlanceReddit.Controllers
 			if (websiteOccurences.Any())
 				statsModel.ForeignWebsites = CastValueDoubleToInt(websiteOccurences);
 
-			// for every post selected, generate a user object from the author string
-			var names = sub.Moderators.Select(m => m.Name).Take(50);
-
-			List <Reddit.Controllers.User> mods = names
-				.Select(n => client.Client.User(n)).ToList();
-
-			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(mods, sub.Name));
+			statsModel.RelatedSubreddits = CastValueDoubleToInt(redditStatistics.GetRelatedSubreddits(client, sub.Name));
 
 			if (statsModel.ForeignWebsites == null)
 				_logger.LogError("ForeignWebsites is null");
