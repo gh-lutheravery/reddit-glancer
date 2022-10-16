@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace GlanceReddit.Controllers
 {
@@ -56,18 +57,26 @@ namespace GlanceReddit.Controllers
 				return dict;
 			}
 
-			foreignUrls.RemoveAll(u => UriHostNameType.Unknown == Uri.CheckHostName(u));
-
 			_logger.LogError("removed foreignUrls: " + foreignUrls.First() + ", " + foreignUrls.Count);
 
-			List<string> hosts = foreignUrls.Select(u => new Uri(u).Host).ToList();
+			// remove string slice after third slash occurence, leaving just the host
+			List<string> hosts = foreignUrls.Select(u => u.Remove(NthIndexOf(u, "/", 3))).ToList();
 
 			_logger.LogError("hosts: " + hosts.First() + ", " + hosts.Count);
 
 			return GetPercents(hosts);
 		}
 
-		
+		private int NthIndexOf(string target, string value, int n)
+		{
+			Match m = Regex.Match(target, "((" + Regex.Escape(value) + ").*?){" + n + "}");
+
+			if (m.Success)
+				return m.Groups[2].Captures[n - 1].Index;
+			else
+				return -1;
+		}
+
 		public Dictionary<string, double> GetRelatedSubreddits(List<Reddit.Controllers.User> users, string subName)
 		{
 			// this sub community's other frequented subs
