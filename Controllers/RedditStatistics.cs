@@ -42,8 +42,12 @@ namespace GlanceReddit.Controllers
 		{
 			List<string> validUrls = urls.Where(u => !string.IsNullOrEmpty(u)).ToList();
 
+			_logger.LogError("validUrls: " + validUrls.First() + ", " + validUrls.Count);
+
 			List<string> foreignUrls = validUrls
 				.Where(url => !url.Contains("redd")).ToList();
+
+			_logger.LogError("foreignUrls: " + foreignUrls.First() + ", " + foreignUrls.Count);
 
 			if (foreignUrls.Count == 0)
 			{
@@ -54,7 +58,11 @@ namespace GlanceReddit.Controllers
 
 			foreignUrls.RemoveAll(u => UriHostNameType.Unknown == Uri.CheckHostName(u));
 
+			_logger.LogError("removed foreignUrls: " + foreignUrls.First() + ", " + foreignUrls.Count);
+
 			List<string> hosts = foreignUrls.Select(u => new Uri(u).Host).ToList();
+
+			_logger.LogError("hosts: " + hosts.First() + ", " + hosts.Count);
 
 			return GetPercents(hosts);
 		}
@@ -64,13 +72,10 @@ namespace GlanceReddit.Controllers
 		{
 			// this sub community's other frequented subs
 			List<string> subs = new List<string>();
-			
+
 			var postHist = users.SelectMany(u => u.PostHistory.Take(5));
 
-			_logger.LogError("postHist: " + postHist.First() + ", " + postHist.Count());
-
 			subs = postHist.Select(p => p.Subreddit).ToList();
-			_logger.LogError("subs: " + subs.First() + ", " + subs.Count);
 
 			/*
 			subs = users.Select((u, i) => 
@@ -80,7 +85,6 @@ namespace GlanceReddit.Controllers
 			*/
 
 			List<string> foreignSubs = subs.Where(s => s != subName).ToList();
-			_logger.LogError("foreignSubs: " + foreignSubs.First() + ", " + foreignSubs.Count);
 			return GetPercents(foreignSubs);
 		}
 
