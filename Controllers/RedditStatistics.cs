@@ -21,6 +21,7 @@ namespace GlanceReddit.Controllers
 
 		private Dictionary<string, double> GetPercents(List<string> list)
 		{
+			_logger.LogError("list: " + list.First() + ", " + list.Count);
 			Dictionary<string, double> dups = list.GroupBy(host => host)
 			  .ToDictionary(g => g.Key, g => (double)g.Count());
 
