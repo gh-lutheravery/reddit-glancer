@@ -145,6 +145,7 @@ namespace GlanceReddit.Controllers
 				queryPop.LowData = true;
 			}
 
+			_logger.LogError(nowTs[0].Seconds.ToString());
 			double avgDistanceNow = nowTs.Average(p => p.TotalSeconds);
 			double avgDistanceBefore = beforeTs.Average(p => p.TotalSeconds);
 
@@ -152,6 +153,10 @@ namespace GlanceReddit.Controllers
 			// put data into object
 			queryPop.ResultFrequencyBefore = avgDistanceBefore;
 			queryPop.ResultFrequencyNow = avgDistanceNow;
+
+			queryPop.ReducedResultFrequencyBefore = 500 / (avgDistanceBefore / avgDistanceNow);
+			queryPop.ReducedResultFrequencyNow = 500 / (avgDistanceNow / avgDistanceBefore);
+
 
 			// get rounded percentage, then negate positive/negative
 			int percent = (int)Math.Round(((avgDistanceNow - avgDistanceBefore) / avgDistanceBefore * 100));
