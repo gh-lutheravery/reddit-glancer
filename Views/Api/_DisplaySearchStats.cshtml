@@ -8,25 +8,27 @@
                 @{
                     if (Model.SearchPopularity.LowData)
                     {
-                        <h4 class="text-muted">Hmmm, your search doesn't have much data; results may be slightly inaccurate.
+                        <h4 class="text-muted">Hmmm, your search doesn't have much data; results may be inaccurate.
                         Try a more general term.</h4>
                     }
 
                     if (Model.SearchPopularity.SimilarDifference)
                     {
-                        <h3>The Interest for this topic hasn't changed much in the last month: </h3>
+                        <h3>The Interest for this topic hasn't changed much in the last month.</h3>
                     }
 
-                    if (Model.SearchPopularity.PercentDifference > 0)
+                    else if (Model.SearchPopularity.PercentDifference > 0)
                     {
-                        <h2>The popularity of this search term has increased by</h2> 
-                        <h2 class="text-success">@(Model.SearchPopularity.PercentDifference)%</h2>
+                        <h2>The popularity of this search term has increased by 
+                        <span class="text-success">@(Model.SearchPopularity.PercentDifference)%</span>
+                        </h2> 
                     }
 
                     else
                     {
-                        <h2>The popularity of this search term has declined by</h2> 
-                        <h2 class="text-danger">@(Model.SearchPopularity.PercentDifference)%</h2>
+                        <h2>The popularity of this search term has decreased by 
+                        <span class="text-success">@(Model.SearchPopularity.PercentDifference)%</span>
+                        </h2> 
                     }
                 }
 
@@ -42,7 +44,7 @@
                     <h2>A month before</h2>
                     <div style="width: @(Model.SearchPopularity.ReducedResultFrequencyBefore)px;" class="bar"></div>
                     <h2>Now</h2>
-                    <div style="width: @(Model.SearchPopularity.ReducedResultFrequencyBefore)px;" class="bar"></div>
+                    <div style="width: @(Model.SearchPopularity.ReducedResultFrequencyNow)px;" class="bar"></div>
                 </div>
         </span>
 

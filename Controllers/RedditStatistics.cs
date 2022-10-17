@@ -154,15 +154,16 @@ namespace GlanceReddit.Controllers
 			queryPop.ResultFrequencyBefore = avgDistanceBefore;
 			queryPop.ResultFrequencyNow = avgDistanceNow;
 
-			queryPop.ReducedResultFrequencyBefore = 500 / (avgDistanceBefore / avgDistanceNow);
-			queryPop.ReducedResultFrequencyNow = 500 / (avgDistanceNow / avgDistanceBefore);
-
-
 			// get rounded percentage, then negate positive/negative
-			int percent = (int)Math.Round(((avgDistanceNow - avgDistanceBefore) / avgDistanceBefore * 100));
+			double doublePercent = (avgDistanceNow - avgDistanceBefore) / avgDistanceBefore;
+			int percent = (int)Math.Round((doublePercent * 100));
 			percent *= -1;
 
 			queryPop.PercentDifference = percent;
+
+			// reduced values for displaying bar graph
+			queryPop.ReducedResultFrequencyBefore = 300 / (avgDistanceBefore / avgDistanceNow);
+			queryPop.ReducedResultFrequencyNow = queryPop.ReducedResultFrequencyBefore * doublePercent;
 
 			// check if frequency now is effectively the same as before
 			int PopularTopicThreshold = 50000;
