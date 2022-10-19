@@ -163,15 +163,23 @@ namespace GlanceReddit.Controllers
 			queryPop.PercentDifference = percent;
 
 			// reduced values for displaying bar graph
-			queryPop.ReducedResultFrequencyBefore = 300 / (avgDistanceBefore / avgDistanceNow);
+			double BarGraphLimit = 500;
+			queryPop.ReducedResultFrequencyBefore = BarGraphLimit / (avgDistanceBefore / avgDistanceNow);
 
 			double difference = queryPop.ReducedResultFrequencyBefore * doublePercent * -1;
 
 			if (avgDistanceBefore > avgDistanceNow)
 				queryPop.ReducedResultFrequencyNow = queryPop.ReducedResultFrequencyBefore - difference;
+			
 
 			else
 				queryPop.ReducedResultFrequencyNow = queryPop.ReducedResultFrequencyBefore + difference;
+
+			queryPop.ReducedResultFrequencyNow = queryPop.ReducedResultFrequencyNow > BarGraphLimit ? BarGraphLimit :
+					queryPop.ReducedResultFrequencyNow;
+
+			queryPop.ReducedResultFrequencyBefore = queryPop.ReducedResultFrequencyBefore > BarGraphLimit ? BarGraphLimit :
+				queryPop.ReducedResultFrequencyBefore;
 
 			// check if frequency now is effectively the same as before
 			int PopularTopicThreshold = 50000;
