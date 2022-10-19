@@ -259,7 +259,9 @@ namespace GlanceReddit.Controllers
 			RedditStatistics redditStatistics = new RedditStatistics(_logger);
 
 			statsModel.SearchPopularity = await redditStatistics.GetQueryPopularity(client, query);
-			statsModel.CommonResultSubreddits = redditStatistics.GetCommonSubreddits(queryList);
+			var doubles = redditStatistics.GetCommonSubreddits(queryList);
+
+			statsModel.CommonResultSubreddits = CastValueDoubleToInt(doubles);
 
 			return statsModel;
 		}
