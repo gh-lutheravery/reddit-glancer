@@ -19,16 +19,16 @@
 
                     else if (Model.SearchPopularity.PercentDifference > 0)
                     {
-                        <h2>The popularity of this search term has increased by 
+                        <h3>The popularity of this search term has increased by 
                         <span class="text-success">@(Model.SearchPopularity.PercentDifference)%</span>
-                        </h2> 
+                        </h3> 
                     }
 
                     else
                     {
-                        <h2>The popularity of this search term has decreased by 
+                        <h3>The popularity of this search term has decreased by 
                         <span class="text-success">@(Model.SearchPopularity.PercentDifference)%</span>
-                        </h2> 
+                        </h3>
                     }
                 }
 
@@ -38,6 +38,16 @@
                     <h2>Now</h2>
                     <div style="width: @(Model.SearchPopularity.ReducedResultFrequencyNow)px;" class="bar"></div>
                 </div>
+
+                <h3>Redditors searched this term every
+                <b>@(Model.SearchPopularity.ResultFrequencyBefore)%</b>
+                    second(s) a month ago.
+                </h3> 
+
+                <h3>Redditors search this term every
+                <b>@(Model.SearchPopularity.ReducedResultFrequencyNow)%</b>
+                    second(s) now.
+                </h3> 
         </span>
 
         <span id="stat-container" style="width: 49.5%">
