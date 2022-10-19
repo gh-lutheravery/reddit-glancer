@@ -148,9 +148,6 @@ namespace GlanceReddit.Controllers
 			double avgDistanceNow = nowTs.Average(p => p.Seconds);
 			double avgDistanceBefore = beforeTs.Average(p => p.Seconds);
 
-			_logger.LogError("Now: " + avgDistanceNow.ToString());
-			_logger.LogError("Before: " + avgDistanceBefore.ToString());
-
 			// put data into object
 			queryPop.ResultFrequencyBefore = avgDistanceBefore;
 			queryPop.ResultFrequencyNow = avgDistanceNow;
