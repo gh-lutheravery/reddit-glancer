@@ -102,7 +102,7 @@ namespace GlanceReddit.Controllers
 					{ 
 						t = "month", 
 						limit = 100, 
-						sort = "top" 
+						sort = "hot"
 					};
 
 			var monthList = await RedditSearchAsync(redditor, searchPostsNow);
@@ -120,7 +120,7 @@ namespace GlanceReddit.Controllers
 						limit = 100,
 						q = query,
 						t = "month",
-						sort = "top"
+						sort = "hot"
 					};
 
 			var beforeMonthList = await RedditSearchAsync(redditor, searchPostsBefore);
