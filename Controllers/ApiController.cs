@@ -168,53 +168,6 @@ namespace GlanceReddit.Controllers
 			return RedirectToAction(nameof(Home));
 		}
 
-		[Route("user")]
-		public ActionResult RedditGetUser(string username)
-		{
-			if (!IsRefreshTokenSet())
-			{
-				TempData["ErrorMessage"] = NotAuthError;
-				return RedirectToAction(nameof(Home));
-			}
-
-			RedditUser redditor = InitRedditor();
-			Reddit.Inputs.Search.SearchGetSearchInput q =
-					new Reddit.Inputs.Search.SearchGetSearchInput(username)
-					{ type = "user" };
-
-			try
-			{
-				var user = redditor.Client.User(username).About();
-
-				UserViewModel vm = new UserViewModel();
-
-				vm.User = user;
-				vm.TcPostArr = user.GetPostHistory(limit: SubmissionLimit).ToArray();
-				vm.TcComArr = user.GetCommentHistory(limit: SubmissionLimit).ToArray();
-
-				return View(vm);
-			}
-
-			catch (RedditForbiddenException ex)
-			{
-				TempData["ErrorMessage"] = ForbiddenError;
-				return RedirectToAction(nameof(Home));
-			}
-
-			// below two exceptions are both caused by element not existing
-			catch (RedditBadRequestException ex)
-			{
-				TempData["ErrorMessage"] = NoUserError;
-				return RedirectToAction(nameof(Home));
-			}
-
-			catch (RedditNotFoundException ex)
-			{
-				TempData["ErrorMessage"] = NoUserError;
-				return RedirectToAction(nameof(Home));
-			}
-		}
-
 		private Dictionary<string, int> CastValueDoubleToInt(Dictionary<string, double> originalDict)
 		{
 			// convert each value to an int from websiteOccurences dictionary
@@ -267,7 +220,7 @@ namespace GlanceReddit.Controllers
 		}
 
 		[Route("subreddit")]
-		public ActionResult RedditGetSubreddit(string name)
+		public ActionResult Subreddit(string name)
 		{
 			if (!IsRefreshTokenSet())
 			{
@@ -335,19 +288,7 @@ namespace GlanceReddit.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					if (viewRequest.RedditorName != null)
-					{
-						if (!IsRefreshTokenSet())
-						{
-							TempData["ErrorMessage"] = NotAuthError;
-							return RedirectToAction(nameof(Home));
-						}
-
-						return RedirectToAction(nameof(RedditGetUser),
-								new { username = viewRequest.RedditorName });
-					}
-
-					else if (viewRequest.SubredditName != null)
+					if (viewRequest.SubredditName != null)
 					{
 						if (!IsRefreshTokenSet())
 						{
@@ -355,7 +296,7 @@ namespace GlanceReddit.Controllers
 							return RedirectToAction(nameof(Home));
 						}
 						
-						return RedirectToAction(nameof(RedditGetSubreddit),
+						return RedirectToAction(nameof(Subreddit),
 								new { name = viewRequest.SubredditName });
 					}
 				}
