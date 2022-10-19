@@ -49,16 +49,6 @@
                         })
                     }
                 </div>
-
-                <div>
-                    @using (Html.BeginForm("ApiRequest", "Api", FormMethod.Post, new { @autocomplete = "off" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.TextBoxFor(m => m.RedditorName, "", new { @class = "form-control-lg", @type = "text", 
-                            @placeholder = "Search for users", @id = "search-id"
-                        })
-                    }
-                </div>
             </div>
         }
 
