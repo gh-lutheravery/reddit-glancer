@@ -2,29 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Security.Claims;
 using System.Web;
 using System.Collections.Specialized;
-using System.Text;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
-using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using Reddit;
 using Reddit.AuthTokenRetriever;
 using Reddit.Exceptions;
 using X.PagedList;
-using Newtonsoft.Json.Linq;
 using GlanceReddit.ViewModels;
-using Azure.Containers.ContainerRegistry;
-using Azure.Identity;
 using Microsoft.Extensions.Logging;
-using uhttpsharp.Headers;
 using Microsoft.Extensions.Primitives;
 using GlanceReddit.Models;
 
@@ -109,23 +96,6 @@ namespace GlanceReddit.Controllers
 			return View();
 		}
 
-		public string GenerateKey()
-		{
-			SymmetricSecurityKey secKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")));
-			SigningCredentials credentials = new SigningCredentials(secKey, SecurityAlgorithms.HmacSha256);
-
-			Claim[] claims = new Claim[] { new Claim(ClaimTypes.Name, HostAuthorizer) };
-
-			JwtSecurityToken token = new JwtSecurityToken(Environment.GetEnvironmentVariable("JWT_ISSUER"),
-				Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
-				claims,
-				expires: DateTime.Now.AddMinutes(5),
-				signingCredentials: credentials
-			);
-
-			return new JwtSecurityTokenHandler().WriteToken(token);
-		}
-
 		[Route("login")]
 		[ValidateAntiForgeryToken]
 		[HttpPost]
@@ -138,20 +108,6 @@ namespace GlanceReddit.Controllers
 
 			TempData["ErrorMessage"] = AlreadyAuthError;
 			return RedirectToAction(nameof(Home));
-		}
-
-		[Route("profile")]
-		public ActionResult Profile()
-		{
-			if (!IsRefreshTokenSet())
-			{
-				TempData["ErrorMessage"] = NotAuthError;
-				return RedirectToAction(nameof(Home));
-			}
-
-			RedditUser redditor = InitRedditor(isProfile: true);
-
-			return View(redditor);
 		}
 
 		public async Task<ActionResult> SignOut()
@@ -198,10 +154,6 @@ namespace GlanceReddit.Controllers
 
 			statsModel.ForeignWebsites = statsModel.ForeignWebsites.OrderByDescending(p => p.Value)
 				.ToDictionary(p => p.Key, p => p.Value);
-
-			//var crosspostedSubs = redditStatistics.GetCrosspostedSubs(sub);
-			//statsModel.CrosspostedSubreddits = CastValueDoubleToInt(crosspostedSubs);
-
 
 			return statsModel;
 		}
@@ -367,8 +319,6 @@ namespace GlanceReddit.Controllers
 							new Reddit.Inputs.Search.SearchGetSearchInput(query) { limit = SearchSubmissionLimit, sort = "best" };
 
 			var queryList = redditor.Client.Search(q).ToList();
-
-
 
 			return queryList;
 		}
