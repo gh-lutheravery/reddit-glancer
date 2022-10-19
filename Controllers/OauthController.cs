@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Reddit.AuthTokenRetriever;
 using RestSharp;
 using System;
-using System.Net;
 using System.Text;
 
 namespace GlanceReddit.Controllers
@@ -12,8 +10,6 @@ namespace GlanceReddit.Controllers
 	public class OauthController : Controller
 	{
 		readonly string RedirectUri = "https://glancereddit.azurewebsites.net/auth-redirect";
-		readonly string AppId = Environment.GetEnvironmentVariable("APP_ID");
-		readonly string AppSecret = Environment.GetEnvironmentVariable("APP_SECRET");
 
 		public string ExecuteRequest(RestRequest restRequest)
 		{
@@ -32,16 +28,9 @@ namespace GlanceReddit.Controllers
 			}
 		}
 
-		// GET: OauthController/Create
+		// construct oauth request then deserialize returned token
 		public OAuthToken FetchToken(string code, string state)
 		{
-			/*
-			AuthTokenRetrieverLib authLib = new AuthTokenRetrieverLib(
-			AppId, 8080, host: GetIPAddress(),
-			redirectUri: RedirectUri, AppSecret);
-
-			authLib.AwaitCallback();
-			*/
 			RestRequest restRequest = new RestRequest("/api/v1/access_token", Method.POST);
 
 			restRequest.AddHeader("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(state)));
@@ -49,7 +38,7 @@ namespace GlanceReddit.Controllers
 
 			restRequest.AddParameter("grant_type", "authorization_code");
 			restRequest.AddParameter("code", code);
-			restRequest.AddParameter("redirect_uri", RedirectUri);  // This must be an EXACT match in the app settings on Reddit!  --Kris
+			restRequest.AddParameter("redirect_uri", RedirectUri);
 
 			OAuthToken oAuthToken = JsonConvert.DeserializeObject<OAuthToken>(ExecuteRequest(restRequest));
 
