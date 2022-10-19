@@ -145,8 +145,8 @@ namespace GlanceReddit.Controllers
 				queryPop.LowData = true;
 			}
 
-			double avgDistanceNow = nowTs.Average(p => p.TotalSeconds);
-			double avgDistanceBefore = beforeTs.Average(p => p.TotalSeconds);
+			double avgDistanceNow = nowTs.Average(p => p.Seconds);
+			double avgDistanceBefore = beforeTs.Average(p => p.Seconds);
 
 			_logger.LogError("Now: " + avgDistanceNow.ToString());
 			_logger.LogError("Before: " + avgDistanceBefore.ToString());
