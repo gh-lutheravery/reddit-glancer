@@ -145,10 +145,11 @@ namespace GlanceReddit.Controllers
 				queryPop.LowData = true;
 			}
 
-			_logger.LogError(nowTs[0].Seconds.ToString());
 			double avgDistanceNow = nowTs.Average(p => p.TotalSeconds);
 			double avgDistanceBefore = beforeTs.Average(p => p.TotalSeconds);
 
+			_logger.LogError("Now: " + avgDistanceNow.ToString());
+			_logger.LogError("Before: " + avgDistanceBefore.ToString());
 
 			// put data into object
 			queryPop.ResultFrequencyBefore = avgDistanceBefore;
