@@ -182,9 +182,7 @@ namespace GlanceReddit.Controllers
 				queryPop.ReducedResultFrequencyBefore;
 
 			// check if frequency now is effectively the same as before
-			int PopularTopicThreshold = 50000;
-
-			double similarityMargin = avgDistanceBefore < PopularTopicThreshold ? 5000 : 15000;
+			double similarityMargin = 1.5;
 
 			double lesserVariance = avgDistanceBefore - similarityMargin;
 			double greaterVariance = avgDistanceBefore + similarityMargin;
