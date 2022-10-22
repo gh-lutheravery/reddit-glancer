@@ -73,7 +73,9 @@ ul {
     font-weight: 600;
 }
 
-
+dropdown-dark-gr {
+    background-color: #343a40;
+}
 
 #search-id::placeholder {
     color: white;
