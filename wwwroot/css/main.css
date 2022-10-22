@@ -121,6 +121,7 @@ ul {
     display: flex;
     margin-top: 2rem;
     justify-content: space-evenly;
+    flex-wrap: wrap;
 }
 
 #info-background {
@@ -153,6 +154,16 @@ ul {
 @media only screen and (max-width: 1375px) {
     #stat-container {
         width: 100% !important;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .title-container-text {
+        margin-top: 0;
+    }
+
+    #search-id {
+        width: auto;
     }
 }
 

@@ -32,7 +32,7 @@
         @if (Model.IsAuth)
         {
             <div id="search-box-container" class="text-margin">
-                <div>
+                <div style="margin-bottom: 1rem;">
                     @using (Html.BeginForm("SearchResult", "Api", FormMethod.Get, new { @autocomplete = "off" }))
                     {
                         @Html.AntiForgeryToken()
