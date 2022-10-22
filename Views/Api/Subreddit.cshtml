@@ -2,7 +2,7 @@
 
 <div class="text-margin">
     <div class="header-container">
-        <h1 class="post-index-header" style="color: white">@Model.Sub.Subscribers subscribed to @Model.Sub.Name</h1>
+        <h1 class="post-index-header">@Model.Sub.Subscribers subscribed to @Model.Sub.Name</h1>
 
         <ul class="index-list-item">
             <li class="index-list-item">Description: @Model.Sub.Description</li>
@@ -23,19 +23,19 @@
                     <li class="index-list-item">Looks like you have to be over 18 to view this subreddit.</li>
                 }
             }
-
-            @Html.Partial("/Views/Api/_DisplaySubredditStats.cshtml", Model.StatsModel)
         </ul>
     </div>
 
+    @Html.Partial("/Views/Api/_DisplaySubredditStats.cshtml", Model.StatsModel)
+
     <div class="header-container">
-        <h2 class="post-index-header" style="color: white">15 New Posts: (if they exist)</h2>
+        <h2 class="post-index-header">15 New Posts: (if they exist)</h2>
     </div>
 
     @Html.Partial("/Views/Api/_DisplayPost.cshtml", Model.TcPostArr)
 
     <div class="header-container">
-        <h2 class="post-index-header" style="color: white">15 New Comments: (if they exist)</h2>
+        <h2 class="post-index-header">15 New Comments: (if they exist)</h2>
     </div>
 
     @Html.Partial("/Views/Api/_DisplayComment.cshtml", Model.TcComArr)
