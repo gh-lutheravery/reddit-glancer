@@ -26,6 +26,8 @@ ul {
     font-weight: 500;
 }
 
+
+
 .content-section {
     background: #ffffff;
     padding: 10px 20px;
@@ -49,7 +51,7 @@ ul {
 }
 
 .title-container-text {
-    font-size: 4rem;
+    font-size: 3.5rem;
     color: #fff;
     margin-top: revert;
     text-shadow: 2px 2px #242424;
@@ -80,6 +82,7 @@ ul {
 
 .home-container {
     display: flex;
+    justify-content: center;
     background-image: url("home-img.jpg");
     background-color: #cccccc;
     height: 500px;
@@ -92,11 +95,12 @@ ul {
 
 #home-btn {
     border-radius: 2rem;
-    width: 24rem;
+    border-top-right-radius: 0rem;
+    width: 300px;
     height: 3.5rem;
-    margin-left: 47.4rem;
     margin-top: 1rem;
     background-color: #FC1810;
+    align-self: center;
 }
 
 #login-desc {
@@ -105,7 +109,10 @@ ul {
 }
 
 .home-col {
-    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 60%;
 }
 
 #search-box-container {
