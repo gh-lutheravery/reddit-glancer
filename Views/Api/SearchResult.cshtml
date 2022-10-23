@@ -6,35 +6,36 @@
 
 @{
     <div class="text-margin">
-        @if (Model.QueryList.Count != 0)
+            @if (Model.QueryList.Count != 0)
         {
-            <div class="header-container">
-                <h2 class="post-index-header">Search Results</h2>
-                <hr>
+                <div class="header-container">
+                    <h2 class="post-index-header">Search Results</h2>
+                    <hr>
 
-                @Html.Partial("/Views/Api/_DisplaySearchStats.cshtml", Model.StatsModel)
+                    @Html.Partial("/Views/Api/_DisplaySearchStats.cshtml", Model.StatsModel)
 
-            </div>
-            @Html.Partial("/Views/Api/_DisplayPost.cshtml", Model.QueryList.ToArray())
+                </div>
+                @Html.Partial("/Views/Api/_DisplayPost.cshtml", Model.QueryList.ToArray())
         }
 
         else
         {
-            <div>
-                <h1><b>No Search Results Found.</b></h1>
-            </div>
-        }  
+                <div>
+                    <h1><b>No Search Results Found.</b></h1>
+                </div>
+        }
+
+        @Html.PagedListPager(Model.QueryList, page => Url.Action("SearchResult", "Api", new { page = page, searchBar = Model.Query }),
+        new PagedListRenderOptions
+        {
+            DisplayItemSliceAndTotal = false,
+            ContainerDivClasses = new [] { "navigation" },
+            LiElementClasses = new string[] { "page-item" }, 
+            PageClasses = new string[] { "page-link" } 
+        })
+
     </div>
 }
-
-@Html.PagedListPager(Model.QueryList, page => Url.Action("SearchResult", "Api", new { page = page, searchBar = Model.Query }),
-    new PagedListRenderOptions
-    {
-        DisplayItemSliceAndTotal = true,
-        ContainerDivClasses = new [] { "navigation" },
-        LiElementClasses = new string[] { "page-item" }, 
-        PageClasses = new string[] { "page-link" } 
-    })
 
 @*
 @Html.PagedListPager(Model.QueryList, page => Url.Action("SearchResult",
