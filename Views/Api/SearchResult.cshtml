@@ -1,6 +1,7 @@
 ﻿@using X.PagedList.Mvc.Core;
 @using X.PagedList;
 @using X.PagedList.Web.Common;
+
 @model GlanceReddit.ViewModels.SearchResultViewModel
 
 @{
@@ -27,8 +28,13 @@
 }
 
 @Html.PagedListPager(Model.QueryList, page => Url.Action("SearchResult", "Api", new { page = page, searchBar = Model.Query }),
-    new PagedListRenderOptions 
-    { LiElementClasses = new string[] { "" }, PageClasses = new string[] { "btn btn-outline-info m-1 bg-light" } }))
+    new PagedListRenderOptions
+    {
+        DisplayItemSliceAndTotal = true,
+        ContainerDivClasses = new [] { "navigation" },
+        LiElementClasses = new string[] { "page-item" }, 
+        PageClasses = new string[] { "page-link" } 
+    })
 
 @*
 @Html.PagedListPager(Model.QueryList, page => Url.Action("SearchResult",
