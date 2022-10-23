@@ -160,7 +160,7 @@ namespace GlanceReddit.Controllers
 			queryPop.PercentDifference = percent;
 
 			// reduced values for displaying bar graph
-			double BarGraphLimit = 500;
+			double BarGraphLimit = 600;
 			queryPop.ReducedResultFrequencyBefore = BarGraphLimit / (avgDistanceBefore / avgDistanceNow);
 
 			double difference = queryPop.ReducedResultFrequencyBefore * doublePercent * -1;
