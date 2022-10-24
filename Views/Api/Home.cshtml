@@ -1,26 +1,8 @@
 ﻿@model GlanceReddit.ViewModels.HomeViewModel
 
-<script>
-       let msg = document.getElementsByClassName("msg");
-       let tally = 0;
+<h2 class="text-danger msg text-margin">@Model.ErrorMessage</h2>
 
-       for (let element of msg) {
-           if (element.innerHTML !== "") {
-               element.style.marginTop = "1rem";
-               element.style.marginBottom = "1rem";
-
-               if (tally == 0) { 
-                   let homeCont = document.getElementById("home-container");
-                   homeCont.style.marginTop = "0";
-               }
-           }
-           tally++;
-       }     
-</script>
-
-<h2 class="text-danger msg text-margin" onloadstart="setMargin(e)">@Model.ErrorMessage</h2>
-
-<h2 class="text-success fade-in msg text-margin" onloadstart="setMargin(e)">@Model.SuccessMessage</h2>
+<h2 class="text-success fade-in msg text-margin">@Model.SuccessMessage</h2>
 
 <div class="home-container">
     <div class="home-col">

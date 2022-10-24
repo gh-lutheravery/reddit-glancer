@@ -26,7 +26,13 @@ ul {
     font-weight: 500;
 }
 
+.msg {
+    margin-bottom: 1rem;
+}
 
+    .msg:empty {
+        margin-bottom: 0rem;
+    }
 
 .content-section {
     background: #ffffff;
