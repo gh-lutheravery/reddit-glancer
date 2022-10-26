@@ -6,50 +6,62 @@
 @using System.Text.Encodings.Web;
 @model Reddit.Controllers.Post[]
 
+<script>
+    $(document).ready(function () {    
+        $(".nsfw-hide").parent("article-gr").hide();
+        $("#nsfw-hide").click(function() {
+            $("#nsfw-post").parent("article-gr").toggle();
+        });
+    })
+</script>
+
+<a href="#" class="nsfw-hide">Hide/Unhide NSFW content</a>
+
 @{
     if (Model.Count() != 0)
     {
         foreach (var post in Model)
         {
             <article class="media content-section">
-                <div class="media-body">
-                    @if (post.NSFW)
-                    {
-                        <div class="btn btn-danger">
+                <div class="media-body article-gr">
+                @if (post.NSFW)
+                {
+                        <div class="btn btn-danger" id="nsfw-post">
                             NSFW
                         </div>
-                    }
-                    <div class="article-metadata">
-                        <small class="text-muted">@post.Created.ToLongDateString()</small>
-                    </div>
+                }
 
-                    <h2 class="article-title">@post.Title</h2>
-                    <p class="text-muted">r/@post.Subreddit</p>
+                <div class="article-metadata">
+                    <small class="text-muted">@post.Created.ToLongDateString()</small>
+                </div>
 
-                    
-                    
-                    @if (post.Listing.IsSelf)
-                    {  
+                <h2 class="article-title">@post.Title</h2>
+                <p class="text-muted">r/@post.Subreddit</p>
+
+                        
+                        
+                @if (post.Listing.IsSelf)
+                {  
                         <p style="max-height: 68ch" class="article-content" id="jbody">
                         @(((Reddit.Controllers.SelfPost)post).SelfText)</p>
-                    }
+                }
 
-                    // some actual videos are not listed as one in API results
-                    else if (post.Listing.IsVideo || 
-                        ((Reddit.Controllers.LinkPost)post).URL.StartsWith("https://youtu.be/") || 
-				        ((Reddit.Controllers.LinkPost)post).URL.StartsWith("https://www.youtube.com/") ||
-				        ((Reddit.Controllers.LinkPost)post).URL.StartsWith("https://m.youtube.com/") ||
-                        ((Reddit.Controllers.LinkPost)post).URL.StartsWith("https://v.redd.it/"))
-                    {
+                // some actual videos are not listed as one in API results
+                else if (post.Listing.IsVideo || 
+                    ((Reddit.Controllers.LinkPost)post).URL.StartsWith("https://youtu.be/") || 
+				    ((Reddit.Controllers.LinkPost)post).URL.StartsWith("https://www.youtube.com/") ||
+				    ((Reddit.Controllers.LinkPost)post).URL.StartsWith("https://m.youtube.com/") ||
+                    ((Reddit.Controllers.LinkPost)post).URL.StartsWith("https://v.redd.it/"))
+                {
                         @await Component.InvokeAsync(nameof(DisplayVideo),
-                             new { post = post })
-                    }
+                            new { post = post })
+                }
 
-                    else
-                    {
-                        <img class="img-fluid" src="@(((Reddit.Controllers.LinkPost)post).URL)" 
+                else
+                {
+                        <img class="img-fluid img-gr" src="@(((Reddit.Controllers.LinkPost)post).URL)" 
                         alt="@(((Reddit.Controllers.LinkPost)post).URL)">
-                    }
+                }
                 </div>
             </article>
 

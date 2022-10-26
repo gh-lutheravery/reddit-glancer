@@ -47,6 +47,10 @@ ul {
     color: #444444;
 }
 
+.img-gr {
+    max-width: 100%;    
+}
+
 .layout-title {
     font-weight: 600;
     font-size: 1.75rem;
