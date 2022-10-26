@@ -115,6 +115,19 @@ ul {
     align-self: center;
 }
 
+    #home-btn:focus {
+        background-color: #FF736E;
+    }
+
+#home-link {
+    color: white;
+    font-size: x-large;
+}
+
+    #home-link:focus {
+        text-decoration: none;
+    }
+
 #login-desc {
     color: #fff;
     margin-left: 47.5rem;
