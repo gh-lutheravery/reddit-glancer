@@ -107,8 +107,7 @@ namespace GlanceReddit
 			}
 			else
 			{
-				//app.UseExceptionHandler("/Misc/Error");
-				app.UseDeveloperExceptionPage();
+				app.UseExceptionHandler("/Misc/Error");
 				app.UseHsts();
 
 				var forwardedHeadersOptions = new ForwardedHeadersOptions
