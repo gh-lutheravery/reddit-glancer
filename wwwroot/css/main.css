@@ -124,10 +124,6 @@ ul {
     font-size: x-large;
 }
 
-    .home-link:focus {
-        text-decoration: none;
-    }
-
 #login-desc {
     color: #fff;
     margin-left: 47.5rem;
