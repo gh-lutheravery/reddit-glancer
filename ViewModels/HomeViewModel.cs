@@ -13,9 +13,6 @@
 
 		public bool RememberMe { get; set; }
 
-		// fields for making api requests to reddit
-		public string RedditorName { get; set; }
-
 		public string SubredditName { get; set; }
 	}
 }

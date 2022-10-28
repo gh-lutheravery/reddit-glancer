@@ -96,6 +96,7 @@ namespace GlanceReddit.Controllers
 			return View();
 		}
 
+		// go back to home page after opening oauth page
 		[Route("login")]
 		[ValidateAntiForgeryToken]
 		[HttpPost]
@@ -110,7 +111,7 @@ namespace GlanceReddit.Controllers
 			return RedirectToAction(nameof(Home));
 		}
 
-		public async Task<ActionResult> SignOut()
+		public ActionResult SignOut()
 		{
 			if (IsRefreshTokenSet())
 			{
@@ -145,12 +146,6 @@ namespace GlanceReddit.Controllers
 				statsModel.ForeignWebsites = CastValueDoubleToInt(websiteOccurences);
 
 			statsModel.RelatedSubreddits = redditStatistics.GetRelatedSubreddits(client, sub.Name);
-
-			if (statsModel.ForeignWebsites == null)
-				_logger.LogError("ForeignWebsites is null");
-
-			if (statsModel.RelatedSubreddits == null)
-				_logger.LogError("RelatedSubreddits is null");
 
 			statsModel.ForeignWebsites = statsModel.ForeignWebsites.OrderByDescending(p => p.Value)
 				.ToDictionary(p => p.Key, p => p.Value);
@@ -232,6 +227,7 @@ namespace GlanceReddit.Controllers
 			return redditor;
 		}
 
+		// check input before going into method
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult ApiRequest(HomeViewModel viewRequest)
