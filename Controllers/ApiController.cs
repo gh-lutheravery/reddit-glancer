@@ -258,7 +258,7 @@ namespace GlanceReddit.Controllers
 			return RedirectToAction(nameof(Home));
 		}
 
-		public Uri SetQueryVal(string url, string name, string newValue)
+		private Uri SetQueryVal(string url, string name, string newValue)
 		{
 			NameValueCollection nvc = HttpUtility.ParseQueryString(url);
 			nvc[name] = (newValue ?? string.Empty).ToString();
