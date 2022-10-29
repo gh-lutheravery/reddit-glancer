@@ -115,13 +115,13 @@ ul {
     align-self: center;
 }
 
-    .home-btn:focus {
-        background-color: #FF736E;
-    }
-
 .home-link {
     color: white;
     font-size: x-large;
+}
+
+a:hover {
+    text-decoration: none;
 }
 
 #login-desc {
